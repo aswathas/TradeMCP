@@ -42,9 +42,10 @@ scripts/split_batch3.py
 scripts/repoint_live_js.py
 scripts/widen_screener_ranges.py
 
-# Source art for the Shrine upgrade. The processed, web-sized PNGs live in
-# showcase/site/assets/shrine/ and are committed; these full-size originals
-# are not.
+# Source art for the Shrine upgrade. These full-size originals are not in the
+# repo. The lossless processed masters are, in showcase/sources/shrine/; the
+# published site carries only the web-sized copies in
+# showcase/site/assets/shrine/.
 Assets for ui/
 
 # Temporary probe pages the layout tools drop into the site directory

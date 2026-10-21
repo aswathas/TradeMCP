@@ -1,0 +1,65 @@
+name: Publish showcase
+
+# GitHub Pages serves a static site, so the showcase can never answer /api/*
+# itself. Instead of shipping a snapshot that goes stale, this workflow
+# regenerates the snapshot from the TradeMCP server - the same tools the
+# product exposes - and publishes it to the gh-pages branch.
+
+on:
+  schedule:
+    # Off the hour, twice an hour. NSE and Yahoo both publish during the
+    # Indian session, so mid-morning and mid-afternoon runs land on real data.
+    - cron: "23,53 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-showcase
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Refresh data and publish to GitHub Pages
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install TradeMCP
+        run: pip install -e .
+
+      - name: Refresh the snapshot and the screener
+        # A flaky upstream must never stop the site from publishing. If the
+        # refresh fails, the previously committed snapshot is published
+        # instead - stale, but working.
+        continue-on-error: true
+        run: |
+          python scripts/refresh_showcase_data.py
+          python scripts/refresh_screener_data.py
+
+      - name: Publish to the gh-pages branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          pages="$RUNNER_TEMP/pages"
+          mkdir -p "$pages"
+          cp -r showcase/site/. "$pages/"
+          cd "$pages"
+          git init -q .
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Publish showcase ($(date -u +%Y-%m-%dT%H:%MZ))"
+          git push --force \
+            "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO}.git" \
+            HEAD:gh-pages
+          echo "published $REPO gh-pages"

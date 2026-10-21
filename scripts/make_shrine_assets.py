@@ -45,6 +45,7 @@ Only Pillow is used - no new dependency is added to the project.
 
 from __future__ import annotations
 
+import io
 import shutil
 from pathlib import Path
 
@@ -52,6 +53,7 @@ from PIL import Image, ImageChops, ImageDraw, ImageFilter
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC_DIR = ROOT / "Assets for ui"
+MASTER_DIR = ROOT / "showcase" / "sources" / "shrine"
 OUT_DIR = ROOT / "showcase" / "site" / "assets" / "shrine"
 
 MAX_SIDE = 1600
@@ -241,26 +243,37 @@ def flatten_transparent_rgb(rgba: Image.Image, color: tuple[int, int, int]) -> I
     return Image.merge("RGBA", (*flat.split(), a))
 
 
-def save_asset(img: Image.Image, path: Path) -> dict:
-    """Write the PNG (optimised) and, when it is much smaller, a WebP beside it.
+def save_asset(img: Image.Image, stem: str) -> dict:
+    """Write the lossless master and the file the page actually loads.
+
+    The master PNG lands in showcase/sources/shrine so the art survives in the
+    repo without the published site carrying megabytes of files no page ever
+    requests. The site copy is whichever of WebP and PNG is smaller.
 
     The PNG is always a real PNG: serving WebP bytes under a .png name makes
-    the server send the wrong Content-Type and the file is a lie. The page
-    references the .webp where one exists, because every browser that can
-    run this site understands WebP.
+    the server send the wrong Content-Type and the file is a lie.
     """
-    img.save(path, "PNG", optimize=True)
-    size = path.stat().st_size
-    note = ""
-    webp = path.with_suffix(".webp")
-    img.save(webp, "WEBP", quality=WEBP_QUALITY, method=6)
-    webp_size = webp.stat().st_size
-    if webp_size <= size // 2:
-        note = f"webp {webp_size} B alongside"
+    MASTER_DIR.mkdir(parents=True, exist_ok=True)
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+
+    master = MASTER_DIR / f"{stem}.png"
+    img.save(master, "PNG", optimize=True)
+    size = master.stat().st_size
+
+    buf = io.BytesIO()
+    img.save(buf, "WEBP", quality=WEBP_QUALITY, method=6)
+    webp_bytes = buf.getvalue()
+
+    if len(webp_bytes) <= size // 2:
+        site = OUT_DIR / f"{stem}.webp"
+        site.write_bytes(webp_bytes)
+        note = f"webp {len(webp_bytes)} B"
     else:
-        webp.unlink()
+        site = OUT_DIR / f"{stem}.png"
+        shutil.copyfile(master, site)
         note = "webp not smaller; png only"
-    return {"bytes": size, "note": note}
+
+    return {"bytes": size, "note": note, "master": master, "site": site}
 
 
 def verify(path: Path) -> dict:
@@ -282,7 +295,7 @@ def verify(path: Path) -> dict:
 # --------------------------------------------------------------------------- #
 def process_plate(
     source: str,
-    target: str,
+    stem: str,
     mode: str,
     tol_core: int,
     tol_edge: int,
@@ -319,33 +332,36 @@ def process_plate(
     rgba = trim_to_content(rgba)
     small = downscale(rgba)
     small = flatten_transparent_rgb(small, flat_rgb)
-    out_path = OUT_DIR / target
-    meta = save_asset(small, out_path)
+    meta = save_asset(small, stem)
     print(
-        f"{target:24s} {meta['bytes']:>8d} B  {small.size[0]}x{small.size[1]} px"
+        f"{stem:24s} {meta['bytes']:>8d} B  {small.size[0]}x{small.size[1]} px"
         + (f"  [{meta['note']}]" if meta["note"] else "")
     )
-    return out_path
+    return meta["site"]
 
 
-def process_plain(source: str, target: str) -> Path:
+def process_plain(source: str, stem: str) -> Path:
     """Copy an asset that already ships with an alpha channel."""
     src_path = SRC_DIR / source
     with Image.open(src_path) as im:
         rgba = im.convert("RGBA")
     small = downscale(rgba)
     small = flatten_transparent_rgb(small, (0, 0, 0))
-    out_path = OUT_DIR / target
-    meta = save_asset(small, out_path)
+    meta = save_asset(small, stem)
     print(
-        f"{target:24s} {meta['bytes']:>8d} B  {small.size[0]}x{small.size[1]} px"
+        f"{stem:24s} {meta['bytes']:>8d} B  {small.size[0]}x{small.size[1]} px"
         + (f"  [{meta['note']}]" if meta["note"] else "")
     )
-    return out_path
+    return meta["site"]
 
 
 def main() -> None:
+    # The site folder holds exactly the files the page loads. Wipe it so a
+    # renamed or retired plate cannot linger as a dead request.
+    if OUT_DIR.exists():
+        shutil.rmtree(OUT_DIR)
     OUT_DIR.mkdir(parents=True, exist_ok=True)
+    MASTER_DIR.mkdir(parents=True, exist_ok=True)
 
     print("building shrine assets")
     print("-" * 62)
@@ -354,7 +370,7 @@ def main() -> None:
     # highlights opaque; the ramp fades the pale glow around the frame.
     process_plate(
         SOURCE_FANG,
-        "shrine-fang-frame.png",
+        "shrine-fang-frame",
         mode="white",
         tol_core=10,
         tol_edge=60,
@@ -367,7 +383,7 @@ def main() -> None:
     # is treated as background and the feather is limited to a thin fringe.
     process_plate(
         SOURCE_ROOF,
-        "shrine-roof-banner.png",
+        "shrine-roof-banner",
         mode="black",
         tol_core=12,
         tol_edge=45,
@@ -378,38 +394,43 @@ def main() -> None:
         min_blob_area=1000,
     )
     print("-" * 62)
-    process_plain("Code_Generated_Image (2).png", "slash-divider.png")
-    process_plain("Code_Generated_Image (1).png", "seal-badge.png")
-    process_plain("Code_Generated_Image.png", "corner-bracket.png")
-    process_plain("Code_Generated_Image (3).png", "panel-frame.png")
+    process_plain("Code_Generated_Image (2).png", "slash-divider")
+    process_plain("Code_Generated_Image (1).png", "seal-badge")
+    process_plain("Code_Generated_Image.png", "corner-bracket")
+    process_plain("Code_Generated_Image (3).png", "panel-frame")
 
     print("-" * 62)
     print("verification")
-    for name in (
-        "shrine-fang-frame.png",
-        "shrine-roof-banner.png",
-        "slash-divider.png",
-        "seal-badge.png",
-        "corner-bracket.png",
-        "panel-frame.png",
+    for stem in (
+        "shrine-fang-frame",
+        "shrine-roof-banner",
+        "slash-divider",
+        "seal-badge",
+        "corner-bracket",
+        "panel-frame",
     ):
-        path = OUT_DIR / name
-        info = verify(path)
+        master = MASTER_DIR / f"{stem}.png"
+        info = verify(master)
         alpha_note = "" if "corner" not in info else f"  corner alpha={info['corner']}"
         print(
-            f"{name:24s} {info['size'][0]}x{info['size'][1]} px  mode={info['mode']}  "
+            f"master {stem:22s} {info['size'][0]}x{info['size'][1]} px  mode={info['mode']}  "
             f"alpha={info['has_alpha']}  {info['bytes']:>8d} B{alpha_note}"
         )
-        # the webp sibling must really be webp. Serving webp bytes under a .png
-        # name is what an earlier run did, and it looks fine until a browser
-        # sniffs the wrong type.
-        sibling = path.with_suffix(".webp")
-        if sibling.exists():
-            magic = sibling.read_bytes()[:4]
-            kind = "webp" if magic == b"RIFF" else f"NOT WEBP ({magic!r})"
-            print(f"{'  ' + sibling.name:24s} {sibling.stat().st_size:>8d} B  {kind}")
-            if magic != b"RIFF":
-                raise SystemExit(f"{sibling.name} is not a real webp")
+        site = OUT_DIR / f"{stem}.webp"
+        if not site.exists():
+            site = OUT_DIR / f"{stem}.png"
+        magic = site.read_bytes()[:4]
+        if site.suffix == ".webp" and magic != b"RIFF":
+            raise SystemExit(f"{site.name} is not a real webp")
+        if site.suffix == ".png" and magic != b"\x89PNG":
+            raise SystemExit(f"{site.name} is not a real png")
+        print(
+            f"  site {site.name:22s} {site.stat().st_size:>8d} B  "
+            f"{'webp' if site.suffix == '.webp' else 'png'}"
+        )
+    published = sorted(p.name for p in OUT_DIR.iterdir())
+    if len(published) != 6:
+        raise SystemExit(f"site folder should hold exactly 6 files, holds {len(published)}: {published}")
 
 
 if __name__ == "__main__":
