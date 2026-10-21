@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Martian+Mono:wght@400;600&family=Permanent+Marker&family=Saira+Condensed:wght@600;700&family=Saira:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=22">
+<link rel="stylesheet" href="styles.css?v=23">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -72,7 +72,10 @@
         </p>
 
         <div class="hero-actions">
-          <button class="btn btn--primary" type="button" id="npx-cta">
+          <button class="btn btn--primary" type="button" id="npx-copy-cta">
+            Copy the npx command
+          </button>
+          <button class="btn btn--ghost" type="button" id="npx-cta">
             Download the npx command
           </button>
           <button class="btn btn--fuga" type="button" id="fuga-btn">
@@ -693,9 +696,26 @@
   }
 }</pre>
           <p class="install__note">For Claude Desktop, Cursor, Windsurf and VS Code. In Claude Code
-          it is a single line: <code>claude mcp add trademcp -- npx -y @aswathas/trademcp</code>.
-          Prefer to run it from source? <code>git clone</code>, <code>pip install -e .</code>, then
-          <code>python -m trademcp</code>.</p>
+          it is a single line: <code>claude mcp add trademcp -- npx -y @aswathas/trademcp</code>.</p>
+
+          <div class="install__bar install__bar--second">
+            <span>Manual setup</span>
+            <button class="btn btn--tiny" type="button" data-copy-target="mcp-config-manual">Copy</button>
+          </div>
+<pre class="code" id="mcp-config-manual">{
+  "mcpServers": {
+    "trademcp": {
+      "command": "python",
+      "args": ["-m", "trademcp"]
+    }
+  }
+}</pre>
+          <p class="install__note">If you installed from source and want to point at your own
+          interpreter, use this instead: <code>git clone</code>, <code>python -m venv .venv</code>,
+          <code>pip install -e .</code>, then <code>python -m trademcp</code>.
+          <code>python</code> must be the interpreter that has TradeMCP installed —
+          <code>scripts/install.ps1</code> prints the exact path to paste. Installed globally
+          instead? Use <code>"command": "trademcp"</code> with no args.</p>
         </div>
 
         <ol class="install__steps">
@@ -785,8 +805,8 @@ python -m pytest tests -q</pre>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="app.js?v=22"></script>
-<script src="live.js?v=22"></script>
-<script src="screener.js?v=22"></script>
+<script src="app.js?v=23"></script>
+<script src="live.js?v=23"></script>
+<script src="screener.js?v=23"></script>
 </body>
 </html>

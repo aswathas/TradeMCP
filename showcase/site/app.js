@@ -187,6 +187,15 @@ function wireNpxDownload() {
   });
 }
 
+function wireNpxCopy() {
+  const button = document.getElementById("npx-copy-cta");
+  if (!button) return;
+  button.addEventListener("click", async () => {
+    const ok = await copyText(NPX_COMMAND);
+    toast(ok ? "Copied — paste it into your client" : "Copy failed — select it manually");
+  });
+}
+
 function wireCopyButtons() {
   document.querySelectorAll("[data-copy-target]").forEach((button) => {
     button.addEventListener("click", async () => {
@@ -415,6 +424,7 @@ function wireDolly() {
 renderChips();
 wireCopyButtons();
 wireNpxDownload();
+wireNpxCopy();
 wireThemeToggle();
 wireDomains();
 wireFuga();
