@@ -1814,7 +1814,12 @@ html.is-flat .panel--hud { transform: none; }
 /* the page-wide copy of the grid: it fills the gaps between panels */
 .void-space--page { z-index: 1; }
 .void-space--page .void-space__grid { perspective-origin: 50% 62%; }
-.void-space--page .void-space__grid::before { top: 62%; }
+.void-space--page .void-space__grid::before {
+  top: 62%;
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 240, 255, 0.17) 0 1px, transparent 1px 56px),
+    repeating-linear-gradient(0deg, rgba(0, 240, 255, 0.11) 0 1px, transparent 1px 56px);
+}
 [data-theme="void"] .void-space { opacity: 1; }
 
 .void-space__grid {
