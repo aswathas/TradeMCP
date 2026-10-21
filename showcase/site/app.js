@@ -135,6 +135,58 @@ async function copyText(text) {
   }
 }
 
+/* The install path is one npx command. The hero button hands the visitor that
+   command as a file, so it can be pasted or run as it is. */
+const NPX_COMMAND = "npx -y @aswathas/trademcp";
+
+function downloadText(filename, text) {
+  const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function npxCommandFile() {
+  return [
+    "# TradeMCP - free MCP server for Indian equities (NSE/BSE)",
+    "# 14 tools, 57 technical indicators, 54 fundamental ratios, a screener.",
+    "# No API key, no account. Node 18+ and Python 3.11+ are the only requirements.",
+    "",
+    "# 1. add it to your MCP client",
+    NPX_COMMAND,
+    "",
+    "# 2. Claude Desktop, Cursor, Windsurf, VS Code  (mcpServers block)",
+    "{",
+    '  "mcpServers": {',
+    '    "trademcp": {',
+    '      "command": "npx",',
+    '      "args": ["-y", "@aswathas/trademcp"]',
+    "    }",
+    "  }",
+    "}",
+    "",
+    "# 3. Claude Code",
+    "claude mcp add trademcp -- npx -y @aswathas/trademcp",
+    "",
+    "# Source: https://github.com/aswathas/TradeMCP",
+    "",
+  ].join("\n");
+}
+
+function wireNpxDownload() {
+  const button = document.getElementById("npx-cta");
+  if (!button) return;
+  button.addEventListener("click", () => {
+    downloadText("trademcp-npx.txt", npxCommandFile());
+    toast("Downloaded — run the command in your MCP client");
+  });
+}
+
 function wireCopyButtons() {
   document.querySelectorAll("[data-copy-target]").forEach((button) => {
     button.addEventListener("click", async () => {
@@ -155,8 +207,8 @@ function wireCopyButtons() {
 const domainState = { base: "paper", active: null };
 
 const domainButtons = {
-  void: [document.getElementById("domain-btn"), document.getElementById("domain-void")],
-  shrine: [document.getElementById("tech-shrine"), document.getElementById("domain-shrine")],
+  void: document.getElementById("domain-btn"),
+  shrine: document.getElementById("tech-shrine"),
 };
 
 const domainLabels = {
@@ -188,13 +240,12 @@ function paintTheme(theme) {
 
 function paintDomain() {
   for (const key of Object.keys(domainButtons)) {
-    for (const button of domainButtons[key]) {
-      if (!button) continue;
-      const on = domainState.active === key;
-      button.setAttribute("aria-pressed", String(on));
-      const sub = button.querySelector(".tech__sub");
-      if (sub) sub.textContent = on ? "Collapse the domain" : domainLabels[key];
-    }
+    const button = domainButtons[key];
+    if (!button) continue;
+    const on = domainState.active === key;
+    button.setAttribute("aria-pressed", String(on));
+    const sub = button.querySelector(".tech__sub");
+    if (sub) sub.textContent = on ? "Collapse the domain" : domainLabels[key];
   }
 }
 
@@ -260,10 +311,9 @@ function wireThemeToggle() {
 
 function wireDomains() {
   for (const key of Object.keys(domainButtons)) {
-    for (const button of domainButtons[key]) {
-      if (!button) continue;
-      button.addEventListener("click", () => castDomain(key));
-    }
+    const button = domainButtons[key];
+    if (!button) continue;
+    button.addEventListener("click", () => castDomain(key));
   }
   paintDomain();
 }
@@ -364,6 +414,7 @@ function wireDolly() {
 
 renderChips();
 wireCopyButtons();
+wireNpxDownload();
 wireThemeToggle();
 wireDomains();
 wireFuga();

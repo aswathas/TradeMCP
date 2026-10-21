@@ -375,23 +375,16 @@ function renderChart(candles) {
   const lastY = yOf(closes[closes.length - 1]);
   svg.appendChild(svgEl("line", { x1: 0, y1: lastY, x2: CH.w, y2: lastY, class: "chart__last-line" }));
 
-  // Sukuna's attacks, drawn into the data: the cleave across the biggest
-  // single move and the divine flame over the best day. Shrine only.
+  // Sukuna's cleave, drawn into the data: the cut across the biggest single
+  // move of the series. Shrine only.
   let cleaveIdx = -1;
   let cleaveMag = 0;
-  let flameIdx = -1;
-  let flameMag = 0;
   candles.forEach((c, i) => {
     if (!c.open) return;
     const move = Math.abs(c.close - c.open) / c.open;
     if (move > cleaveMag) {
       cleaveMag = move;
       cleaveIdx = i;
-    }
-    const gain = (c.close - c.open) / c.open;
-    if (gain > flameMag) {
-      flameMag = gain;
-      flameIdx = i;
     }
   });
   if (cleaveIdx >= 0) {
@@ -400,17 +393,6 @@ function renderChart(candles) {
       x1: x - 30, y1: CH.priceTop - 8, x2: x + 30, y2: CH.priceBottom + 8,
       class: "chart__cleave",
     }));
-  }
-  if (flameIdx >= 0) {
-    const x = xOf(flameIdx);
-    const y = yOf(candles[flameIdx].close);
-    const flame = svgEl("g", {
-      class: "chart__flame",
-      transform: `translate(${x.toFixed(1)} ${y.toFixed(1)})`,
-    });
-    flame.appendChild(svgEl("path", { d: "M0 0 C 7 -7 5 -16 0 -25 C -5 -16 -7 -7 0 0 Z", class: "chart__flame-core" }));
-    flame.appendChild(svgEl("path", { d: "M0 -3 C 3.5 -7 2.5 -13 0 -17 C -2.5 -13 -3.5 -7 0 -3 Z", class: "chart__flame-inner" }));
-    svg.appendChild(flame);
   }
 
   host.appendChild(svg);
@@ -462,7 +444,6 @@ function renderChart(candles) {
       <span class="legend"><i class="legend__key legend__key--band"></i>Bollinger 20·2</span>
       <span class="legend"><i class="legend__key legend__key--rsi"></i>RSI 14</span>
       <span class="legend legend--shrine"><i class="legend__key legend__key--cleave"></i>Cleave</span>
-      <span class="legend legend--shrine"><i class="legend__key legend__key--flame"></i>Divine flame</span>
       <span class="legend legend--right">${candles[0].date} → ${candles[candles.length - 1].date}</span>`;
   }
 

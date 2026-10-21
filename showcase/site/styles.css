@@ -866,6 +866,7 @@ code {
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
+.install__bar--second { border-top: 2px solid var(--rule); }
 .install__bar .btn {
   background: var(--paper);
   color: var(--ink);
@@ -1835,29 +1836,6 @@ html.is-flat .panel--hud { transform: none; }
   0%, 100% { transform: rotate(-2deg) scaleX(1); opacity: 0.7; }
   50% { transform: rotate(-1deg) scaleX(1.03); opacity: 1; }
 }
-.void-core__horizon {
-  position: relative;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.9) 24%,
-    #00f0ff 50%,
-    rgba(255, 255, 255, 0.9) 76%,
-    transparent
-  );
-  box-shadow: 0 0 12px rgba(0, 240, 255, 0.8), 0 0 44px rgba(0, 240, 255, 0.32);
-  opacity: 0;
-}
-[data-theme="void"] .void-core__horizon {
-  opacity: 1;
-  animation: horizon-breathe 7s ease-in-out infinite;
-}
-@keyframes horizon-breathe {
-  0%, 100% { transform: scaleX(0.86); opacity: 0.75; }
-  50% { transform: scaleX(1); opacity: 1; }
-}
 /* what the page looks like from inside each domain */
 [data-theme="void"] .hero-title {
   color: #ffffff;
@@ -1879,32 +1857,6 @@ html.is-flat .panel--hud { transform: none; }
 [data-theme="shrine"] .panel { outline: 1px solid rgba(157, 2, 8, 0.45); outline-offset: 2px; }
 [data-theme="void"] .hud-dot { background: var(--cyan); }
 [data-theme="shrine"] .hud-dot { background: var(--flame); }
-
-/* the global domain switch, next to the paper/night toggle */
-.domain-toggle {
-  display: inline-flex;
-  border: 1px solid var(--rule);
-  background: var(--paper-2);
-}
-.domain-toggle__btn {
-  font-family: var(--font-ui);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-2);
-  background: transparent;
-  border: 0;
-  padding: 10px 14px;
-  cursor: pointer;
-  transition: background 150ms ease, color 150ms ease;
-}
-.domain-toggle__btn + .domain-toggle__btn { border-left: 1px solid var(--rule); }
-.domain-toggle__btn:hover { color: var(--ink); }
-.domain-toggle__btn[aria-pressed="true"] { background: var(--cyan); color: var(--paper); }
-@media (max-width: 1100px) {
-  .domain-toggle { display: none; }
-}
 
 /* a cleave notch: the corners are cut, not squared */
 [data-theme="shrine"] .preset,
@@ -2347,27 +2299,19 @@ html.is-cast .panel--hero { animation: cast-flash 800ms ease-out; }
   100% { transform: translateY(0) scaleY(1); opacity: 1; color: inherit; }
 }
 
-/* Sukuna's attacks inside the data: the cleave across the biggest move and
-   the divine flame over the best day. They surface only in the Shrine. */
-.chart__cleave,
-.chart__flame { opacity: 0; transition: opacity 320ms ease; }
-[data-theme="shrine"] .chart__cleave,
-[data-theme="shrine"] .chart__flame { opacity: 1; }
+/* Sukuna's cleave: the cut drawn across the biggest single-day move.
+   It surfaces only in the Shrine. */
+.chart__cleave { opacity: 0; transition: opacity 320ms ease; }
+[data-theme="shrine"] .chart__cleave { opacity: 1; }
 .chart__cleave {
   stroke: #e0ddcf;
   stroke-width: 1.4;
   stroke-dasharray: 6 5;
 }
-.chart__flame-core { fill: #ffba08; }
-.chart__flame-inner { fill: #fff3b0; }
 .legend--shrine { display: none; }
 [data-theme="shrine"] .legend--shrine { display: inline-flex; }
 .legend__key--cleave {
   background: repeating-linear-gradient(90deg, #e0ddcf 0 5px, transparent 5px 9px);
-}
-.legend__key--flame {
-  background: linear-gradient(180deg, #fff3b0, #ffba08);
-  border-radius: 50% 50% 40% 40%;
 }
 
 /* Dismantle: one clean cut across the page when a domain lets go. */

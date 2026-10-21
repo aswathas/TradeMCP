@@ -1,0 +1,46 @@
+{
+  "name": "@aswathas/trademcp",
+  "version": "0.1.0",
+  "description": "Free Model Context Protocol server for Indian equities (NSE/BSE). 14 tools, 57 technical indicators, 54 fundamental ratios, a screener. No API keys.",
+  "keywords": [
+    "mcp",
+    "modelcontextprotocol",
+    "india",
+    "nse",
+    "bse",
+    "stocks",
+    "equities",
+    "technical-analysis",
+    "fundamentals",
+    "screener"
+  ],
+  "homepage": "https://github.com/aswathas/TradeMCP#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aswathas/TradeMCP.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aswathas/TradeMCP/issues"
+  },
+  "license": "MIT",
+  "author": "Aswath AS",
+  "type": "commonjs",
+  "bin": {
+    "trademcp": "bin/trademcp.js"
+  },
+  "files": [
+    "bin/trademcp.js",
+    "src/trademcp/",
+    "!src/**/__pycache__/**",
+    "!**/*.pyc",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node bin/trademcp.js --selftest"
+  },
+  "dependencies": {}
+}

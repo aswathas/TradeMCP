@@ -68,8 +68,36 @@ numbers are consistent and auditable.
 
 ## Install
 
+One command. The npm package carries the Python server and builds its own environment on first
+run, so all you need is Node 18+ and Python 3.11+:
+
 ```bash
-git clone <your-repo-url> TradeMCP
+npx -y @aswathas/trademcp
+```
+
+Point your MCP client at it — Claude Code:
+
+```bash
+claude mcp add trademcp -- npx -y @aswathas/trademcp
+```
+
+Claude Desktop, Cursor, Windsurf, VS Code — in `mcpServers`:
+
+```json
+{
+  "mcpServers": {
+    "trademcp": {
+      "command": "npx",
+      "args": ["-y", "@aswathas/trademcp"]
+    }
+  }
+}
+```
+
+Or run it from source:
+
+```bash
+git clone https://github.com/aswathas/TradeMCP.git
 cd TradeMCP
 python -m venv .venv
 .venv\Scripts\activate          # Windows
