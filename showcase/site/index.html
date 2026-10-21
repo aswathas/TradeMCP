@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Martian+Mono:wght@400;600&family=Permanent+Marker&family=Saira+Condensed:wght@600;700&family=Saira:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=25">
+<link rel="stylesheet" href="styles.css?v=26">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -32,6 +32,10 @@
       <span class="theme-toggle__glyph" aria-hidden="true">◐</span>
       <span class="theme-toggle__text">Night</span>
     </button>
+    <div class="domain-toggle" role="group" aria-label="Cursed domain">
+      <button class="domain-toggle__btn" type="button" id="domain-void" aria-pressed="false">Void</button>
+      <button class="domain-toggle__btn" type="button" id="domain-shrine" aria-pressed="false">Shrine</button>
+    </div>
   </header>
 
   <div class="tape" aria-label="Live quotes for NSE stocks">
@@ -773,6 +777,7 @@ python -m pytest tests -q</pre>
         <h2 id="config-title">Every setting has a default</h2>
       </header>
       <div class="panel">
+        <div class="table-wrap">
         <table class="table">
           <caption class="sr-only">Environment variables and their defaults</caption>
           <thead><tr><th scope="col">Variable</th><th scope="col">Default</th><th scope="col">Purpose</th></tr></thead>
@@ -787,6 +792,7 @@ python -m pytest tests -q</pre>
             <tr><td><code>TRADEMCP_ENABLE_SCREENER_IN</code></td><td>1</td><td>Set to 0 to skip Screener.in</td></tr>
           </tbody>
         </table>
+        </div>
       </div>
     </section>
 
@@ -824,8 +830,8 @@ python -m pytest tests -q</pre>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="app.js?v=25"></script>
-<script src="live.js?v=25"></script>
-<script src="screener.js?v=25"></script>
+<script src="app.js?v=26"></script>
+<script src="live.js?v=26"></script>
+<script src="screener.js?v=26"></script>
 </body>
 </html>

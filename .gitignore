@@ -41,3 +41,12 @@ scripts/make_manga_comps.py
 scripts/split_batch3.py
 scripts/repoint_live_js.py
 scripts/widen_screener_ranges.py
+
+# Source art for the Shrine upgrade. The processed, web-sized PNGs live in
+# showcase/site/assets/shrine/ and are committed; these full-size originals
+# are not.
+Assets for ui/
+
+# Temporary probe pages the layout tools drop into the site directory
+showcase/site/_probe.html
+showcase/site/_frame.html

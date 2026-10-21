@@ -91,6 +91,16 @@ input,
 textarea,
 select { cursor: text; }
 
+/* A control must look like a control. The razor cursor belongs to the page,
+   but drawn over a button it hides the very thing you are trying to tap —
+   so anything clickable gets the ordinary pointer back. */
+button,
+a,
+summary,
+label[for],
+[role="button"],
+[role="tab"] { cursor: pointer; }
+
 .sr-only {
   position: absolute;
   width: 1px; height: 1px;
@@ -119,6 +129,8 @@ select { cursor: text; }
 }
 
 .sheet {
+  position: relative;
+  z-index: 1;
   max-width: 1360px;
   margin: 0 auto;
   padding: 0 clamp(12px, 3vw, 40px) 0;
@@ -204,6 +216,34 @@ select { cursor: text; }
   cursor: pointer;
 }
 .theme-toggle:hover { background: var(--paper-2); }
+
+/* The domain switch. It lives in the header so a thumb can reach it on a
+   phone; on wide screens the hero rail carries the same control and this
+   copy stands down, so there is only ever one switch on screen. */
+.domain-toggle {
+  display: inline-flex;
+  border: 1px solid var(--rule);
+  background: var(--paper-2);
+}
+.domain-toggle__btn {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  background: transparent;
+  border: 0;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background 150ms ease, color 150ms ease;
+}
+.domain-toggle__btn + .domain-toggle__btn { border-left: 1px solid var(--rule); }
+.domain-toggle__btn:hover { color: var(--ink); }
+.domain-toggle__btn[aria-pressed="true"] { background: var(--cyan); color: var(--paper); }
+@media (min-width: 721px) {
+  .domain-toggle { display: none; }
+}
 
 /* ---------- splash ------------------------------------------------------- */
 
@@ -386,10 +426,10 @@ select { cursor: text; }
 
 .hud-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(140px, 100%), 1fr));
   gap: 10px;
 }
-.hud-row--bars { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+.hud-row--bars { grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr)); }
 
 .hud-readout {
   position: relative;
@@ -584,7 +624,7 @@ select { cursor: text; }
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
 }
 .strip__list li {
   padding: 16px 18px;
@@ -630,7 +670,7 @@ select { cursor: text; }
 
 .tool-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(290px, 100%), 1fr));
   gap: var(--gutter);
 }
 
@@ -645,7 +685,7 @@ select { cursor: text; }
   list-style: none;
   cursor: pointer;
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: baseline;
   gap: 10px;
   padding: 13px 15px;
@@ -721,13 +761,16 @@ code {
   background: var(--paper);
   border: 1px solid var(--tone);
   padding: 1px 5px;
+  /* a long token (a JSON example, a tool name) must break rather than widen
+     the card it sits in — otherwise the whole page overflows on a phone */
+  overflow-wrap: anywhere;
 }
 
 /* ---------- metrics ------------------------------------------------------ */
 
 .metric-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   gap: var(--gutter);
 }
 .metric-panel h3 {
@@ -772,7 +815,7 @@ code {
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(176px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(176px, 100%), 1fr));
   gap: var(--gutter);
   counter-reset: step;
 }
@@ -808,7 +851,7 @@ code {
 
 .source-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(270px, 100%), 1fr));
   gap: var(--gutter);
 }
 .source__mark {
@@ -890,7 +933,7 @@ code {
 .code--sm { font-size: 11.5px; padding: 12px 14px; border: 2px solid var(--rule); }
 
 .install__note { margin: 0; padding: 12px 14px; font-size: 13px; color: var(--ink-2); }
-.install__note code { white-space: nowrap; }
+.install__note code { white-space: normal; overflow-wrap: anywhere; }
 
 .install__steps {
   list-style: none;
@@ -902,7 +945,7 @@ code {
 .install__steps li {
   position: relative;
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto minmax(0, 1fr);
   gap: 14px;
   align-items: start;
 }
@@ -917,6 +960,9 @@ code {
 .install__steps p { margin: 0; font-size: 14px; color: var(--ink-2); }
 
 /* ---------- table -------------------------------------------------------- */
+
+/* a wide table scrolls inside its panel instead of stretching the page */
+.table-wrap { overflow-x: auto; }
 
 .table {
   width: 100%;
@@ -1213,7 +1259,7 @@ code {
 
 .readouts {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
   gap: 8px;
 }
 
@@ -1275,7 +1321,10 @@ code {
   content: "";
   position: absolute;
   z-index: -1;
-  inset: -40px -60px -30px -60px;
+  /* the speed lines bleed into the gutter, but never past the page edge: a
+     fixed -60px pushed the right-hand 48px off-screen, where the domain
+     switch lives and could not be tapped */
+  inset: -40px calc(-1 * min(3vw, 40px)) -30px calc(-1 * min(3vw, 40px));
   background: repeating-conic-gradient(
     from 0deg at 22% 40%,
     var(--ink) 0deg 0.45deg,
@@ -1618,15 +1667,17 @@ html.is-flat .panel--hud { transform: none; }
 /* ---------- responsive --------------------------------------------------- */
 
 @media (max-width: 1080px) {
-  .splash { grid-template-columns: 1fr; }
-  .install { grid-template-columns: 1fr; }
-  .board { grid-template-columns: 1fr; }
-  .screener { grid-template-columns: 1fr; }
+  /* minmax(0, 1fr), not 1fr: a plain 1fr floors at min-content, so a wide
+     code block pushed the whole page wider than the phone */
+  .splash { grid-template-columns: minmax(0, 1fr); }
+  .install { grid-template-columns: minmax(0, 1fr); }
+  .board { grid-template-columns: minmax(0, 1fr); }
+  .screener { grid-template-columns: minmax(0, 1fr); }
   }
 
 @media (max-width: 720px) {
   .masthead { flex-wrap: wrap; gap: 10px; }
-  .nav { order: 3; width: 100%; margin-left: 0; justify-content: space-between; }
+  .nav { order: 3; width: 100%; margin-left: 0; justify-content: space-between; flex-wrap: wrap; }
   .theme-toggle { margin-left: auto; }
   .strip__list { grid-template-columns: repeat(2, 1fr); }
   .strip__list li { border-right: var(--edge) solid var(--rule); border-bottom: var(--edge) solid var(--rule); }
@@ -1724,7 +1775,9 @@ html.is-flat .panel--hud { transform: none; }
 .domain {
   position: fixed;
   inset: 0;
-  z-index: 55;
+  /* behind the page: the void is the space the page sits in, not a veil
+     painted over it. A veil at 55 dimmed every word to grey. */
+  z-index: 0;
   pointer-events: none;
   opacity: 0;
   transition: opacity 420ms ease;
@@ -1888,7 +1941,10 @@ html.is-flat .panel--hud { transform: none; }
 
 /* the copy keeps its own ground: the grid is atmosphere, not a backdrop for
    the text to sit on */
-.void-space::after {
+/* the copy keeps its own ground: the grid is atmosphere, not a backdrop
+   for the text to sit on. Only the hero copy needs this scrim — applied to
+   the page-wide copy it dimmed the whole page. */
+.panel--hero .void-space::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -2123,7 +2179,7 @@ html.is-cast .panel--hero { animation: cast-flash 800ms ease-out; }
 .shrine {
   position: fixed;
   inset: 0;
-  z-index: 55;
+  z-index: 0;
   pointer-events: none;
   opacity: 0;
   transition: opacity 420ms ease;

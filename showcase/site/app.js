@@ -220,8 +220,8 @@ function wireCopyButtons() {
 const domainState = { base: "paper", active: null };
 
 const domainButtons = {
-  void: document.getElementById("domain-btn"),
-  shrine: document.getElementById("tech-shrine"),
+  void: [document.getElementById("domain-btn"), document.getElementById("domain-void")],
+  shrine: [document.getElementById("tech-shrine"), document.getElementById("domain-shrine")],
 };
 
 const domainLabels = {
@@ -253,12 +253,13 @@ function paintTheme(theme) {
 
 function paintDomain() {
   for (const key of Object.keys(domainButtons)) {
-    const button = domainButtons[key];
-    if (!button) continue;
-    const on = domainState.active === key;
-    button.setAttribute("aria-pressed", String(on));
-    const sub = button.querySelector(".tech__sub");
-    if (sub) sub.textContent = on ? "Collapse the domain" : domainLabels[key];
+    for (const button of domainButtons[key]) {
+      if (!button) continue;
+      const on = domainState.active === key;
+      button.setAttribute("aria-pressed", String(on));
+      const sub = button.querySelector(".tech__sub");
+      if (sub) sub.textContent = on ? "Collapse the domain" : domainLabels[key];
+    }
   }
 }
 
@@ -275,12 +276,17 @@ function slash() {
 
 /* Press a domain to open it. Press it again to let it go. */
 let lastCast = 0;
+let lastCastKey = "";
 function castDomain(key) {
-  // The second click of a double-click would open and then instantly close,
-  // which reads as a broken button. Only the first click of a pair counts.
+  // A double-tap on the SAME button would open it and then instantly close
+  // it, which reads as a broken button — so only the first tap of a pair
+  // counts. A tap on a DIFFERENT button always works: switching straight
+  // from Void to Shrine must never be swallowed, because a thumb that taps
+  // fast is not double-tapping.
   const now = Date.now();
-  if (now - lastCast < 350) return;
+  if (key === lastCastKey && now - lastCast < 350) return;
   lastCast = now;
+  lastCastKey = key;
   if (domainState.active === key) {
     domainState.active = null;
     paintTheme(domainState.base);
@@ -324,9 +330,10 @@ function wireThemeToggle() {
 
 function wireDomains() {
   for (const key of Object.keys(domainButtons)) {
-    const button = domainButtons[key];
-    if (!button) continue;
-    button.addEventListener("click", () => castDomain(key));
+    for (const button of domainButtons[key]) {
+      if (!button) continue;
+      button.addEventListener("click", () => castDomain(key));
+    }
   }
   paintDomain();
 }
