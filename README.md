@@ -6,6 +6,8 @@ It gives an AI agent **14 tools** covering live quotes, OHLCV history, **57 tech
 
 **No API keys. No paid subscriptions. No account.** Every number comes from free public endpoints.
 
+**Live demo → [zdyijud18c2oc.space.minimax.io](https://zdyijud18c2oc.space.minimax.io)**
+
 ---
 
 ## Showcase
@@ -37,7 +39,8 @@ python scripts/serve_showcase.py --port 8099
 # → http://127.0.0.1:8099/
 ```
 
-Opened as a plain folder it falls back to the bundled snapshot and says so on screen.
+The hosted demo is the same page without a backend, so it falls back to the bundled snapshot and
+labels itself **SNAPSHOT** on screen. Running the server locally is what makes it live.
 
 ---
 
