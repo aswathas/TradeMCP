@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<evaluation>
+  <qa_pair>
+    <question>Use the symbol search tool to find the NSE-listed code for Tata Motors Limited. What code does it return?</question>
+    <answer>TMCV</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Use the fundamental profile tool on Reliance Industries. What is the ISIN code of the company it resolves?</question>
+    <answer>INE002A01018</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Which Yahoo ticker does TradeMCP use to fetch the SENSEX index?</question>
+    <answer>^BSESN</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Call the support and resistance tool for any NIFTY 50 stock. How many different pivot point styles does the pivots section contain?</question>
+    <answer>5</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>In the DuPont breakdown of the fundamental profile, which single metric equals net margin multiplied by asset turnover multiplied by equity multiplier?</question>
+    <answer>roe_from_dupont_pct</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Which indicator in the technical indicator set provides a directional movement reading together with the plus DI and minus DI lines?</question>
+    <answer>adx_14</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>What is the default value of the universe parameter on the stock screening tool?</question>
+    <answer>NIFTY 50</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Which section of the portfolio analysis output contains the portfolio beta against the chosen benchmark index?</question>
+    <answer>risk</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Using the fundamentals tool on Reliance Industries, how many individual metrics are listed under the components of the health score?</question>
+    <answer>10</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>How many technical indicators are registered in the indicator registry of the technical indicators tool? Give the exact count of names the tool lists when no indicator list is supplied.</question>
+    <answer>57</answer>
+  </qa_pair>
+</evaluation>

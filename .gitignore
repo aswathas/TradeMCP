@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Secrets
+.env
+
+# Local scratch scripts, not part of the project
+probe_*.py
+scripts/_*.py
+
+# Agent design scratch space (139 MB of comps and decision pages, not source)
+.impeccable/
+logs/
+
+# Unused art: the manga figure plates were cut from the page, only the
+# screentone tiles in assets/plates are still referenced.
+showcase/site/assets/plates/plate-figure-*.source
+showcase/site/assets/plates/plate-figure-*.webp
+
+# Stale experiments
+showcase/site/logs_patch*.py
+showcase/screenshots/_debug/
+showcase/screenshots/_*.png
+
+# One-shot scripts from the design sessions: they fetched reference images,
+# probed API shapes and applied single edits. Not part of the project.
+scripts/check_skill_names.py
+scripts/fetch_*.py
+scripts/make_figures.py
+scripts/make_gen_batch3.py
+scripts/make_manga_comps.py
+scripts/split_batch3.py
+scripts/repoint_live_js.py
+scripts/widen_screener_ranges.py
