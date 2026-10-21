@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Martian+Mono:wght@400;600&family=Permanent+Marker&family=Saira+Condensed:wght@600;700&family=Saira:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=24">
+<link rel="stylesheet" href="styles.css?v=25">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -48,6 +48,11 @@
       <div class="panel panel--hero">
         <span class="void-core" aria-hidden="true">
           <span class="void-core__disk"></span>
+        </span>
+        <span class="void-space" aria-hidden="true">
+          <span class="void-space__grid"></span>
+          <span class="void-space__rays"></span>
+          <span class="void-space__pulse"></span>
         </span>
         <svg class="shrine-gate" viewBox="0 0 400 300" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="4">
           <g stroke-width="5">
@@ -803,6 +808,9 @@ python -m pytest tests -q</pre>
   <span class="domain__stars"></span>
   <span class="domain__swirl"></span>
   <span class="domain__floor"></span>
+  <span class="void-space void-space--page">
+    <span class="void-space__grid"></span>
+  </span>
 </div>
 
 <div class="shrine" id="shrine" aria-hidden="true">
@@ -816,8 +824,8 @@ python -m pytest tests -q</pre>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="app.js?v=24"></script>
-<script src="live.js?v=24"></script>
-<script src="screener.js?v=24"></script>
+<script src="app.js?v=25"></script>
+<script src="live.js?v=25"></script>
+<script src="screener.js?v=25"></script>
 </body>
 </html>

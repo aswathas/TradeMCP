@@ -1781,17 +1781,6 @@ html.is-flat .panel--hud { transform: none; }
     radial-gradient(ellipse 70% 100% at 50% 0%, rgba(0, 240, 255, 0.1), transparent 72%),
     linear-gradient(to bottom, transparent, rgba(5, 5, 10, 0.42) 48%, rgba(5, 5, 10, 0.6) 100%);
 }
-.domain__floor::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 0;
-  width: 62%;
-  height: 2px;
-  margin-left: -31%;
-  background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.55), transparent);
-  box-shadow: 0 0 18px rgba(0, 240, 255, 0.3);
-}
 
 /* the black sun: a pupil of pure black ringed in white light, with its
    accretion rings. It sits behind the hero copy, the way a manga background
@@ -1811,6 +1800,102 @@ html.is-flat .panel--hud { transform: none; }
   align-items: center;
   justify-content: center;
 }
+/* The Unlimited Void: a grid receding to a vanishing point, drifting forward,
+   with the space around it turning. Drawn in CSS, nothing borrowed. */
+.void-space {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 420ms ease;
+}
+/* the page-wide copy of the grid: it fills the gaps between panels */
+.void-space--page { z-index: 1; }
+.void-space--page .void-space__grid { perspective-origin: 50% 62%; }
+.void-space--page .void-space__grid::before { top: 62%; }
+[data-theme="void"] .void-space { opacity: 1; }
+
+.void-space__grid {
+  position: absolute;
+  inset: 0;
+  perspective: 400px;
+  perspective-origin: 50% 58%;
+}
+.void-space__grid::before {
+  content: "";
+  position: absolute;
+  left: -80%;
+  right: -80%;
+  top: 58%;
+  height: 130%;
+  transform-origin: 50% 0;
+  transform: rotateX(73deg);
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 240, 255, 0.38) 0 1px, transparent 1px 56px),
+    repeating-linear-gradient(0deg, rgba(0, 240, 255, 0.26) 0 1px, transparent 1px 56px);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 58%, transparent 88%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 58%, transparent 88%);
+  animation: void-grid-drift 7s linear infinite;
+}
+@keyframes void-grid-drift {
+  from { background-position: 0 0, 0 0; }
+  to { background-position: 0 56px, 0 56px; }
+}
+
+/* the space around the void turns, very slowly */
+.void-space__rays {
+  position: absolute;
+  inset: -30%;
+  background: repeating-conic-gradient(
+    from 0deg at 50% 58%,
+    rgba(0, 240, 255, 0.12) 0deg 0.3deg,
+    transparent 0.3deg 3.4deg
+  );
+  -webkit-mask-image: radial-gradient(ellipse 64% 60% at 50% 58%, #000 2%, transparent 72%);
+  mask-image: radial-gradient(ellipse 64% 60% at 50% 58%, #000 2%, transparent 72%);
+  animation: void-rays-turn 44s linear infinite;
+}
+@keyframes void-rays-turn {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* the domain expanding: a shockwave leaving the vanishing point */
+.void-space__pulse {
+  position: absolute;
+  left: 50%;
+  top: 58%;
+  width: 18vmin;
+  height: 18vmin;
+  margin: -9vmin 0 0 -9vmin;
+  border: 1px solid rgba(0, 240, 255, 0.55);
+  border-radius: 50%;
+  box-shadow: 0 0 26px rgba(0, 240, 255, 0.22);
+  animation: void-pulse 4.6s cubic-bezier(0.18, 0.6, 0.3, 1) infinite;
+}
+@keyframes void-pulse {
+  0% { transform: scale(0.18); opacity: 0; }
+  16% { opacity: 0.85; }
+  100% { transform: scale(5.6); opacity: 0; }
+}
+
+/* the copy keeps its own ground: the grid is atmosphere, not a backdrop for
+   the text to sit on */
+.void-space::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    104deg,
+    rgba(5, 5, 10, 0.9) 0%,
+    rgba(5, 5, 10, 0.66) 34%,
+    rgba(5, 5, 10, 0.12) 62%,
+    transparent 80%
+  );
+}
+
 .void-core__disk {
   position: absolute;
   width: 130%;
@@ -1998,14 +2083,6 @@ html.is-flat .panel--hud { transform: none; }
 }
 [data-theme="void"] .chart__sma20 { stroke: #00f0ff; }
 
-/* the void replaces the corner brackets with targeting reticles */
-[data-theme="void"] .hud-readout::before {
-  inset: 5px;
-  border-radius: 50%;
-  background: none;
-  box-shadow: none;
-  border: 1px solid rgba(0, 240, 255, 0.45);
-}
 
 /* the themed call to action: Fūga in the shrine, Blue Lapse in the void */
 .btn--fuga { position: relative; overflow: hidden; }
@@ -2131,7 +2208,7 @@ html.is-cast .panel--hero { animation: cast-flash 800ms ease-out; }
 }
 [data-theme="shrine"] .shrine-scrim { opacity: 1; }
 .panel--hero { position: relative; overflow: hidden; }
-.panel--hero > *:not(.shrine-gate):not(.void-core):not(.shrine-scrim) { position: relative; z-index: 1; }
+.panel--hero > *:not(.shrine-gate):not(.void-core):not(.void-space):not(.shrine-scrim) { position: relative; z-index: 1; }
 
 /* the tape keeps the page's own darkness instead of flipping to a light bar */
 [data-theme="void"] .tape,
