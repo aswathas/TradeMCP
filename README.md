@@ -6,7 +6,7 @@ It gives an AI agent **14 tools** covering live quotes, OHLCV history, **57 tech
 
 **No API keys. No paid subscriptions. No account.** Every number comes from free public endpoints.
 
-**Live demo → [zdyijud18c2oc.space.minimax.io](https://zdyijud18c2oc.space.minimax.io)**
+**Live demo → [aswathas.github.io/TradeMCP](https://aswathas.github.io/TradeMCP/)**
 
 ---
 
@@ -41,6 +41,15 @@ python scripts/serve_showcase.py --port 8099
 
 The hosted demo is the same page without a backend, so it falls back to the bundled snapshot and
 labels itself **SNAPSHOT** on screen. Running the server locally is what makes it live.
+
+To republish the demo after changing `showcase/site`:
+
+```powershell
+.\scripts\deploy_pages.ps1
+```
+
+That copies `showcase/site` onto the `gh-pages` branch, which is what GitHub Pages serves. The
+branch is a build artefact — `showcase/site` stays the single source of truth.
 
 ---
 
