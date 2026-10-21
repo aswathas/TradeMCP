@@ -40,6 +40,7 @@
     "node": ">=18"
   },
   "scripts": {
+    "postinstall": "node bin/trademcp.js --setup",
     "test": "node bin/trademcp.js --selftest"
   },
   "dependencies": {}

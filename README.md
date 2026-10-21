@@ -105,6 +105,19 @@ source .venv/bin/activate       # macOS / Linux
 pip install -e .
 ```
 
+**First run takes about half a minute.** The npm package carries the Python server and builds its
+own environment (a virtualenv with `mcp` and `httpx`) the first time it runs. After that the server
+starts in about a second. If your MCP client has a short start-up timeout, install the package once
+globally so the build happens at install time, then point the client at the `trademcp` command:
+
+```bash
+npm i -g @aswathas/trademcp
+```
+
+```json
+{ "mcpServers": { "trademcp": { "command": "trademcp" } } }
+```
+
 Or run the helper script:
 
 ```powershell
