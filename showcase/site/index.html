@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Martian+Mono:wght@400;600&family=Permanent+Marker&family=Saira+Condensed:wght@600;700&family=Saira:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=26">
+<link rel="stylesheet" href="styles.css?v=28">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -121,6 +121,8 @@
       </div>
 
       <div class="panel panel--hud" aria-labelledby="hud-title">
+        <img class="shrine-roof" src="assets/shrine/shrine-roof-banner.webp" alt="" aria-hidden="true" loading="lazy" draggable="false" style="position:absolute">
+        <span class="shrine-corner" aria-hidden="true" style="position:absolute"></span>
         <span class="watermark watermark--shrine" aria-hidden="true">Fukuma Mizushi</span>
         <span class="watermark watermark--void" aria-hidden="true">Muryōkūsho</span>
         <svg class="eaves" viewBox="0 0 420 100" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round">
@@ -134,6 +136,7 @@
         <h2 class="hud-title" id="hud-title">Live analysis panel</h2>
 
         <div class="hud-readout hud-readout--hero">
+          <img class="shrine-fangs" src="assets/shrine/shrine-fang-frame.webp" alt="" aria-hidden="true" draggable="false" style="position:absolute">
           <span class="hud-label">Last price</span>
           <span class="hud-value hud-value--xl"><span id="hud-price">1,202.00</span><span class="hud-unit">INR</span></span>
         </div>
@@ -351,6 +354,7 @@
         </div>
 
         <div class="panel screener__results">
+          <span class="shrine-corner" aria-hidden="true" style="position:absolute"></span>
           <div class="sc-bar">
             <span class="sc-count"><b id="sc-count">—</b> matching</span>
             <span class="sc-note" id="sc-note"></span>
@@ -595,30 +599,35 @@
       <ol class="steps">
         <li class="step">
           <span class="step__no">1</span>
+          <span class="shrine-seal" aria-hidden="true" style="position:absolute"></span>
           <h3>Resolve</h3>
           <p><code>RELIANCE</code>, <code>tata motors</code>, <code>NSE:TCS</code>, <code>RELIANCE.NS</code>,
           <code>INE002A01018</code> and <code>nifty</code> all resolve to the same instrument.</p>
         </li>
         <li class="step">
           <span class="step__no">2</span>
+          <span class="shrine-seal" aria-hidden="true" style="position:absolute"></span>
           <h3>Fetch</h3>
           <p>Prices from Yahoo's chart endpoint, statements from its timeseries endpoint, symbol
           identity from NSE's static CSV listings.</p>
         </li>
         <li class="step">
           <span class="step__no">3</span>
+          <span class="shrine-seal" aria-hidden="true" style="position:absolute"></span>
           <h3>Compute</h3>
           <p>Each ratio is derived from raw statement lines, so valuation, profitability and
           leverage reconcile with each other and with DuPont.</p>
         </li>
         <li class="step">
           <span class="step__no">4</span>
+          <span class="shrine-seal" aria-hidden="true" style="position:absolute"></span>
           <h3>Score</h3>
           <p>Indicators become signals, signals become a composite score from Strong Buy to
           Strong Sell, explained in plain language.</p>
         </li>
         <li class="step">
           <span class="step__no">5</span>
+          <span class="shrine-seal" aria-hidden="true" style="position:absolute"></span>
           <h3>Cache</h3>
           <p>Responses are cached on disk with per-type TTLs, so repeated screens stay off the
           free endpoints and stay fast.</p>
@@ -741,6 +750,7 @@
         <ol class="install__steps">
           <li>
             <span class="step__no">1</span>
+            <span class="shrine-seal" aria-hidden="true" style="position:absolute"></span>
             <div>
               <h3>Install</h3>
 <pre class="code code--sm">npx -y @aswathas/trademcp</pre>
@@ -750,6 +760,7 @@
           </li>
           <li>
             <span class="step__no">2</span>
+            <span class="shrine-seal" aria-hidden="true" style="position:absolute"></span>
             <div>
               <h3>Verify it works</h3>
 <pre class="code code--sm">python scripts/verify_all_tools.py
@@ -760,6 +771,7 @@ python -m pytest tests -q</pre>
           </li>
           <li>
             <span class="step__no">3</span>
+            <span class="shrine-seal" aria-hidden="true" style="position:absolute"></span>
             <div>
               <h3>Ask your agent</h3>
               <p class="install__note">“What is the technical score on TCS over one year, and
@@ -830,8 +842,8 @@ python -m pytest tests -q</pre>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="app.js?v=26"></script>
-<script src="live.js?v=26"></script>
-<script src="screener.js?v=26"></script>
+<script src="app.js?v=28"></script>
+<script src="live.js?v=28"></script>
+<script src="screener.js?v=28"></script>
 </body>
 </html>

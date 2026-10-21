@@ -1725,26 +1725,30 @@ html.is-flat .panel--hud { transform: none; }
   --plate-tone-dark: url("assets/plates/tone-night-dark.png");
 }
 
-/* The Malevolent Shrine. Dried blood red, ashen charcoal, eerie vermilion and
-   bone white. No barrier: an open field, a gate, a sky of crimson cloud. */
+/* The Malevolent Shrine. Charred obsidian, blood-ink and molten ember: the
+   field is burnt out, the gate is cut from razor light, and the only warmth
+   left in the palette is the furnace burning behind the cases. */
 [data-theme="shrine"] {
-  --paper: #191012;
-  --paper-2: #25161a;
-  --ink: #e0ddcf;
-  --ink-2: #c2baa6;
-  --ink-3: #9a9080;
-  --tone: #370617;
-  --rule: #e0ddcf;
+  --paper: #050405;        /* pitch obsidian: the ground the shrine stands on */
+  --paper-2: #171014;      /* altar iron: the inner surface of a case */
+  --ink: #f5f2eb;          /* bleached bone: primary text */
+  --ink-2: #c4bcb7;        /* ashen bone: secondary text */
+  --ink-3: #8d8386;        /* ash: muted text, units, meta */
+  --tone: #3a1218;         /* dried blood: hairlines, rules, grid */
+  --rule: #e50914;         /* razor crimson: every hard edge */
 
-  --cyan: #e0472c;
-  --cyan-bright: #1a0608;
-  --cyan-deep: #fff3e6;
-  --verm: #ff4d6d;
-  --green: #4ff0b4;
+  --cyan: #e50914;         /* primary accent: borders, active tabs, slashes */
+  --cyan-bright: #ff5500;  /* molten furnace: hot surfaces */
+  --cyan-deep: #140304;    /* ember black: type set on a hot surface */
+  --verm: #ff4d6d;         /* down */
+  --green: #4ff0b4;        /* up */
 
-  --aura: #9d0208;
-  --flame: #ffba08;
-  --indigo: #370617;
+  --aura: #b00912;         /* the gate, the eaves */
+  --flame: #ff5500;        /* the furnace glow */
+  --indigo: #1a0508;
+
+  /* one cut, everywhere: 45 degrees, 12px */
+  --shrine-notch: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
 
   --plate-tone: url("assets/plates/tone-night-mid.png");
   --plate-tone-light: url("assets/plates/tone-night-light.png");
@@ -2077,7 +2081,7 @@ html.is-flat .panel--hud { transform: none; }
   z-index: 0;
 }
 [data-theme="shrine"] .eaves { opacity: 0.55; }
-[data-theme="shrine"] .panel--hud { padding-top: 78px; }
+[data-theme="shrine"] .panel--hud { padding-top: 172px; }
 .panel--hud { position: relative; overflow: hidden; }
 .panel--hud > *:not(.eaves) { position: relative; z-index: 1; }
 
@@ -2488,4 +2492,490 @@ html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
   [data-theme="void"] .void-core__disk { animation: none; opacity: 0.6; }
   [data-theme="shrine"] .shrine-gate { animation: none; opacity: 0.42; }
   html.is-cut .cut::after { animation: none; opacity: 0; }
+}
+
+/* ==========================================================================
+   THE SHRINE, REBUILT: charred surfaces and surgical edges
+   The shrine was an open field: a gate, a sky of crimson cloud, a floor of
+   blood. It is redrawn here in charcoal and razor light. The ground the page
+   stands on is pitch obsidian, the cases are cut from charred ash, the
+   surfaces inside them are altar iron, and the only warmth left in the
+   palette is the furnace burning behind the panels.
+
+   Every rule in this section is scoped to the shrine. Paper, night and the
+   void keep exactly the look they had.
+   ========================================================================== */
+
+/* ---------- 1. surfaces: three planes of darkness ------------------------
+   The tokens carry the ground and the inner plane. The cases - the panels
+   themselves - are set here, because a case is a different plane of ash
+   from the ground it stands on, and a hairline of dried crimson is a
+   different edge from the heavy rules of the light themes. */
+
+[data-theme="shrine"] .panel,
+[data-theme="shrine"] .tool,
+[data-theme="shrine"] .step {
+  background: #0e0a0c;
+  border: 1px solid rgba(229, 9, 20, 0.28);
+  /* the old outline drew a rectangle around a panel that is now cut at 45
+     degrees; the hairline and the brackets below replace it */
+  outline: none;
+}
+[data-theme="shrine"] .tool[open] { background: #171014; }
+
+[data-theme="shrine"] .hud-readout,
+[data-theme="shrine"] .readout {
+  background: #171014;
+  border: 1px solid rgba(229, 9, 20, 0.45);
+}
+
+/* ---------- 2. nothing in the shrine has a rounded corner ----------------
+   Every case is cut at 45 degrees: the top right and the bottom left lose
+   12px, so the page reads as a stack of blades instead of a stack of boxes.
+
+   The notch clips what lives inside the case, so the panels that carry
+   their own decoration (.panel--hero with the gate, .panel--hud with the
+   eaves) keep their overflow: hidden and their decoration stays inside the
+   cut. A clip-path also clips the box-shadow of the thing it cuts, so the
+   shadows that must survive the cut are drawn with a filter instead. */
+
+[data-theme="shrine"] *,
+[data-theme="shrine"] *::before,
+[data-theme="shrine"] *::after { border-radius: 0; }
+
+[data-theme="shrine"] .panel,
+[data-theme="shrine"] .tool,
+[data-theme="shrine"] .step,
+[data-theme="shrine"] .source,
+[data-theme="shrine"] .metric-panel,
+[data-theme="shrine"] .install__code,
+[data-theme="shrine"] .code,
+[data-theme="shrine"] .btn {
+  clip-path: var(--shrine-notch);
+}
+/* the case is already cut - cutting the block inside it twice only makes
+   two notches where one would do */
+[data-theme="shrine"] .install__code .code { clip-path: none; }
+/* the chart keeps its long cut: a blade that big wants the room */
+[data-theme="shrine"] .board__chart {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%);
+}
+
+/* ---------- 3. surgical corner brackets ----------------------------------
+   The bracket technique the HUD readouts already use, lifted into a class
+   of its own and given to the shrine's cases: four metal corner marks in
+   razor crimson, laid over the hairline border. A case that already draws
+   its own brackets - the readouts - keeps just its own. */
+
+.shrine-bracket { position: relative; }
+.shrine-bracket::before,
+[data-theme="shrine"] .panel::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(#e50914, #e50914) 0 0 / 14px 2px no-repeat,
+    linear-gradient(#e50914, #e50914) 0 0 / 2px 14px no-repeat,
+    linear-gradient(#e50914, #e50914) 100% 0 / 14px 2px no-repeat,
+    linear-gradient(#e50914, #e50914) 100% 0 / 2px 14px no-repeat,
+    linear-gradient(#e50914, #e50914) 0 100% / 14px 2px no-repeat,
+    linear-gradient(#e50914, #e50914) 0 100% / 2px 14px no-repeat,
+    linear-gradient(#e50914, #e50914) 100% 100% / 14px 2px no-repeat,
+    linear-gradient(#e50914, #e50914) 100% 100% / 2px 14px no-repeat;
+}
+
+/* ---------- 4. the slash becomes a cut -----------------------------------
+   The ink slash that separates the sections is redrawn as a wound: the same
+   wedge, but razor crimson with a furnace-hot core, bleeding light into the
+   page around it. It must read as a cut across the sheet, not as a grey
+   band - so the fill carries the heat and the glow does the cutting. */
+
+[data-theme="shrine"] .slash {
+  /* the owner's razor cut, drawn as a plate: a red blade with three
+     slashes through it, glowing at the crossing */
+  background: url("assets/shrine/slash-divider.webp") center / 100% 100% no-repeat;
+  filter: drop-shadow(0 0 6px rgba(229, 9, 20, 0.75)) drop-shadow(0 0 18px rgba(255, 85, 0, 0.4));
+}
+[data-theme="shrine"] .slash svg { display: none; }
+
+/* ---------- 5. the domain's name, printed down the margin ---------------
+   The watermark is the inscription on the shrine wall: enormous, five per
+   cent, cut from the same crimson as the gate and running down the margin
+   of the live panel like a column of writing. Romaji, not kanji - a machine
+   without a CJK font would show tofu boxes instead of a character. */
+
+[data-theme="shrine"] .panel--hud > .watermark--shrine {
+  position: absolute;
+  /* the inscription rises out of the floor of the panel and runs off the
+     top of it: a name carved into the wall, not a caption */
+  bottom: -30px;
+  right: 16px;
+  writing-mode: vertical-rl;
+  font-family: var(--font-ui);
+  font-size: clamp(64px, 6.6vw, 104px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: #e50914;
+  opacity: 0.06;
+  text-shadow: 0 0 46px rgba(229, 9, 20, 0.55);
+  z-index: 0;
+}
+
+/* ---------- 6. the buttons ------------------------------------------------
+   The plain buttons keep a hard shadow, but a clipped one cannot be seen,
+   so the offset is drawn as a filter on the cut shape.
+
+   Fuga is the furnace opening: a molten core inside a dark ember shell, lit
+   from within. Its glow cannot be a box-shadow either - the notch would eat
+   it - so it is drawn as a filter too, and it is written after the plain
+   button so the furnace wins. */
+
+[data-theme="shrine"] .btn {
+  box-shadow: none;
+  filter: drop-shadow(4px 4px 0 rgba(229, 9, 20, 0.45));
+}
+[data-theme="shrine"] .btn:hover { filter: drop-shadow(6px 6px 0 rgba(229, 9, 20, 0.5)); }
+[data-theme="shrine"] .btn:active { filter: drop-shadow(2px 2px 0 rgba(229, 9, 20, 0.5)); }
+
+[data-theme="shrine"] .btn--fuga {
+  background: linear-gradient(180deg, #3a0508 0%, #8d0801 48%, #3a0508 100%);
+  color: #ffb066;
+  border: 1px solid #ff5500;
+  box-shadow: 0 0 20px rgba(255, 85, 0, 0.45);
+  filter: drop-shadow(0 0 18px rgba(255, 85, 0, 0.5));
+  text-shadow: 0 0 12px rgba(255, 85, 0, 0.55);
+}
+[data-theme="shrine"] .btn--fuga:hover {
+  background: linear-gradient(180deg, #8d0801 0%, #ff5500 52%, #8d0801 100%);
+  color: #140304;
+  text-shadow: none;
+  filter: drop-shadow(0 0 22px rgba(255, 85, 0, 0.6));
+}
+
+/* ---------- 7. the code --------------------------------------------------
+   The install panel was a bone-white header over a white block: a printer's
+   page. In the shrine the header is iron stained with blood, the command
+   names burn amber, and the body is the black of the floor. The body still
+   scrolls sideways: a long command must never widen the page. */
+
+[data-theme="shrine"] .install__bar {
+  background: #1a0d10;
+  color: #f5f2eb;
+  border-left: 3px solid #e50914;
+}
+[data-theme="shrine"] .install__bar--second { border-top: 1px solid rgba(229, 9, 20, 0.28); }
+[data-theme="shrine"] .install__bar > span {
+  color: #ff5500;
+  text-shadow: 0 0 10px rgba(255, 85, 0, 0.5);
+}
+[data-theme="shrine"] .install__bar .btn {
+  background: transparent;
+  color: #ff5500;
+  border: 1px solid #ff5500;
+}
+[data-theme="shrine"] .install__bar .btn:hover { background: #ff5500; color: #140304; }
+[data-theme="shrine"] .code {
+  background: #060405;
+  color: #c4bcb7;
+  border: 1px solid rgba(229, 9, 20, 0.28);
+  overflow-x: auto;
+}
+[data-theme="shrine"] .code--sm { border: 1px solid rgba(229, 9, 20, 0.28); }
+
+/* ---------- 8. the screener table ----------------------------------------
+   The header stops being a light strip: it is a stained iron band with the
+   column names cut into it in bone, and a row caught by the light turns
+   faintly red under the pointer. */
+
+[data-theme="shrine"] .sc-bar {
+  background: #1a0d10;
+  color: #f5f2eb;
+  border-bottom: 1px solid rgba(229, 9, 20, 0.28);
+}
+[data-theme="shrine"] .sc-count b { color: #ff5500; }
+[data-theme="shrine"] .sc-note { color: #8d8386; }
+[data-theme="shrine"] .sc-table thead th {
+  background: #1c0a0e;
+  color: #f5f2eb;
+  font-family: var(--font-data);
+  font-weight: 600;
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+[data-theme="shrine"] .sc-table th:hover { background: rgba(229, 9, 20, 0.22); }
+[data-theme="shrine"] .sc-table tbody tr:hover { background: rgba(229, 9, 20, 0.1); }
+[data-theme="shrine"] .sc-sym { background: #0e0a0c; }
+[data-theme="shrine"] .sc-table tbody tr:nth-child(even) .sc-sym {
+  background: color-mix(in srgb, #171014 92%, #0e0a0c);
+}
+
+/* ---------- 9. the chart -------------------------------------------------
+   The price line is a razor edge lit from behind: crimson, throwing a
+   furnace glow onto the grid. The area under it is blood pooling in the
+   dark, deepest at the line and gone by the floor. */
+
+[data-theme="shrine"] .chart__price {
+  stroke: #e50914;
+  filter: drop-shadow(0 0 5px rgba(229, 9, 20, 0.9)) drop-shadow(0 0 13px rgba(255, 85, 0, 0.4));
+}
+[data-theme="shrine"] .chart__sma20 { stroke: #ff5500; }
+[data-theme="shrine"] .chart__cleave { stroke: #ff5500; }
+[data-theme="shrine"] .chart__area-stop { stop-color: #b30612; stop-opacity: 0.55; }
+[data-theme="shrine"] .chart__area-stop--low { stop-color: #2a0508; stop-opacity: 0; }
+[data-theme="shrine"] .chart__grid { stroke: rgba(245, 242, 235, 0.12); opacity: 1; }
+[data-theme="shrine"] .chart__rsi { stroke: #8d8386; }
+[data-theme="shrine"] .legend__key--price { background: #e50914; }
+[data-theme="shrine"] .legend__key--sma20 { background: #ff5500; }
+[data-theme="shrine"] .legend__key--rsi { background: #8d8386; }
+[data-theme="shrine"] .legend__key--cleave {
+  background: repeating-linear-gradient(90deg, #ff5500 0 5px, transparent 5px 9px);
+}
+
+/* ---------- 10. the bars that were bone ---------------------------------
+   On the light page a white bar was a label. Here a white bar would be a
+   hole in the dark, so every one of them becomes iron with a crimson edge.
+   Bone text on iron keeps the contrast the light themes had. */
+
+[data-theme="shrine"] .hud-tag {
+  background: #1a0d10;
+  color: #f5f2eb;
+  border-left: 3px solid #e50914;
+}
+[data-theme="shrine"] .board__bar {
+  background: #1a0d10;
+  color: #f5f2eb;
+}
+[data-theme="shrine"] .board__name { color: #8d8386; }
+[data-theme="shrine"] .board__badge { color: #8d8386; border-color: rgba(229, 9, 20, 0.5); }
+[data-theme="shrine"] .board__symbol input {
+  border-color: rgba(229, 9, 20, 0.55);
+  color: #f5f2eb;
+}
+[data-theme="shrine"] .board__bar .btn {
+  background: transparent;
+  color: #ff5500;
+  border-color: #ff5500;
+}
+[data-theme="shrine"] .board__bar .btn:hover { background: #ff5500; color: #140304; }
+[data-theme="shrine"] .tape__stamp {
+  background: #0e0a0c;
+  color: #8d8386;
+  border-left-color: rgba(229, 9, 20, 0.5);
+}
+[data-theme="shrine"] .tape__price { color: #f5f2eb; }
+[data-theme="shrine"] .toast {
+  background: #1a0d10;
+  color: #f5f2eb;
+  border-color: #e50914;
+  box-shadow: 6px 6px 0 rgba(229, 9, 20, 0.55);
+}
+[data-theme="shrine"] .tool__no,
+[data-theme="shrine"] .step__no {
+  background: #1a0d10;
+  color: #ff5500;
+  border: 1px solid rgba(229, 9, 20, 0.6);
+}
+/* the step number used to hang above the card; the notch would cut it off,
+   so the seal moves inside the case */
+[data-theme="shrine"] .step { padding-top: 44px; }
+[data-theme="shrine"] .step__no { top: 12px; left: 16px; }
+[data-theme="shrine"] .preset.is-active { background: #e50914; color: #fff; }
+[data-theme="shrine"] .domain-toggle__btn[aria-pressed="true"] { background: #e50914; color: #fff; }
+[data-theme="shrine"] .tech--shrine[aria-pressed="true"] {
+  background: #e50914;
+  color: #fff;
+}
+[data-theme="shrine"] .tech--shrine[aria-pressed="true"] .tech__txt i { color: rgba(255, 255, 255, 0.82); }
+
+/* ---------- 11. the headline and the marks on it ------------------------
+   The title is bone lit by a furnace: the glow moves from amber to the
+   crimson of the gate. */
+
+[data-theme="shrine"] .hero-title {
+  color: #f5f2eb;
+  text-shadow: 0 0 26px rgba(255, 85, 0, 0.4), 0 0 72px rgba(229, 9, 20, 0.55);
+}
+[data-theme="shrine"] .sfx {
+  color: var(--flame);
+  text-shadow: 3px 3px 0 var(--rule), 0 0 18px rgba(255, 85, 0, 0.85);
+}
+
+/* a live number catches fire when it rolls: the same roll the light themes
+   use, but burning amber instead of the accent */
+[data-theme="shrine"] .digit--changed {
+  animation: shrine-digit-roll 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes shrine-digit-roll {
+  0% { transform: translateY(-0.4em) scaleY(1.25); opacity: 0.35; color: var(--flame); }
+  60% { color: var(--flame); }
+  100% { transform: translateY(0) scaleY(1); opacity: 1; color: inherit; }
+}
+
+/* ---------- 12. the shrine's own marks ----------------------------------
+   A seal cut at 45 degrees in the corner of every step, the corner mark of
+   the case, and the roof and frame art - drawn inside the panel, never over
+   it, so nothing dims the page. */
+
+[data-theme="shrine"] .shrine-seal {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  width: 26px;
+  height: 26px;
+  border: 1px solid rgba(229, 9, 20, 0.4);
+  transform: rotate(45deg);
+  opacity: 0.55;
+  pointer-events: none;
+}
+[data-theme="shrine"] .panel--hud > .shrine-corner,
+[data-theme="shrine"] .screener__results > .shrine-corner {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 54px;
+  height: 54px;
+  border-right: 2px solid rgba(229, 9, 20, 0.55);
+  border-bottom: 2px solid rgba(229, 9, 20, 0.55);
+  z-index: 1;
+  pointer-events: none;
+}
+/* ---------- the plates ----------------------------------------------------
+   The shrine is built from plates: the roof over the live panel, the jaws
+   around the price, a beam at the foot, a seal cut into every card and a
+   mark in the corner. They are art the owner drew, cut to transparent PNG,
+   and they sit INSIDE their panels - never over the copy. */
+
+/* The shrine plates carry a src, so they paint even outside the shrine - at
+   their full intrinsic size, straight over the void theme's copy. They are
+   shrine-only furniture: park them everywhere else. */
+.shrine-roof,
+.shrine-fangs {
+  display: none;
+}
+[data-theme="shrine"] .shrine-roof,
+[data-theme="shrine"] .shrine-fangs {
+  display: block;
+}
+
+/* the roof crowns the Live Analysis Panel and breaks its top edge, the way
+   a temple eave breaks the line of a wall */
+[data-theme="shrine"] .panel--hud > .shrine-roof {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  z-index: 2;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-mask-image: radial-gradient(ellipse 94% 80% at 50% 58%, #000 58%, transparent 100%);
+  mask-image: radial-gradient(ellipse 94% 80% at 50% 58%, #000 58%, transparent 100%);
+  filter: drop-shadow(0 8px 18px rgba(229, 9, 20, 0.5));
+}
+
+
+/* the jaws sit behind the price. Screen-blended so the teeth read as light
+   on the panel rather than as a lid over the number. */
+[data-theme="shrine"] .hud-readout--hero > .shrine-fangs {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+  z-index: 0;
+  opacity: 0.78;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+/* the number keeps its own ground: it is lifted above the jaws and given a
+   shadow so it stays crisp against them */
+[data-theme="shrine"] .hud-readout--hero > *:not(.shrine-fangs) {
+  position: relative;
+  z-index: 1;
+}
+[data-theme="shrine"] .hud-readout--hero .hud-value--xl {
+  text-shadow: 0 2px 10px rgba(5, 4, 4, 0.95), 0 0 26px rgba(229, 9, 20, 0.55);
+}
+
+/* the seal cut into the corner of every card */
+[data-theme="shrine"] .shrine-seal {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 30px;
+  height: 30px;
+  background: url("assets/shrine/seal-badge.png") center / contain no-repeat;
+  border: 0;
+  transform: rotate(0deg);
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+/* the mark in the corner of the live and screener panels */
+[data-theme="shrine"] .panel--hud > .shrine-corner,
+[data-theme="shrine"] .screener__results > .shrine-corner {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 62px;
+  height: 62px;
+  background: url("assets/shrine/corner-bracket.png") right bottom / contain no-repeat;
+  border-right: 0;
+  border-bottom: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* the beam under the eaves: the roof catching the furnace light */
+[data-theme="shrine"] .panel--hud::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 132px;
+  background: linear-gradient(
+    180deg,
+    rgba(229, 9, 20, 0.24),
+    rgba(229, 9, 20, 0.05) 58%,
+    transparent
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ---------- the neon gate frame ----------------------------------------
+   The owner's neon panel plate is a rectangle with studded corners, which is
+   exactly what border-image is for: the four edges stretch, the four corner
+   studs stay square. Slicing at 40px keeps every stud whole (they sit at
+   x 14-26, y 22-39 of the 800x200 source). */
+[data-theme="shrine"] .panel--hero::after {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border: 14px solid transparent;
+  border-image: url("assets/shrine/panel-frame.webp") 40;
+  filter: drop-shadow(0 0 12px rgba(255, 85, 0, 0.4));
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* the maw needs room to breathe: the price sits in its throat */
+[data-theme="shrine"] .hud-readout--hero {
+  padding: 68px 18px 72px;
+}
+
+/* the label sits on the maw's throat, so it needs its own light */
+[data-theme="shrine"] .hud-readout--hero .hud-label {
+  color: rgba(245, 242, 235, 0.72);
+  text-shadow: 0 1px 7px rgba(5, 4, 4, 0.95);
 }
