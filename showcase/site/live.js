@@ -661,6 +661,8 @@ function setPrice(rawQuote) {
       `<span class="board__range-nums">${nf(quote.low, 2)} — ${nf(quote.high, 2)}</span>`;
   }
   if (nameNode && quote.name) nameNode.textContent = quote.name;
+  const feed = document.getElementById("board-feed-label");
+  if (feed) feed.textContent = "live feed";
 }
 /* ---------- the hero HUD ----------------------------------------------------
    The first screen used to be static markup with a LIVE tag over snapshot
@@ -837,7 +839,7 @@ async function refreshHud(snapshot) {
     const stamp = new Date().toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" });
     foot.textContent = live
       ? `Live from the TradeMCP server at ${stamp} — Yahoo Finance, NSE archives and Screener.in.`
-      : `Server snapshot captured ${snapshot?.generated_at || "21 Oct 2026, 03:20 IST"} from Yahoo Finance, NSE archives and Screener.in.`;
+      : "Server snapshot from Yahoo Finance, NSE archives and Screener.in — this host has no live endpoint.";
   }
 }
 
@@ -870,19 +872,27 @@ async function refreshBoard(symbol, snapshot) {
     }
   } catch {
     state.live = false;
-    const fallback = snapshot?.fundamentals?.[symbol];
-    const candles = snapshot?.candles || [];
-    if (candles.length) {
-      const computed = renderChart(candles);
-      state.computed = computed;
-      setReadouts(buildIndicatorRows(candles, computed), "indicator-list");
-    }
-    if (fallback) {
-      setReadouts(buildFundamentalRows(fundamentalsFromFundamentals(fallback)), "fundamental-list");
-      setPrice(fallback.market || fallback);
-    }
-    setBadge(false, "server snapshot — live endpoint unavailable");
+    paintSnapshot(symbol, snapshot, "server snapshot — live endpoint unavailable");
   }
+}
+
+/* The static fallback, used when the host has no /api/* endpoints. It paints
+   everything the live path paints, so the deployed page is the same page. */
+function paintSnapshot(symbol, snapshot, stamp) {
+  const fallback = snapshot?.fundamentals?.[symbol];
+  const candles = snapshot?.candles || [];
+  if (candles.length) {
+    const computed = renderChart(candles);
+    state.computed = computed;
+    setReadouts(buildIndicatorRows(candles, computed), "indicator-list");
+  }
+  if (fallback) {
+    setReadouts(buildFundamentalRows(fundamentalsFromFundamentals(fallback)), "fundamental-list");
+    setPrice(fallback.market || fallback);
+  }
+  const feed = document.getElementById("board-feed-label");
+  if (feed) feed.textContent = "snapshot feed";
+  setBadge(false, stamp || "server snapshot");
 }
 function fundamentalsFromFundamentals(payload) {
   const v = payload.valuation || {};
@@ -936,13 +946,10 @@ function wireBoard() {
   loadSnapshot()
     .then((data) => {
       snapshot = data;
+      // A static host has no /api/* endpoints: paint the board from the
+      // snapshot the server itself wrote, and say so on screen.
       if (!state.live) {
-        const candles = data.candles || [];
-        if (candles.length) {
-          const computed = renderChart(candles);
-          setReadouts(buildIndicatorRows(candles, computed), "indicator-list");
-          setBadge(false, "server snapshot");
-        }
+        paintSnapshot(state.symbol || "RELIANCE", data, "server snapshot");
       }
       return refreshTape(data.tape || []);
     })
