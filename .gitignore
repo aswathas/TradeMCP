@@ -19,6 +19,7 @@ scripts/_*.py
 
 # Agent design scratch space (139 MB of comps and decision pages, not source)
 .impeccable/
+.mavis/
 logs/
 
 # Unused art: the manga figure plates were cut from the page, only the

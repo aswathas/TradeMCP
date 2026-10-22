@@ -10,8 +10,8 @@
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Martian+Mono:wght@400;600&family=Permanent+Marker&family=Saira+Condensed:wght@600;700&family=Saira:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=29">
+<link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Martian+Mono:wght@400;600&family=Permanent+Marker&family=Saira+Condensed:wght@600;700;800&family=Saira:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=31">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -49,6 +49,8 @@
     <!-- ================= SPLASH ================= -->
     <section class="splash" aria-labelledby="hero-title">
 
+      <img class="shrine-roof shrine-roof--splash" src="assets/shrine/shrine-roof-banner.webp" alt="" aria-hidden="true" loading="lazy" draggable="false">
+
       <div class="panel panel--hero">
         <span class="void-core" aria-hidden="true">
           <span class="void-core__disk"></span>
@@ -70,42 +72,42 @@
         <span class="shrine-scrim" aria-hidden="true"></span>
         <span class="caption">FREE · NO API KEY · NO ACCOUNT</span>
         <h1 class="hero-title" id="hero-title">
-          <span class="sfx sfx--up">LIVE</span>
-          MARKET DATA<br>
-          FOR YOUR AI AGENT
+          LIVE MARKET DATA<br>FOR YOUR AI AGENT
         </h1>
         <p class="hero-lede">
-          TradeMCP is a Model Context Protocol server for Indian equities. It hands your agent
-          live NSE and BSE quotes, 57 technical indicators, 54 fundamental ratios and a stock
-          screener — over plain MCP stdio, from three free public sources.
+          A Model Context Protocol server for Indian equities. Live NSE and BSE quotes,
+          57 technical indicators, 54 fundamental ratios and a stock screener — over plain
+          MCP stdio, from three free public sources.
         </p>
 
-        <div class="hero-actions">
-          <button class="btn btn--primary" type="button" id="npx-copy-cta">
-            Copy the npx command
-          </button>
-          <button class="btn btn--ghost" type="button" id="npx-cta">
-            Download the npx command
-          </button>
-          <button class="btn btn--fuga" type="button" id="fuga-btn">
-            <span class="btn__label" id="fuga-label">Fūga · initialize</span>
-          </button>
-          <a class="btn btn--ghost" href="#tools">See all 14 tools</a>
+        <div class="terminal">
+          <span class="terminal__prompt" aria-hidden="true">&gt;</span>
+          <code class="terminal__cmd" id="hero-npx-command">npx -y @aswathas/trademcp</code>
+          <button class="terminal__copy" type="button" data-copy-target="hero-npx-command">Copy MCP config</button>
         </div>
 
         <div class="techs" role="group" aria-label="Cursed domain">
-          <span class="techs__cap">Cursed domain</span>
+          <span class="techs__cap">Cursed technique</span>
           <button class="tech tech--void" type="button" id="domain-btn" aria-pressed="false">
             <span class="tech__sig" aria-hidden="true"></span>
-            <span class="tech__txt"><b>VOID</b><i class="tech__sub">Infinite Void</i></span>
+            <span class="tech__txt"><b>CLEAVE</b><i class="tech__sub">Infinite Void</i></span>
           </button>
+          <img class="techs__slash" src="assets/shrine/slash-divider.webp" alt="" aria-hidden="true" loading="lazy" draggable="false">
           <button class="tech tech--shrine" type="button" id="tech-shrine" aria-pressed="false">
             <span class="tech__sig" aria-hidden="true"></span>
-            <span class="tech__txt"><b>SHRINE</b><i class="tech__sub">Malevolent Shrine</i></span>
+            <span class="tech__txt"><b>FŪGA</b><i class="tech__sub">Malevolent Shrine</i></span>
           </button>
           <span class="techs__tick" id="tech-tendency" data-tone="flat">
             <span id="tick-text">Live tick ▸ —</span>
           </span>
+        </div>
+
+        <div class="hero-actions">
+          <button class="btn btn--fuga" type="button" id="fuga-btn">
+            <img class="btn__flame" src="assets/shrine/panel-frame.webp" alt="" aria-hidden="true" draggable="false">
+            <span class="btn__label" id="fuga-label">Fūga / Open Furnace</span>
+          </button>
+          <button class="btn btn--dismantle" type="button" id="dismantle-btn">Dismantle</button>
         </div>
 
         <div class="balloons">
@@ -121,8 +123,7 @@
       </div>
 
       <div class="panel panel--hud" aria-labelledby="hud-title">
-        <img class="shrine-roof" src="assets/shrine/shrine-roof-banner.webp" alt="" aria-hidden="true" loading="lazy" draggable="false" style="position:absolute">
-        <span class="shrine-corner" aria-hidden="true" style="position:absolute"></span>
+        <span class="shrine-brackets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
         <span class="watermark watermark--shrine" aria-hidden="true">Fukuma Mizushi</span>
         <span class="watermark watermark--void" aria-hidden="true">Muryōkūsho</span>
         <svg class="eaves" viewBox="0 0 420 100" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round">
@@ -186,6 +187,7 @@
             <span class="gauge__zone gauge__zone--sell"></span>
             <span class="gauge__zone gauge__zone--neutral"></span>
             <span class="gauge__zone gauge__zone--buy"></span>
+            <span class="gauge__fill" id="hud-gauge-fill"></span>
             <span class="gauge__needle" id="hud-needle" style="left:48.7%"></span>
           </div>
           <div class="gauge__scale"><span>−100 SELL</span><span>NEUTRAL</span><span>+100 BUY</span></div>
@@ -287,10 +289,13 @@
         <div class="panel board__side">
           <span class="caption">INDICATORS · COMPUTED HERE</span>
           <div class="readouts" id="indicator-list"></div>
-          <span class="caption caption--spaced">FUNDAMENTALS · TRAILING</span>
-          <div class="readouts" id="fundamental-list"></div>
           <p class="board__note" id="board-stamp"></p>
         </div>
+      </div>
+
+      <div class="panel board__fundamentals">
+        <span class="caption">FUNDAMENTALS · TRAILING</span>
+        <div class="readouts" id="fundamental-list"></div>
       </div>
     </section>
 
@@ -694,7 +699,10 @@
         <div class="panel install__code">
           <div class="install__bar">
             <span>npx</span>
-            <button class="btn btn--tiny" type="button" data-copy-target="npx-command">Copy</button>
+            <span class="install__bar-actions">
+              <button class="btn btn--tiny" type="button" data-copy-target="npx-command">Copy</button>
+              <button class="btn btn--tiny" type="button" id="npx-cta">Download</button>
+            </span>
           </div>
 <pre class="code" id="npx-command">npx -y @aswathas/trademcp</pre>
           <p class="install__note">That is the whole install. The package carries the Python
@@ -842,8 +850,8 @@ python -m pytest tests -q</pre>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="app.js?v=29"></script>
-<script src="live.js?v=29"></script>
-<script src="screener.js?v=29"></script>
+<script src="app.js?v=30"></script>
+<script src="live.js?v=30"></script>
+<script src="screener.js?v=30"></script>
 </body>
 </html>

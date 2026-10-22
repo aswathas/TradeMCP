@@ -62,12 +62,17 @@ setTimeout(() => {{
           const r = el.getBoundingClientRect();
           return {{ display: cs.display, w: Math.round(r.width), h: Math.round(r.height) }};
         }});
-      const frame = getComputedStyle(d.querySelector(".panel--hero"), "::after");
+      // the neon plate is the border of the Fuga button now, not of the panel
+      const flame = d.querySelector(".btn__flame");
+      const hero = d.querySelector(".panel--hero").getBoundingClientRect();
+      const hud = d.querySelector(".panel--hud").getBoundingClientRect();
       out[theme] = {{
         scrollW: d.documentElement.scrollWidth,
         clientW: d.documentElement.clientWidth,
         plates: plates,
-        frameImage: frame.borderImageSource,
+        flameOn: flame ? getComputedStyle(flame).display !== "none" : false,
+        heroH: Math.round(hero.height),
+        hudH: Math.round(hud.height),
       }};
     }}
     // the domain switch, driven for real
@@ -84,6 +89,18 @@ setTimeout(() => {{
     d.getElementById("domain-shrine").click(); state();
     d.getElementById("domain-void").click(); state();
     out.switching = steps;
+
+    // Dismantle has to tear the open domain back down to the base page.
+    d.getElementById("domain-shrine").click();
+    const opened = d.documentElement.dataset.theme;
+    d.getElementById("dismantle-btn").click();
+    out.dismantle = [
+      opened,
+      d.documentElement.dataset.theme,
+      d.getElementById("domain-shrine").getAttribute("aria-pressed"),
+      d.getElementById("domain-void").getAttribute("aria-pressed"),
+    ];
+
     document.title = "RESULT" + JSON.stringify(out);
   }} catch (e) {{ document.title = "ERR(" + e.message + ")"; }}
 }}, 4000);
@@ -143,17 +160,28 @@ def main() -> int:
             info = data[theme]
             overflow = info["scrollW"] - info["clientW"]
             painted = [p for p in info["plates"] if p["display"] != "none"]
-            frame_on = "none" not in (info["frameImage"] or "none")
+            frame_on = bool(info["flameOn"])
+            # the two hero boxes must land on the same height, or one of them
+            # carries a hole at the bottom
+            lopsided = abs(info["heroH"] - info["hudH"])
             ok = overflow <= 0
             # the plates and the neon frame belong to the shrine and nowhere else
             if theme == "shrine":
                 ok = ok and len(painted) == 2 and frame_on
             else:
                 ok = ok and not painted and not frame_on
+            if width >= 1000:
+                ok = ok and lopsided <= 4
             flag = "ok " if ok else "FAIL"
-            print(f"  {flag} {theme:<7} overflow={overflow:>3}px  plates_painted={len(painted)}  neon_frame={frame_on}")
+            print(
+                f"  {flag} {theme:<7} overflow={overflow:>3}px  plates_painted={len(painted)}"
+                f"  neon_frame={frame_on}  hero/hud={info['heroH']}/{info['hudH']}"
+            )
             if not ok:
-                failures.append(f"{width}px {theme}: overflow={overflow} plates={painted} frame={frame_on}")
+                failures.append(
+                    f"{width}px {theme}: overflow={overflow} plates={painted}"
+                    f" frame={frame_on} lopsided={lopsided}px"
+                )
 
     steps = data.get("switching", [])
     expected = [
@@ -169,6 +197,15 @@ def main() -> int:
         print(f"  {'ok ' if ok else 'FAIL'} step{i}: theme={got[0]} void={got[1]} shrine={got[2]}")
         if not ok:
             failures.append(f"switch step{i}: got {got} want {want}")
+
+    print("\n== dismantle ==")
+    got = data.get("dismantle")
+    want = ["shrine", "paper", "false", "false"]
+    ok = got == want
+    print(f"  {'ok ' if ok else 'FAIL'} opened={got[0] if got else '?'} "
+          f"after={got[1] if got else '?'} shrine={got[2] if got else '?'} void={got[3] if got else '?'}")
+    if not ok:
+        failures.append(f"dismantle: got {got} want {want}")
 
     if failures:
         print("\nFAILURES:")

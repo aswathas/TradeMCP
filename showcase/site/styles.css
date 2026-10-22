@@ -23,12 +23,14 @@
 
   --gutter: 14px;
   --edge: 3px;
+  --panel-pad: clamp(18px, 2.4vw, 30px);
 
   --font-script: "Kaushan Script", "Segoe Script", cursive;
   --font-shout: "Permanent Marker", "Comic Sans MS", cursive;
   --font-ui: "Saira Condensed", "Arial Narrow", sans-serif;
   --font-body: "Saira", "Segoe UI", system-ui, sans-serif;
   --font-data: "Martian Mono", "Consolas", ui-monospace, monospace;
+  --font-display: "Saira Condensed", "Arial Narrow", sans-serif;
 
   --plate-tone: url("assets/plates/tone-mid.png");
   --plate-tone-light: url("assets/plates/tone-light.png");
@@ -142,7 +144,7 @@ label[for],
   position: relative;
   background: var(--paper);
   border: var(--edge) solid var(--rule);
-  padding: clamp(18px, 2.4vw, 30px);
+  padding: var(--panel-pad);
 }
 
 .caption {
@@ -261,12 +263,14 @@ label[for],
   align-items: flex-start;
 }
 
+/* Two lines, one face, no badge. The line break is set in the markup so the
+   measure never drifts between the themes. */
 .hero-title {
-  font-family: var(--font-ui);
-  font-weight: 700;
-  font-size: clamp(38px, 5.2vw, 74px);
-  line-height: 0.94;
-  letter-spacing: -0.015em;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(34px, 4.7vw, 64px);
+  line-height: 0.95;
+  letter-spacing: 0.004em;
   text-transform: uppercase;
   margin: 0;
   position: relative;
@@ -284,10 +288,10 @@ label[for],
 .sfx--up { font-size: 0.52em; vertical-align: 0.55em; margin-right: 6px; }
 
 .hero-lede {
-  font-size: clamp(15px, 1.25vw, 17.5px);
-  line-height: 1.62;
+  font-size: clamp(14.5px, 1.05vw, 16px);
+  line-height: 1.58;
   color: var(--ink-2);
-  max-width: 46ch;
+  max-width: 54ch;
   margin: 0;
 }
 
@@ -297,6 +301,15 @@ label[for],
   gap: 12px;
   align-items: center;
 }
+
+/* Dismantle is the other half of the pair: it tears the domain back down.
+   Red, because it is the destructive one. */
+.btn--dismantle {
+  background: var(--paper);
+  color: var(--verm);
+  border-color: var(--verm);
+}
+.btn--dismantle:hover { background: var(--verm); color: var(--paper); }
 
 .btn {
   font-family: var(--font-ui);
@@ -910,6 +923,7 @@ code {
   text-transform: uppercase;
 }
 .install__bar--second { border-top: 2px solid var(--rule); }
+.install__bar-actions { display: inline-flex; gap: 8px; }
 .install__bar .btn {
   background: var(--paper);
   color: var(--ink);
@@ -1255,6 +1269,10 @@ code {
 }
 
 .board__side { display: flex; flex-direction: column; gap: 10px; }
+.board__fundamentals { margin-top: var(--gutter); }
+.board__fundamentals .readouts {
+  grid-template-columns: repeat(auto-fit, minmax(min(190px, 100%), 1fr));
+}
 .caption--spaced { margin-top: 10px; }
 
 .readouts {
@@ -2081,7 +2099,7 @@ html.is-flat .panel--hud { transform: none; }
   z-index: 0;
 }
 [data-theme="shrine"] .eaves { opacity: 0.55; }
-[data-theme="shrine"] .panel--hud { padding-top: 172px; }
+[data-theme="shrine"] .panel--hud { padding-top: 46px; }
 .panel--hud { position: relative; overflow: hidden; }
 .panel--hud > *:not(.eaves) { position: relative; z-index: 1; }
 
@@ -2291,7 +2309,7 @@ html.is-cast .panel--hero { animation: cast-flash 800ms ease-out; }
   flex-wrap: wrap;
   align-items: center;
   gap: 10px;
-  margin-top: 20px;
+  margin-top: 0;
   padding: 12px 14px;
   border: 1px solid var(--rule);
   background: var(--paper-2);
@@ -2382,6 +2400,22 @@ html.is-cast .panel--hero { animation: cast-flash 800ms ease-out; }
   bottom: 0;
   border-left: 2px solid var(--tech-c);
   border-right: 2px solid var(--tech-c);
+}
+
+/* the cut between the two techniques. Shrine furniture, so it parks itself
+   in every other theme. */
+.techs__slash { display: none; }
+[data-theme="shrine"] .techs__slash {
+  display: block;
+  flex: none;
+  width: 58px;
+  height: 12px;
+  object-fit: fill;
+  mix-blend-mode: lighten;
+  opacity: 0.95;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .techs__tick {
@@ -2863,48 +2897,19 @@ html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
 
 /* the roof crowns the Live Analysis Panel and breaks its top edge, the way
    a temple eave breaks the line of a wall */
-[data-theme="shrine"] .panel--hud > .shrine-roof {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  max-width: none;
-  height: auto;
-  z-index: 2;
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-select: none;
-  -webkit-mask-image: radial-gradient(ellipse 94% 80% at 50% 58%, #000 58%, transparent 100%);
-  mask-image: radial-gradient(ellipse 94% 80% at 50% 58%, #000 58%, transparent 100%);
-  filter: drop-shadow(0 8px 18px rgba(229, 9, 20, 0.5));
-}
+
 
 
 /* the jaws sit behind the price. Screen-blended so the teeth read as light
-   on the panel rather than as a lid over the number. */
-[data-theme="shrine"] .hud-readout--hero > .shrine-fangs {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 50%;
-  z-index: 0;
-  opacity: 0.78;
-  mix-blend-mode: screen;
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-select: none;
-}
+   on the panel rather than as a lid over the number. The shrine builds them
+   in the hero section at the foot of this file. */
 /* the number keeps its own ground: it is lifted above the jaws and given a
    shadow so it stays crisp against them */
 [data-theme="shrine"] .hud-readout--hero > *:not(.shrine-fangs) {
   position: relative;
   z-index: 1;
 }
-[data-theme="shrine"] .hud-readout--hero .hud-value--xl {
-  text-shadow: 0 2px 10px rgba(5, 4, 4, 0.95), 0 0 26px rgba(229, 9, 20, 0.55);
-}
+
 
 /* the seal cut into the corner of every card */
 [data-theme="shrine"] .shrine-seal {
@@ -2958,16 +2963,7 @@ html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
    exactly what border-image is for: the four edges stretch, the four corner
    studs stay square. Slicing at 40px keeps every stud whole (they sit at
    x 14-26, y 22-39 of the 800x200 source). */
-[data-theme="shrine"] .panel--hero::after {
-  content: "";
-  position: absolute;
-  inset: 9px;
-  border: 14px solid transparent;
-  border-image: url("assets/shrine/panel-frame.webp") 40;
-  filter: drop-shadow(0 0 12px rgba(255, 85, 0, 0.4));
-  pointer-events: none;
-  z-index: 2;
-}
+
 
 /* the maw needs room to breathe: the price sits in its throat */
 [data-theme="shrine"] .hud-readout--hero {
@@ -2979,3 +2975,293 @@ html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
   color: rgba(245, 242, 235, 0.72);
   text-shadow: 0 1px 7px rgba(5, 4, 4, 0.95);
 }
+
+/* ==========================================================================
+   THE HERO AS A GATE
+   The roof no longer crowns one card. One eave now runs the full width of
+   the screen, the great skull hanging over the gutter between the two boxes,
+   so the left hero column and the right Live Analysis Panel share a crown.
+   The neon plate that framed the hero panel moved onto the Fuga button,
+   where it becomes the furnace opening.
+   ========================================================================== */
+
+/* The drawn eaves used to be the panel's roof. The painted one is now the
+   roof, and it hangs over the panel from outside - so the line drawing only
+   crossed the tag and doubled the eave. */
+[data-theme="shrine"] .panel--hud > .eaves { display: none; }
+
+/* ---------- the ground and the burning sky ------------------------------ */
+[data-theme="shrine"] .splash {
+  position: relative;
+  background: #050405;
+  background-image: radial-gradient(circle at 50% 0%, rgba(165, 0, 12, 0.2) 0%, transparent 62%);
+}
+
+/* One roof, over both boxes, edge to edge. It breaks out of the page gutter
+   the way a temple roof runs past the wall it sits on: the grid area is
+   centred on the viewport, so half the area less half the viewport slides
+   the eave out to both screen edges. The feather is wide enough to keep the
+   two end skulls solid - a tighter ellipse would eat them. */
+[data-theme="shrine"] .shrine-roof--splash {
+  grid-column: 1 / -1;
+  justify-self: start;
+  width: 100vw;
+  max-width: none;
+  height: auto;
+  max-height: 40vh;
+  margin: 0 0 -44px;
+  margin-left: calc(50% - 50vw);
+  object-fit: cover;
+  object-position: 50% 34%;
+  z-index: 20;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-mask-image: radial-gradient(ellipse 118% 84% at 50% 44%, #000 62%, transparent 100%);
+  mask-image: radial-gradient(ellipse 118% 84% at 50% 44%, #000 62%, transparent 100%);
+  filter: drop-shadow(0 14px 26px rgba(229, 9, 20, 0.32));
+}
+
+/* both boxes keep their content clear of the eave */
+[data-theme="shrine"] .panel--hero { padding-top: 46px; }
+
+/* ---------- the terminal command box ------------------------------------ */
+.terminal {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  width: 100%;
+  padding: 7px 7px 7px 12px;
+  background: var(--paper);
+  border: 1px solid var(--tone);
+  border-color: color-mix(in srgb, var(--cyan) 40%, transparent);
+  border-left: 4px solid var(--cyan);
+}
+/* the shell prompt: the command reads as something you type */
+.terminal__prompt {
+  flex: none;
+  align-self: center;
+  font-family: var(--font-data);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cyan);
+  opacity: 0.75;
+}
+.terminal__cmd {
+  flex: 1;
+  align-self: center;
+  min-width: 0;
+  font-family: var(--font-data);
+  font-size: 12.5px;
+  line-height: 1.35;
+  color: var(--cyan);
+  background: none;
+  border: 0;
+  padding: 0;
+  overflow-wrap: anywhere;
+}
+.terminal__copy {
+  flex: none;
+  border: 1px solid var(--tone);
+  border-color: color-mix(in srgb, var(--cyan) 55%, transparent);
+  background: var(--paper-2);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 9px 13px;
+  cursor: pointer;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  transition: background 140ms ease, color 140ms ease;
+}
+.terminal__copy:hover { background: var(--cyan); color: var(--paper); }
+.terminal__copy:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+
+/* the shrine burns: amber command on black */
+[data-theme="shrine"] .terminal { background: #050304; }
+[data-theme="shrine"] .terminal__cmd { color: #ff5500; }
+[data-theme="shrine"] .terminal__prompt { color: #ff5500; opacity: 0.9; }
+[data-theme="shrine"] .terminal__copy { background: #120a0c; color: #f5f2eb; }
+[data-theme="shrine"] .terminal__copy:hover { background: #e50914; color: #f5f2eb; }
+
+/* ---------- the technique panel ------------------------------------------
+   The rail is a bordered plate with the cut between the two techniques, the
+   way the mockup draws it. */
+[data-theme="shrine"] .techs {
+  padding: 11px 14px;
+  gap: 14px;
+  border: 1px solid rgba(229, 9, 20, 0.55);
+  background: #0b0709;
+  box-shadow: none;
+}
+[data-theme="shrine"] .techs__cap { color: #8d8386; }
+[data-theme="shrine"] .tech { border-color: currentColor; background: transparent; }
+[data-theme="shrine"] .tech__txt i { color: #8d8386; }
+
+/* On a phone the command needs the whole row and the copy button gets its
+   own line under it, instead of the command breaking in half. */
+@media (max-width: 560px) {
+  .terminal { flex-wrap: wrap; }
+  .terminal__prompt { align-self: flex-start; }
+  .terminal__cmd { font-size: 11.5px; }
+  .terminal__copy { width: 100%; text-align: center; }
+}
+
+/* The rail wraps into two clean lines on a phone: the label and the tick on
+   top, the two techniques under them with the cut between. */
+@media (max-width: 720px) {
+  .techs {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-areas: "cap cap tick" "void slash shrine";
+    gap: 12px 8px;
+    align-items: center;
+  }
+  .techs__cap { grid-area: cap; }
+  .techs__tick { grid-area: tick; justify-self: end; margin-left: 0; }
+  .tech--void { grid-area: void; justify-self: start; }
+  .techs__slash { grid-area: slash; justify-self: center; width: 44px; }
+  .tech--shrine { grid-area: shrine; justify-self: end; }
+}
+
+/* ---------- the furnace button ------------------------------------------
+   The neon plate is the border. Lighten keeps the dark body of the frame
+   transparent and lets only the orange line survive. */
+.btn__flame {
+  display: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  mix-blend-mode: lighten;
+  opacity: 0.95;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+[data-theme="shrine"] .btn__flame { display: block; }
+[data-theme="shrine"] .btn--fuga {
+  background: linear-gradient(180deg, #170b0d, #0a0608);
+  color: #f5f2eb;
+  border-color: rgba(229, 9, 20, 0.55);
+  box-shadow: none;
+  isolation: isolate;
+}
+[data-theme="shrine"] .btn__flame { filter: drop-shadow(0 0 7px rgba(255, 85, 0, 0.9)); }
+[data-theme="shrine"] .btn--fuga:hover { background: #140a0c; color: #f5f2eb; }
+[data-theme="shrine"] .btn--fuga .btn__label {
+  position: relative;
+  z-index: 1;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-shadow: 0 0 14px rgba(255, 85, 0, 0.85);
+}
+/* the other half of the pair: the cut, in red */
+[data-theme="shrine"] .btn--dismantle {
+  background: #0a0608;
+  color: #ff7a4d;
+  border-color: rgba(229, 9, 20, 0.5);
+  box-shadow: none;
+}
+[data-theme="shrine"] .btn--dismantle:hover { background: #1a0b0d; color: #ffb08a; }
+
+/* ---------- the price in the jaws ---------------------------------------
+   The maw is wider than the price box. Its two jaw walls reach out past the
+   left and right edges, so the number is held between the teeth instead of
+   sitting on top of them. */
+[data-theme="shrine"] .hud-readout.hud-readout--hero {
+  aspect-ratio: 1600 / 665;
+  padding: 0 var(--panel-pad);
+  justify-content: center;
+}
+[data-theme="shrine"] .hud-readout--hero > .shrine-fangs {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% + 2 * (var(--panel-pad) - 8px));
+  height: 100%;
+  object-fit: fill;
+  object-position: 50% 50%;
+  z-index: 0;
+  opacity: 0.8;
+  mix-blend-mode: lighten;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+/* a dark throat over the teeth, under the number */
+[data-theme="shrine"] .hud-readout--hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse 58% 44% at 50% 50%, rgba(5, 3, 4, 0.94) 26%, rgba(5, 3, 4, 0.6) 64%, transparent 90%);
+  pointer-events: none;
+}
+[data-theme="shrine"] .hud-readout--hero .hud-value--xl {
+  text-shadow: 0 2px 10px rgba(5, 4, 4, 0.95), 0 0 15px rgba(229, 9, 20, 0.9);
+}
+
+/* ---------- the surgical grid of ratios --------------------------------- */
+[data-theme="shrine"] .hud-readout {
+  background: #130c0f;
+  border: 1px solid rgba(229, 9, 20, 0.3);
+  padding: 22px 16px 23px;
+}
+[data-theme="shrine"] .hud-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: #8d8386;
+}
+[data-theme="shrine"] .hud-value { color: #f5f2eb; }
+
+/* ---------- the cursed technical score ---------------------------------- */
+[data-theme="shrine"] .gauge {
+  background: #191014;
+  border: 1px solid rgba(229, 9, 20, 0.4);
+}
+[data-theme="shrine"] .gauge__zone--sell {
+  background: repeating-linear-gradient(45deg, #8d0801 0 5px, transparent 5px 10px);
+  opacity: 0.55;
+}
+[data-theme="shrine"] .gauge__zone--neutral { background: #191014; }
+[data-theme="shrine"] .gauge__zone--buy {
+  background: repeating-linear-gradient(45deg, #e50914 0 5px, transparent 5px 10px);
+  opacity: 0.45;
+}
+.gauge__fill {
+  display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  background: linear-gradient(90deg, #8d0801, #e50914 55%, #ff5500);
+  box-shadow: 0 0 10px #e50914;
+  pointer-events: none;
+}
+[data-theme="shrine"] .gauge__fill { display: block; }
+
+/* ---------- the four corners of the analysis panel ----------------------- */
+.shrine-brackets { display: none; }
+[data-theme="shrine"] .shrine-brackets {
+  display: block;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+.shrine-brackets i {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #e50914;
+}
+.shrine-brackets i:nth-child(1) { top: 8px; left: 8px; border-right: 0; border-bottom: 0; }
+.shrine-brackets i:nth-child(2) { top: 8px; right: 8px; border-left: 0; border-bottom: 0; }
+.shrine-brackets i:nth-child(3) { bottom: 8px; left: 8px; border-right: 0; border-top: 0; }
+.shrine-brackets i:nth-child(4) { bottom: 8px; right: 8px; border-left: 0; border-top: 0; }

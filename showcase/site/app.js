@@ -191,15 +191,6 @@ function wireNpxDownload() {
   });
 }
 
-function wireNpxCopy() {
-  const button = document.getElementById("npx-copy-cta");
-  if (!button) return;
-  button.addEventListener("click", async () => {
-    const ok = await copyText(NPX_COMMAND);
-    toast(ok ? "Copied — paste it into your client" : "Copy failed — select it manually");
-  });
-}
-
 function wireCopyButtons() {
   document.querySelectorAll("[data-copy-target]").forEach((button) => {
     button.addEventListener("click", async () => {
@@ -244,9 +235,9 @@ function paintTheme(theme) {
   if (fuga) {
     fuga.textContent =
       theme === "shrine"
-        ? "Fūga · initialize"
+        ? "Fūga / Open Furnace"
         : theme === "void"
-          ? "Blue Lapse · pull data"
+          ? "Cleave / pull data"
           : "Refresh the feed";
   }
 }
@@ -365,6 +356,21 @@ function wireFuga() {
   });
 }
 
+/* Dismantle: tear the cursed domain down and let the base theme back in.
+   The cut is the same slash a domain makes when it lets go. */
+function wireDismantle() {
+  const button = document.getElementById("dismantle-btn");
+  if (!button) return;
+  button.addEventListener("click", () => {
+    const was = domainState.active;
+    domainState.active = null;
+    paintTheme(domainState.base);
+    paintDomain();
+    slash();
+    toast(was ? "Domain dismantled · back to the base page" : "No domain open · nothing to tear down");
+  });
+}
+
 function wireToolCards() {
   document.querySelectorAll(".tool").forEach((card) => {
     const summary = card.querySelector("summary");
@@ -435,10 +441,10 @@ function wireDolly() {
 renderChips();
 wireCopyButtons();
 wireNpxDownload();
-wireNpxCopy();
 wireThemeToggle();
 wireDomains();
 wireFuga();
+wireDismantle();
 wireToolCards();
 wireTilt();
 wireDolly();

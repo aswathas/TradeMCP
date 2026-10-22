@@ -763,8 +763,21 @@ function paintHud(quote, fundamentals, score, rsi, live) {
     const label = score.label || "—";
     hudSet("hud-score", `${value > 0 ? "+" : value < 0 ? "−" : ""}${nf(Math.abs(value), 2)}`);
     hudSet("hud-score-label", label);
+    const pos = Math.max(0, Math.min(100, (value + 100) / 2));
     const needle = document.getElementById("hud-needle");
-    if (needle) needle.style.left = `${Math.max(0, Math.min(100, (value + 100) / 2)).toFixed(1)}%`;
+    if (needle) needle.style.left = `${pos.toFixed(1)}%`;
+    // the fill runs from the middle of the scale to the reading, so it
+    // grows towards whichever way the score leans
+    const fill = document.getElementById("hud-gauge-fill");
+    if (fill) {
+      // the fill always runs from the middle of the scale to the reading, and
+      // the hot end is always at the needle
+      fill.style.left = `${Math.min(50, pos)}%`;
+      fill.style.width = `${Math.abs(pos - 50)}%`;
+      fill.style.background = pos < 50
+        ? "linear-gradient(90deg, #ff5500, #e50914 45%, #8d0801)"
+        : "linear-gradient(90deg, #8d0801, #e50914 55%, #ff5500)";
+    }
     const gauge = document.getElementById("hud-gauge");
     if (gauge) {
       gauge.setAttribute(
