@@ -66,10 +66,6 @@
   --verm: #ff7a5c;
   --green: #3fce8f;
 
-  --plate-tone: url("assets/plates/tone-night-mid.png");
-  --plate-tone-light: url("assets/plates/tone-night-light.png");
-  --plate-tone-dark: url("assets/plates/tone-night-dark.png");
-}
   /* the night theme inverts the page, so its band inverts too: a light strip
      with dark ink on it. The accent has to follow, or "50 / 50" is a ghost. */
   --band-bg: #f1f2f3;
@@ -82,6 +78,10 @@
   /* the night theme's install bar is light, so its tag is a dark red */
   --flag-ink: #a8381c;
 
+  --plate-tone: url("assets/plates/tone-night-mid.png");
+  --plate-tone-light: url("assets/plates/tone-night-light.png");
+  --plate-tone-dark: url("assets/plates/tone-night-dark.png");
+}
 
 *,
 *::before,
@@ -186,11 +186,6 @@ label[for],
   background: var(--paper-2);
 }
 
-/* ---------- masthead ----------------------------------------------------- */
-
-.masthead {
-  position: sticky;
-  top: 0;
 /* the free badge is a burnt chip: orange on black, never orange on paper.
    This has to come after .caption - same specificity, so the later rule
    wins, and .caption would otherwise paint the light background over it. */
@@ -200,6 +195,11 @@ label[for],
   color: #ff5500;
 }
 
+/* ---------- masthead ----------------------------------------------------- */
+
+.masthead {
+  position: sticky;
+  top: 0;
   z-index: 40;
   display: flex;
   align-items: center;
@@ -1186,6 +1186,10 @@ code {
   border-left: 2px solid var(--band-fg);
   cursor: pointer;
 }
+.tape__pause:hover { color: var(--band-bg); background: var(--band-fg); }
+.tape__pause[aria-pressed="true"] { color: var(--band-bg); background: var(--band-fg); }
+.tape.is-paused .tape__row { animation-play-state: paused; }
+.tape:focus-within .tape__row { animation-play-state: paused; }
 
 /* ---------- live board ---------------------------------------------------- */
 
@@ -1198,10 +1202,6 @@ code {
 
 .board__chart { padding: 0; overflow: hidden; }
 
-.tape__pause:hover { color: var(--band-bg); background: var(--band-fg); }
-.tape__pause[aria-pressed="true"] { color: var(--band-bg); background: var(--band-fg); }
-.tape.is-paused .tape__row { animation-play-state: paused; }
-.tape:focus-within .tape__row { animation-play-state: paused; }
 .board__bar {
   display: flex;
   align-items: center;
@@ -1532,6 +1532,16 @@ code {
   transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateZ(14px);
   box-shadow: 10px 12px 0 rgba(16, 15, 16, 0.16);
 }
+
+/* The tilt is a pointer gesture, so the browser must not wait to see if it
+   is a scroll. Without this, a touch drag on a card fights the page. */
+.panel--metrics,
+.metric-panel,
+.tool,
+.step,
+.source {
+  touch-action: manipulation;
+}
 [data-theme="night"] .panel.tilt,
 [data-theme="night"] .tool.tilt,
 [data-theme="night"] .step.tilt,
@@ -1654,6 +1664,12 @@ html.is-flat .panel--hud { transform: none; }
   color: var(--ink);
   width: 100%;
 }
+/* the browser's default placeholder grey is 4.2:1 on paper - the search box
+   is the one field whose placeholder is the only instruction it has */
+.field input::placeholder {
+  color: var(--ink-2);
+  opacity: 1;
+}
 
 .filters { display: flex; flex-direction: column; gap: 11px; }
 .filter { display: flex; flex-direction: column; gap: 4px; }
@@ -1676,10 +1692,21 @@ html.is-flat .panel--hud { transform: none; }
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
+  /* the control is a 26px target; the track drawn inside it stays 6px */
+  height: 26px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.filter input[type="range"]::-webkit-slider-runnable-track {
   height: 6px;
   background: var(--paper-2);
   border: 2px solid var(--rule);
-  cursor: pointer;
+}
+.filter input[type="range"]::-moz-range-track {
+  height: 6px;
+  background: var(--paper-2);
+  border: 2px solid var(--rule);
 }
 .filter input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
@@ -1715,16 +1742,6 @@ html.is-flat .panel--hud { transform: none; }
 }
 .sc-count {
   font-family: var(--font-ui);
-
-/* The tilt is a pointer gesture, so the browser must not wait to see if it
-   is a scroll. Without this, a touch drag on a card fights the page. */
-.panel--metrics,
-.metric-panel,
-.tool,
-.step,
-.source {
-  touch-action: manipulation;
-}
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 0.12em;
@@ -1741,6 +1758,7 @@ html.is-flat .panel--hud { transform: none; }
   top: 0;
   z-index: 2;
   background: var(--paper-2);
+  cursor: pointer;
   user-select: none;
   padding: 9px 8px;
   font-size: 12px;
@@ -1808,6 +1826,27 @@ html.is-flat .panel--hud { transform: none; }
   .tool { break-inside: avoid; }
 }
 
+/* ---------- the narrowest phones ------------------------------------------
+   At 320px the technique rail cannot hold a label, a cut and two buttons on
+   one line: the shrine's 58px blade pushed the Fuga button off the edge and
+   `overflow-x: clip` turned that into a control that could not be reached.
+   The blade goes, the tick gets its own line, and the stat strip stacks. */
+@media (max-width: 380px) {
+  .strip__list { grid-template-columns: 1fr; }
+  .strip__list li {
+    padding: 14px 12px;
+    border-right: 0;
+    border-bottom: var(--edge) solid var(--rule);
+  }
+  .strip__list li:last-child { border-bottom: 0; }
+  .techs {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "cap cap" "tick tick" "void shrine";
+  }
+  .techs__slash { display: none; }
+  .techs__tick { justify-self: start; margin-left: 0; }
+}
+
 /* ---------- the domain: cursed energy, drawn in code ------------------------
    A barrier the page can open over itself. The vocabulary is the technique,
    not the character: shockwave, veil, motes, reversed palette. No licensed
@@ -1832,6 +1871,16 @@ html.is-flat .panel--hud { transform: none; }
   --verm: #ff4d6d;
   --green: #4ff0b4;
 
+  /* the void keeps its own darkness instead of flipping to a light bar */
+  --band-bg: #0b132b;
+  --band-fg: #d6ecf5;
+  --band-accent: #48cae4;
+  --band-dim: #8fb8c9;
+  --band-up: #4ff0b4;
+  --band-down: #ff7a5c;
+
+  --flag-ink: #a8381c;
+
   --aura: #48cae4;
   --flame: #ffffff;
   --indigo: #0b132b;
@@ -1846,12 +1895,6 @@ html.is-flat .panel--hud { transform: none; }
    left in the palette is the furnace burning behind the cases. */
 [data-theme="shrine"] {
   --paper: #050405;        /* pitch obsidian: the ground the shrine stands on */
-/* the browser's default placeholder grey is 4.2:1 on paper - the search box
-   is the one field whose placeholder is the only instruction it has */
-.field input::placeholder {
-  color: var(--ink-2);
-  opacity: 1;
-}
   --paper-2: #171014;      /* altar iron: the inner surface of a case */
   --ink: #f5f2eb;          /* bleached bone: primary text */
   --ink-2: #c4bcb7;        /* ashen bone: secondary text */
@@ -1865,6 +1908,16 @@ html.is-flat .panel--hud { transform: none; }
   --verm: #ff4d6d;         /* down */
   --green: #4ff0b4;        /* up */
 
+  /* the shrine's band is altar iron with bone on it */
+  --band-bg: #1a0d10;
+  --band-fg: #f5f2eb;
+  --band-accent: #ff5500;
+  --band-dim: #8d8386;
+  --band-up: #4ff0b4;
+  --band-down: #ff8a6b;
+
+  --flag-ink: #a8381c;
+
   --aura: #b00912;         /* the gate, the eaves */
   --flame: #ff5500;        /* the furnace glow */
   --indigo: #1a0508;
@@ -1874,18 +1927,6 @@ html.is-flat .panel--hud { transform: none; }
 
   --plate-tone: url("assets/plates/tone-night-mid.png");
   --plate-tone-light: url("assets/plates/tone-night-light.png");
-  /* the control is a 26px target; the track drawn inside it stays 6px */
-  height: 26px;
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-}
-.filter input[type="range"]::-webkit-slider-runnable-track {
-  height: 6px;
-  background: var(--paper-2);
-  border: 2px solid var(--rule);
-}
-.filter input[type="range"]::-moz-range-track {
   --plate-tone-dark: url("assets/plates/tone-night-dark.png");
 }
 
@@ -2009,27 +2050,6 @@ html.is-flat .panel--hud { transform: none; }
   top: 62%;
   background:
     repeating-linear-gradient(90deg, rgba(0, 240, 255, 0.17) 0 1px, transparent 1px 56px),
-/* ---------- the narrowest phones ------------------------------------------
-   At 320px the technique rail cannot hold a label, a cut and two buttons on
-   one line: the shrine's 58px blade pushed the Fuga button off the edge and
-   `overflow-x: clip` turned that into a control that could not be reached.
-   The blade goes, the tick gets its own line, and the stat strip stacks. */
-@media (max-width: 380px) {
-  .strip__list { grid-template-columns: 1fr; }
-  .strip__list li {
-    padding: 14px 12px;
-    border-right: 0;
-    border-bottom: var(--edge) solid var(--rule);
-  }
-  .strip__list li:last-child { border-bottom: 0; }
-  .techs {
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas: "cap cap" "tick tick" "void shrine";
-  }
-  .techs__slash { display: none; }
-  .techs__tick { justify-self: start; margin-left: 0; }
-}
-
     repeating-linear-gradient(0deg, rgba(0, 240, 255, 0.11) 0 1px, transparent 1px 56px);
 }
 [data-theme="void"] .void-space { opacity: 1; }
@@ -2054,16 +2074,6 @@ html.is-flat .panel--hud { transform: none; }
     repeating-linear-gradient(0deg, rgba(0, 240, 255, 0.26) 0 1px, transparent 1px 56px);
   -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 58%, transparent 88%);
   mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 58%, transparent 88%);
-  /* the void keeps its own darkness instead of flipping to a light bar */
-  --band-bg: #0b132b;
-  --band-fg: #d6ecf5;
-  --band-accent: #48cae4;
-  --band-dim: #8fb8c9;
-  --band-up: #4ff0b4;
-  --band-down: #ff7a5c;
-
-  --flag-ink: #a8381c;
-
   animation: void-grid-drift 7s linear infinite;
 }
 @keyframes void-grid-drift {
@@ -2091,16 +2101,6 @@ html.is-flat .panel--hud { transform: none; }
 
 /* the domain expanding: a shockwave leaving the vanishing point */
 .void-space__pulse {
-  /* the shrine's band is altar iron with bone on it */
-  --band-bg: #1a0d10;
-  --band-fg: #f5f2eb;
-  --band-accent: #ff5500;
-  --band-dim: #8d8386;
-  --band-up: #4ff0b4;
-  --band-down: #ff8a6b;
-
-  --flag-ink: #a8381c;
-
   position: absolute;
   left: 50%;
   top: 58%;
@@ -2215,6 +2215,10 @@ html.is-flat .panel--hud { transform: none; }
   pointer-events: none;
   white-space: nowrap;
 }
+/* Each domain's name is printed only in that domain. The shrine's watermark
+   used to ghost into the paper theme at ten percent opacity - a clipped
+   sliver of a name that meant nothing on that page. */
+.watermark--shrine { display: none; }
 .watermark--void { display: none; }
 [data-theme="shrine"] .watermark--shrine { display: block; }
 [data-theme="void"] .watermark--void { display: block; }
@@ -2400,10 +2404,6 @@ html.is-cast .panel--hero { animation: cast-flash 800ms ease-out; }
   inset: 0;
   background-image:
     repeating-linear-gradient(90deg, rgba(255, 186, 8, 0.18) 0 1px, transparent 1px 150px),
-/* Each domain's name is printed only in that domain. The shrine's watermark
-   used to ghost into the paper theme at ten percent opacity - a clipped
-   sliver of a name that meant nothing on that page. */
-.watermark--shrine { display: none; }
     repeating-linear-gradient(90deg, rgba(224, 71, 44, 0.14) 0 1px, transparent 1px 260px);
   background-size: 100% 120vmin, 100% 190vmin;
   mask-image: linear-gradient(to top, #000 0%, rgba(0, 0, 0, 0.35) 62%, transparent 100%);
@@ -2515,7 +2515,7 @@ html.is-cast .panel--hero { animation: cast-flash 800ms ease-out; }
 [data-theme="void"] .tech--void,
 [data-theme="shrine"] .tech--void { --tech-c: #48cae4; }
 [data-theme="night"] .tech--shrine,
-[data-theme="void"] .tech--shrine { --tech-c: #e0472c; }
+[data-theme="void"] .tech--shrine { --tech-c: #ff7a4d; }
 [data-theme="shrine"] .tech--shrine { --tech-c: #ff7a4d; }
 
 .tech__txt {
@@ -2597,6 +2597,10 @@ html.is-cast .panel--hero { animation: cast-flash 800ms ease-out; }
 }
 .techs__tick[data-tone="ao"] { color: #0077b6; border-color: #0077b6; }
 .techs__tick[data-tone="aka"] { color: #a4161a; border-color: #a4161a; }
+/* the night theme's ground is dark, so the crimson of the red pull has to be
+   the lit one - the dark crimson reads as a smudge on #1e2025 */
+[data-theme="night"] .techs__tick[data-tone="ao"] { color: #38b6dd; border-color: #38b6dd; }
+[data-theme="night"] .techs__tick[data-tone="aka"] { color: #ff7a8a; border-color: #ff7a8a; }
 [data-theme="void"] .techs__tick[data-tone="ao"] { color: #00b4d8; border-color: #00b4d8; }
 [data-theme="void"] .techs__tick[data-tone="aka"] { color: #ff4d6d; border-color: #ff4d6d; }
 [data-theme="shrine"] .techs__tick[data-tone="ao"] { color: #48cae4; border-color: #48cae4; }
@@ -2780,10 +2784,6 @@ html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
     linear-gradient(#e50914, #e50914) 0 100% / 14px 2px no-repeat,
     linear-gradient(#e50914, #e50914) 0 100% / 2px 14px no-repeat,
     linear-gradient(#e50914, #e50914) 100% 100% / 14px 2px no-repeat,
-/* the night theme's ground is dark, so the crimson of the red pull has to be
-   the lit one - the dark crimson reads as a smudge on #1e2025 */
-[data-theme="night"] .techs__tick[data-tone="ao"] { color: #38b6dd; border-color: #38b6dd; }
-[data-theme="night"] .techs__tick[data-tone="aka"] { color: #ff7a8a; border-color: #ff7a8a; }
     linear-gradient(#e50914, #e50914) 100% 100% / 2px 14px no-repeat;
 }
 
@@ -2892,8 +2892,8 @@ html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
    faintly red under the pointer. */
 
 [data-theme="shrine"] .sc-bar {
-  background: #1a0d10;
-  color: #f5f2eb;
+  background: var(--band-bg);
+  color: var(--band-fg);
   border-bottom: 1px solid rgba(229, 9, 20, 0.28);
 }
 [data-theme="shrine"] .sc-count b { color: var(--band-accent); }
@@ -2951,7 +2951,7 @@ html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
   color: #f5f2eb;
 }
 [data-theme="shrine"] .board__name { color: #8d8386; }
-[data-theme="shrine"] .board__badge { color: #8d8386; border-color: rgba(229, 9, 20, 0.5); }
+[data-theme="shrine"] .board__badge:not(.board__badge--live) { color: #8d8386; border-color: rgba(229, 9, 20, 0.5); }
 [data-theme="shrine"] .board__symbol input {
   border-color: rgba(229, 9, 20, 0.55);
   color: #f5f2eb;
@@ -2969,8 +2969,8 @@ html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
 }
 [data-theme="shrine"] .tape__price { color: #f5f2eb; }
 [data-theme="shrine"] .toast {
-  background: var(--band-bg);
-  color: var(--band-fg);
+  background: #1a0d10;
+  color: #f5f2eb;
   border-color: #e50914;
   box-shadow: 6px 6px 0 rgba(229, 9, 20, 0.55);
 }
@@ -2990,7 +2990,7 @@ html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
   background: #e50914;
   color: #fff;
 }
-[data-theme="shrine"] .tech--shrine[aria-pressed="true"] .tech__txt i { color: rgba(255, 255, 255, 0.82); }
+[data-theme="shrine"] .tech--shrine[aria-pressed="true"] .tech__txt i { color: #fff; }
 
 /* ---------- 11. the headline and the marks on it ------------------------
    The title is bone lit by a furnace: the glow moves from amber to the
@@ -3178,6 +3178,108 @@ html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
   border-color: color-mix(in srgb, var(--cyan) 40%, transparent);
   border-left: 4px solid var(--cyan);
 }
+
+/* The install command is the page's one call to action, and it does not
+   resolve yet. The sentence under it says so, in the same type as the
+   rest of the page's small print. */
+.terminal__note {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+.terminal__note a {
+  color: var(--ink);
+  font-weight: 700;
+}
+.terminal__flag,
+.install__flag {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 2px 7px;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--verm);
+  border: 1px solid color-mix(in srgb, var(--verm) 55%, transparent);
+  background: color-mix(in srgb, var(--verm) 9%, transparent);
+}
+.install__flag {
+  margin-left: auto;
+  margin-right: 0;
+  color: var(--flag-ink);
+  border-color: color-mix(in srgb, var(--flag-ink) 55%, transparent);
+  background: color-mix(in srgb, var(--flag-ink) 12%, transparent);
+}
+
+/* the board says when it cannot show what was asked for */
+.board__error {
+  margin: 0;
+  padding: 9px 12px;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--verm);
+  background: color-mix(in srgb, var(--verm) 10%, transparent);
+  border-bottom: 2px solid color-mix(in srgb, var(--verm) 45%, transparent);
+}
+.board__error[hidden] { display: none; }
+
+/* the screener's sort headers are buttons, so they have a focus ring and a
+   name; the row's symbol is a button too, so a keyboard can load it */
+.sc-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.sc-sort i { font-style: normal; }
+.sc-load {
+  padding: 0;
+  font: inherit;
+  font-weight: 600;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+}
+.sc-load:hover { text-decoration: underline; }
+
+/* the footer links out to the repository, the issues and the tool reference */
+.footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+}
+.footer__links a {
+  color: var(--ink);
+  font-weight: 700;
+}
+.footer__links a:hover { color: var(--cyan); }
+
+/* the metric catalogue says what it is: names, with the manual one click away */
+.metrics__note {
+  margin: 12px 0 0;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+.metrics__note a {
+  color: var(--ink);
+  font-weight: 700;
+}
 /* the shell prompt: the command reads as something you type */
 .terminal__prompt {
   flex: none;
@@ -3363,108 +3465,6 @@ html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
 }
 [data-theme="shrine"] .hud-value { color: #f5f2eb; }
 [data-theme="shrine"] .hud-head { border-bottom-color: rgba(229, 9, 20, 0.4); padding-bottom: 8px; }
-
-/* The install command is the page's one call to action, and it does not
-   resolve yet. The sentence under it says so, in the same type as the
-   rest of the page's small print. */
-.terminal__note {
-  margin: 0;
-  font-family: var(--font-body);
-  font-size: 12.5px;
-  line-height: 1.55;
-  color: var(--ink-2);
-}
-.terminal__note a {
-  color: var(--ink);
-  font-weight: 700;
-}
-.terminal__flag,
-.install__flag {
-  display: inline-block;
-  margin-right: 8px;
-  padding: 2px 7px;
-  font-family: var(--font-ui);
-  font-weight: 700;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--verm);
-  border: 1px solid color-mix(in srgb, var(--verm) 55%, transparent);
-  background: color-mix(in srgb, var(--verm) 9%, transparent);
-}
-.install__flag {
-  margin-left: auto;
-  margin-right: 0;
-  color: var(--flag-ink);
-  border-color: color-mix(in srgb, var(--flag-ink) 55%, transparent);
-  background: color-mix(in srgb, var(--flag-ink) 12%, transparent);
-}
-
-/* the board says when it cannot show what was asked for */
-.board__error {
-  margin: 0;
-  padding: 9px 12px;
-  font-family: var(--font-body);
-  font-size: 12.5px;
-  line-height: 1.5;
-  color: var(--verm);
-  background: color-mix(in srgb, var(--verm) 10%, transparent);
-  border-bottom: 2px solid color-mix(in srgb, var(--verm) 45%, transparent);
-}
-.board__error[hidden] { display: none; }
-
-/* the screener's sort headers are buttons, so they have a focus ring and a
-   name; the row's symbol is a button too, so a keyboard can load it */
-.sc-sort {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 0;
-  font: inherit;
-  color: inherit;
-  letter-spacing: inherit;
-  text-transform: inherit;
-  background: none;
-  border: 0;
-  cursor: pointer;
-}
-.sc-sort i { font-style: normal; }
-.sc-load {
-  padding: 0;
-  font: inherit;
-  font-weight: 600;
-  color: inherit;
-  background: none;
-  border: 0;
-  cursor: pointer;
-  text-align: left;
-}
-.sc-load:hover { text-decoration: underline; }
-
-/* the footer links out to the repository, the issues and the tool reference */
-.footer__links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 18px;
-}
-.footer__links a {
-  color: var(--ink);
-  font-weight: 700;
-}
-.footer__links a:hover { color: var(--cyan); }
-
-/* the metric catalogue says what it is: names, with the manual one click away */
-.metrics__note {
-  margin: 12px 0 0;
-  font-family: var(--font-body);
-  font-size: 13.5px;
-  line-height: 1.6;
-  color: var(--ink-2);
-}
-.metrics__note a {
-  color: var(--ink);
-  font-weight: 700;
-}
 [data-theme="shrine"] .hud-head .hud-tag {
   background: none;
   color: #ff7a4d;

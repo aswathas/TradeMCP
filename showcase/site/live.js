@@ -463,6 +463,23 @@ function renderChart(candles) {
       <span class="legend legend--right">${candles[0].date} → ${candles[candles.length - 1].date}</span>`;
   }
 
+  /* A chart is a picture. The sentence behind it has to exist somewhere a
+     screen reader can reach, or the only way to read this series is to see
+     it - which is exactly the thing PRODUCT.md says must not happen. */
+  const summary = document.getElementById("chart-summary");
+  if (summary) {
+    const first = candles[0];
+    const last = candles[candles.length - 1];
+    const low = Math.min(...closes);
+    const high = Math.max(...closes);
+    const change = ((last.close - first.close) / first.close) * 100;
+    const direction = change > 0.05 ? "rose" : change < -0.05 ? "fell" : "was flat";
+    summary.textContent =
+      `${state.symbol} daily closes from ${first.date} to ${last.date}, ${candles.length} sessions. ` +
+      `The first close was ${nf(first.close, 2)} and the last was ${nf(last.close, 2)}, so over that window it ${direction} ` +
+      `${nf(Math.abs(change), 2)} percent. The lowest close was ${nf(low, 2)} and the highest was ${nf(high, 2)}.`;
+  }
+
   return { closes, bands, mid20, mid50, rsiSeries };
 }
 
@@ -589,6 +606,20 @@ function setTapeStamp(text) {
   if (node) node.textContent = text;
 }
 
+/* The ticker runs on its own, so it has to be stoppable on its own terms.
+   A pause button in the tape, and the tape stops when it holds focus. */
+function wireTapePause() {
+  const tape = document.querySelector(".tape");
+  const button = document.getElementById("tape-pause");
+  if (!tape || !button) return;
+  button.addEventListener("click", () => {
+    const paused = button.getAttribute("aria-pressed") !== "true";
+    button.setAttribute("aria-pressed", String(paused));
+    tape.classList.toggle("is-paused", paused);
+    button.textContent = paused ? "Play" : "Pause";
+  });
+}
+
 /* ---------- board -------------------------------------------------------- */
 
 function setBadge(live, stamp) {
@@ -627,23 +658,6 @@ function rollNumber(node, text) {
     span.textContent = text[i];
     if (prev[i] && prev[i] !== text[i]) span.classList.add("digit--changed");
     frag.appendChild(span);
-  /* A chart is a picture. The sentence behind it has to exist somewhere a
-     screen reader can reach, or the only way to read this series is to see
-     it - which is exactly the thing PRODUCT.md says must not happen. */
-  const summary = document.getElementById("chart-summary");
-  if (summary) {
-    const first = candles[0];
-    const last = candles[candles.length - 1];
-    const low = Math.min(...closes);
-    const high = Math.max(...closes);
-    const change = ((last.close - first.close) / first.close) * 100;
-    const direction = change > 0.05 ? "rose" : change < -0.05 ? "fell" : "was flat";
-    summary.textContent =
-      `${state.symbol} daily closes from ${first.date} to ${last.date}, ${candles.length} sessions. ` +
-      `The first close was ${nf(first.close, 2)} and the last was ${nf(last.close, 2)}, so over that window it ${direction} ` +
-      `${nf(Math.abs(change), 2)} percent. The lowest close was ${nf(low, 2)} and the highest was ${nf(high, 2)}.`;
-  }
-
   }
   node.appendChild(frag);
 }
@@ -768,20 +782,6 @@ function paintHud(quote, fundamentals, score, rsi, live) {
       hudSet("hud-netdebt", `net debt ₹${crore(l.net_debt, 0)} Cr`);
     }
     if (v.dividend_yield_pct !== undefined) hudSet("hud-dy", nf(v.dividend_yield_pct, 2));
-/* The ticker runs on its own, so it has to be stoppable on its own terms.
-   A pause button in the tape, and the tape stops when it holds focus. */
-function wireTapePause() {
-  const tape = document.querySelector(".tape");
-  const button = document.getElementById("tape-pause");
-  if (!tape || !button) return;
-  button.addEventListener("click", () => {
-    const paused = button.getAttribute("aria-pressed") !== "true";
-    button.setAttribute("aria-pressed", String(paused));
-    tape.classList.toggle("is-paused", paused);
-    button.textContent = paused ? "Play" : "Pause";
-  });
-}
-
     if (q.current_ratio !== undefined && q.current_ratio !== null) {
       hudSet("hud-cr", `current ratio ${nf(q.current_ratio, 2)}`);
     }
@@ -834,6 +834,40 @@ function wireTapePause() {
         `Technical score ${value.toFixed(2)} on a scale from minus 100 Strong Sell to plus 100 Strong Buy, reading ${label}.`
       );
     }
+  } else {
+    // There is no score in a snapshot. A hardcoded reading would be a lie
+    // wearing a number, so the gauge says it has nothing to show.
+    hudSet("hud-score", "—");
+    hudSet("hud-score-label", "not in this snapshot");
+    const needle = document.getElementById("hud-needle");
+    if (needle) needle.style.left = "50%";
+    const fill = document.getElementById("hud-gauge-fill");
+    if (fill) { fill.style.left = "50%"; fill.style.width = "0%"; }
+    const gauge = document.getElementById("hud-gauge");
+    if (gauge) {
+      gauge.setAttribute(
+        "aria-label",
+        "No technical score in this snapshot: the score is computed by the server on a live quote, and this page is showing a saved one."
+      );
+    }
+  }
+}
+
+/* The copy around the board has to match what the board is showing. On a
+   static host the numbers are a saved server run, so "live in this tab"
+   would be the one false sentence on the page. */
+function setLiveCopy(live) {
+  const title = document.getElementById("live-title");
+  const note = document.getElementById("live-note");
+  if (title) {
+    title.textContent = live
+      ? "The same numbers, live in this tab"
+      : "The same numbers, from the last server run";
+  }
+  if (note) {
+    note.textContent = live
+      ? "These candles come from the TradeMCP server right now, and the indicators below are recomputed in your browser from the same raw series."
+      : "These candles are a saved run of the TradeMCP server, and the indicators below are recomputed in your browser from that same raw series.";
   }
 }
 
@@ -891,6 +925,7 @@ async function refreshHud(snapshot) {
   const rsi = series && series.length ? series[series.length - 1] : null;
 
   paintHud(hudQuote(quote), fundamentals, score, rsi, live);
+  setLiveCopy(live);
 
   const foot = document.getElementById("hud-foot");
   if (foot) {
@@ -904,6 +939,11 @@ async function refreshHud(snapshot) {
 async function refreshBoard(symbol, snapshot) {
   const badge = document.getElementById("board-badge");
   if (badge) badge.textContent = "…";
+  if (apiIsLive === false) {
+    state.live = false;
+    paintSnapshot(symbol, snapshot, "server snapshot — live endpoint unavailable");
+    return;
+  }
   try {
     const history = await getJSON(chartPath(symbol), 20000);
     const { rows } = toCandles(history);
@@ -924,6 +964,8 @@ async function refreshBoard(symbol, snapshot) {
     try {
       const fundamentals = await getJSON(fundamentalsPath(symbol), 20000);
       setReadouts(buildFundamentalRows(fundamentalsFromFundamentals(fundamentals)), "fundamental-list");
+      setBoardName(fundamentals?.name || symbol);
+      setBoardError("");
     } catch {
       const fallback = snapshot?.fundamentals?.[symbol];
       if (fallback) setReadouts(buildFundamentalRows(fundamentalsFromFundamentals(fallback)), "fundamental-list");
@@ -951,14 +993,38 @@ function paintSnapshot(symbol, snapshot, stamp) {
     const computed = renderChart(candles);
     state.computed = computed;
     setReadouts(buildIndicatorRows(candles, computed), "indicator-list");
+    setBoardError("");
+  } else {
+    setBoardError(
+      `The saved snapshot holds a series for ${chartSymbol} only. The live server draws any symbol you ask for.`
+    );
   }
+
   if (fallback) {
     setReadouts(buildFundamentalRows(fundamentalsFromFundamentals(fallback)), "fundamental-list");
     setPrice(fallback.market || fallback);
+    setBoardName(fallback.name || symbol);
+  } else {
+    setBoardName(symbol);
   }
+
   const feed = document.getElementById("board-feed-label");
   if (feed) feed.textContent = "snapshot feed";
   setBadge(false, stamp || "server snapshot");
+}
+
+/* The board's company name and any complaint about the input. A control that
+   silently does nothing is worse than one that says it cannot. */
+function setBoardName(name) {
+  const node = document.getElementById("board-name");
+  if (node) node.textContent = name;
+}
+
+function setBoardError(message) {
+  const node = document.getElementById("board-error");
+  if (!node) return;
+  node.textContent = message || "";
+  node.hidden = !message;
 }
 function fundamentalsFromFundamentals(payload) {
   const v = payload.valuation || {};
@@ -996,7 +1062,15 @@ function wireBoard() {
 
   const run = async () => {
     const symbol = (input.value || "RELIANCE").trim().toUpperCase();
+    if (!SYMBOL_LIST.includes(symbol)) {
+      // An unknown symbol used to leave the old price and the old company
+      // name on screen with no word about it.
+      setBoardError(`"${symbol}" is not on this board's NSE list. Try RELIANCE, TCS, INFY, HDFCBANK or SBIN.`);
+      setBoardName(symbol);
+      return;
+    }
     state.symbol = symbol;
+    setBoardError("");
     await refreshBoard(symbol, snapshot);
     refreshHud(snapshot);
   };
@@ -1006,40 +1080,6 @@ function wireBoard() {
     if (event.key === "Enter") { event.preventDefault(); run(); }
   });
 
-  } else {
-    // There is no score in a snapshot. A hardcoded reading would be a lie
-    // wearing a number, so the gauge says it has nothing to show.
-    hudSet("hud-score", "—");
-    hudSet("hud-score-label", "not in this snapshot");
-    const needle = document.getElementById("hud-needle");
-    if (needle) needle.style.left = "50%";
-    const fill = document.getElementById("hud-gauge-fill");
-    if (fill) { fill.style.left = "50%"; fill.style.width = "0%"; }
-    const gauge = document.getElementById("hud-gauge");
-    if (gauge) {
-      gauge.setAttribute(
-        "aria-label",
-        "No technical score in this snapshot: the score is computed by the server on a live quote, and this page is showing a saved one."
-      );
-    }
-  }
-}
-
-/* The copy around the board has to match what the board is showing. On a
-   static host the numbers are a saved server run, so "live in this tab"
-   would be the one false sentence on the page. */
-function setLiveCopy(live) {
-  const title = document.getElementById("live-title");
-  const note = document.getElementById("live-note");
-  if (title) {
-    title.textContent = live
-      ? "The same numbers, live in this tab"
-      : "The same numbers, from the last server run";
-  }
-  if (note) {
-    note.textContent = live
-      ? "These candles come from the TradeMCP server right now, and the indicators below are recomputed in your browser from the same raw series."
-      : "These candles are a saved run of the TradeMCP server, and the indicators below are recomputed in your browser from that same raw series.";
   const refresh = document.getElementById("board-refresh");
   if (refresh) refresh.addEventListener("click", run);
 
@@ -1073,44 +1113,4 @@ function setLiveCopy(live) {
 }
 
 wireBoard();
-  setLiveCopy(live);
-  if (apiIsLive === false) {
-    state.live = false;
-    paintSnapshot(symbol, snapshot, "server snapshot — live endpoint unavailable");
-    return;
-  }
-      setBoardName(fundamentals?.name || symbol);
-      setBoardError("");
-    setBoardError("");
-  } else {
-    setBoardError(
-      `The saved snapshot holds a series for ${chartSymbol} only. The live server draws any symbol you ask for.`
-    );
-
-    setBoardName(fallback.name || symbol);
-  } else {
-    setBoardName(symbol);
-
-
-/* The board's company name and any complaint about the input. A control that
-   silently does nothing is worse than one that says it cannot. */
-function setBoardName(name) {
-  const node = document.getElementById("board-name");
-  if (node) node.textContent = name;
-}
-
-function setBoardError(message) {
-  const node = document.getElementById("board-error");
-  if (!node) return;
-  node.textContent = message || "";
-  node.hidden = !message;
-}
-    if (!SYMBOL_LIST.includes(symbol)) {
-      // An unknown symbol used to leave the old price and the old company
-      // name on screen with no word about it.
-      setBoardError(`"${symbol}" is not on this board's NSE list. Try RELIANCE, TCS, INFY, HDFCBANK or SBIN.`);
-      setBoardName(symbol);
-      return;
-    }
-    setBoardError("");
 wireTapePause();

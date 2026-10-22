@@ -43,8 +43,8 @@
     <div class="tape__row" id="tape-row-a"></div>
     <div class="tape__row tape__row--reverse" id="tape-row-b"></div>
     <span class="tape__stamp" id="tape-stamp"></span>
-  </div>
     <button class="tape__pause" type="button" id="tape-pause" aria-pressed="false">Pause</button>
+  </div>
 
   <main id="main">
 
@@ -86,13 +86,13 @@
           <code class="terminal__cmd" id="hero-npx-command">npx -y @aswathas/trademcp</code>
           <button class="terminal__copy" type="button" data-copy-target="hero-npx-command" aria-label="Copy the npx install command">Copy install command</button>
         </div>
-
         <p class="terminal__note">
           <span class="terminal__flag">npm: waiting on publish</span>
           The package is written and tested, but it is not on the registry yet, so that
           command will not resolve yet. <a href="#install">Install from source</a> instead —
           same server, same tools, no key.
         </p>
+
         <div class="techs" role="group" aria-label="Cursed technique">
           <span class="techs__cap">Cursed technique</span>
           <button class="tech tech--void" type="button" id="domain-btn" aria-pressed="false">
@@ -272,8 +272,8 @@
             <span class="board__badge" id="board-badge">…</span>
             <button class="btn btn--tiny" type="button" id="board-refresh">Refresh</button>
           </div>
-
           <p class="board__error" id="board-error" role="alert" hidden></p>
+
           <div class="board__price">
             <span class="board__last" id="board-last">—</span>
             <span class="board__change" id="board-change"></span>
@@ -281,8 +281,8 @@
           </div>
 
           <div class="chart" id="chart"></div>
-          <div class="chart__legend" id="chart-legend"></div>
           <p class="sr-only" id="chart-summary"></p>
+          <div class="chart__legend" id="chart-legend"></div>
           <div class="board__range" id="board-range"></div>
 
           <div class="tracker">
@@ -566,11 +566,11 @@
         <h2 id="metrics-title">57 indicators. 54 ratios. 18 candlestick patterns.</h2>
         <p>No pandas, no numpy, no yfinance. Every indicator is computed in pure Python, and
         every ratio is derived locally from raw statement lines.</p>
-      </header>
         <p class="metrics__note">Those names are a catalogue, not a manual. Every formula, its
         parameters and a worked example are in the
         <a href="https://github.com/aswathas/TradeMCP#the-tools">tool reference</a>, and the live
         board above shows the ones that matter for the stock you are looking at.</p>
+      </header>
 
       <div class="metric-grid">
         <div class="panel metric-panel">
@@ -713,7 +713,22 @@
       <div class="install">
         <div class="panel install__code">
           <div class="install__bar">
+            <span>From source — works today</span>
+            <span class="install__bar-actions">
+              <button class="btn btn--tiny" type="button" data-copy-target="source-install" aria-label="Copy the from-source install commands">Copy</button>
+            </span>
+          </div>
+<pre class="code" id="source-install">git clone https://github.com/aswathas/TradeMCP.git
+cd TradeMCP
+python -m venv .venv
+.venv/Scripts/activate          # macOS / Linux: source .venv/bin/activate
+pip install -e .</pre>
+          <p class="install__note">Three dependencies, one of them optional. The server then runs
+          as <code>python -m trademcp</code> or as the <code>trademcp</code> command.</p>
+
+          <div class="install__bar install__bar--second">
             <span>npx</span>
+            <span class="install__flag">waiting on publish</span>
             <span class="install__bar-actions">
               <button class="btn btn--tiny" type="button" data-copy-target="npx-command" aria-label="Copy the npx install command">Copy</button>
               <button class="btn btn--tiny" type="button" id="npx-cta">Download</button>
@@ -826,22 +841,7 @@ python -m pytest tests -q</pre>
             <tr><td><code>TRADEMCP_MAX_CONCURRENCY</code></td><td>8</td><td>Parallel outbound requests</td></tr>
             <tr><td><code>TRADEMCP_ENABLE_SCREENER_IN</code></td><td>1</td><td>Set to 0 to skip Screener.in</td></tr>
           </tbody>
-            <span>From source — works today</span>
-            <span class="install__bar-actions">
-              <button class="btn btn--tiny" type="button" data-copy-target="source-install" aria-label="Copy the from-source install commands">Copy</button>
-            </span>
-          </div>
-<pre class="code" id="source-install">git clone https://github.com/aswathas/TradeMCP.git
-cd TradeMCP
-python -m venv .venv
-.venv/Scripts/activate          # macOS / Linux: source .venv/bin/activate
-pip install -e .</pre>
-          <p class="install__note">Three dependencies, one of them optional. The server then runs
-          as <code>python -m trademcp</code> or as the <code>trademcp</code> command.</p>
-
-          <div class="install__bar install__bar--second">
         </table>
-            <span class="install__flag">waiting on publish</span>
         </div>
       </div>
     </section>
@@ -852,6 +852,11 @@ pip install -e .</pre>
     <div class="panel footer__panel">
       <p class="footer__mark">TradeMCP</p>
       <p>MIT licensed. Free forever. Two dependencies: <code>mcp</code> and <code>httpx</code>.</p>
+      <p class="footer__links">
+        <a href="https://github.com/aswathas/TradeMCP">Source on GitHub</a>
+        <a href="https://github.com/aswathas/TradeMCP/issues">Report an issue</a>
+        <a href="https://github.com/aswathas/TradeMCP#the-tools">Tool reference</a>
+      </p>
       <p class="footer__fine">Market data is provided by Yahoo Finance, NSE and Screener.in and is
       for information only. It is not investment advice.</p>
     </div>
@@ -885,8 +890,3 @@ pip install -e .</pre>
 <script src="screener.js?v=39"></script>
 </body>
 </html>
-      <p class="footer__links">
-        <a href="https://github.com/aswathas/TradeMCP">Source on GitHub</a>
-        <a href="https://github.com/aswathas/TradeMCP/issues">Report an issue</a>
-        <a href="https://github.com/aswathas/TradeMCP#the-tools">Tool reference</a>
-      </p>
