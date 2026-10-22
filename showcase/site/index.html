@@ -70,7 +70,8 @@
           </g>
         </svg>
         <span class="shrine-scrim" aria-hidden="true"></span>
-        <span class="caption">FREE · NO API KEY · NO ACCOUNT</span>
+        <span class="shrine-brackets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span class="caption caption--badge">● FREE · NO API KEY · NO ACCOUNT</span>
         <h1 class="hero-title" id="hero-title">
           LIVE MARKET DATA<br>FOR YOUR AI AGENT
         </h1>
@@ -109,17 +110,6 @@
           </button>
           <button class="btn btn--dismantle" type="button" id="dismantle-btn">Dismantle</button>
         </div>
-
-        <div class="balloons">
-          <p class="balloon balloon--dev">
-            <span class="balloon__who">Developer</span>
-            Paste one config block. The agent gets the tools.
-          </p>
-          <p class="balloon balloon--trader">
-            <span class="balloon__who">Trader</span>
-            Every ratio is computed from raw statement lines, not scraped off a screen.
-          </p>
-        </div>
       </div>
 
       <div class="panel panel--hud" aria-labelledby="hud-title">
@@ -133,8 +123,10 @@
           <path d="M280 46 V84" />
           <path d="M20 84 H400" />
         </svg>
-        <span class="hud-tag" id="hud-tag"><span class="hud-dot" aria-hidden="true"></span><span id="hud-tag-text">LIVE · RELIANCE INDUSTRIES · NSE</span></span>
-        <h2 class="hud-title" id="hud-title">Live analysis panel</h2>
+        <div class="hud-head">
+          <h2 class="hud-title" id="hud-title">Live analysis panel</h2>
+          <span class="hud-tag" id="hud-tag"><span class="hud-dot" aria-hidden="true"></span><span id="hud-tag-text">LIVE · RELIANCE INDUSTRIES · NSE</span></span>
+        </div>
 
         <div class="hud-readout hud-readout--hero">
           <img class="shrine-fangs" src="assets/shrine/shrine-fang-frame.webp" alt="" aria-hidden="true" draggable="false" style="position:absolute">
@@ -220,6 +212,17 @@
         </div>
 
         <p class="hud-foot" id="hud-foot">Snapshot captured 21 Oct 2026, 03:20 IST from Yahoo Finance, NSE archives and Screener.in.</p>
+      </div>
+
+      <div class="balloons">
+        <p class="balloon balloon--dev">
+          <span class="balloon__who">Developer</span>
+          Paste one config block. The agent gets the tools.
+        </p>
+        <p class="balloon balloon--trader">
+          <span class="balloon__who">Trader</span>
+          Every ratio is computed from raw statement lines, not scraped off a screen.
+        </p>
       </div>
     </section>
 
