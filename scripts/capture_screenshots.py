@@ -36,7 +36,7 @@ FRAME = 900
 PLAN = {
     "paper": (FRAME, [("01-paper", 0)]),
     "void": (3400, [("02-infinite-void", 0), ("05-live-board-void", 1150)]),
-    "shrine": (3800, [("03-malevolent-shrine", 0), ("04-live-board-shrine", 1560), ("06-screener", 2650)]),
+    "shrine": (3800, [("03-malevolent-shrine", 0), ("04-live-board-shrine", 1406), ("06-screener", 2496)]),
 }
 
 
