@@ -11,7 +11,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Martian+Mono:wght@400;600&family=Permanent+Marker&family=Saira+Condensed:wght@600;700;800&family=Saira:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=32">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css?v=39">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -32,7 +33,7 @@
       <span class="theme-toggle__glyph" aria-hidden="true">◐</span>
       <span class="theme-toggle__text">Night</span>
     </button>
-    <div class="domain-toggle" role="group" aria-label="Cursed domain">
+    <div class="domain-toggle" role="group" aria-label="Cursed domain switcher">
       <button class="domain-toggle__btn" type="button" id="domain-void" aria-pressed="false">Void</button>
       <button class="domain-toggle__btn" type="button" id="domain-shrine" aria-pressed="false">Shrine</button>
     </div>
@@ -43,6 +44,7 @@
     <div class="tape__row tape__row--reverse" id="tape-row-b"></div>
     <span class="tape__stamp" id="tape-stamp"></span>
   </div>
+    <button class="tape__pause" type="button" id="tape-pause" aria-pressed="false">Pause</button>
 
   <main id="main">
 
@@ -82,10 +84,16 @@
         <div class="terminal">
           <span class="terminal__prompt" aria-hidden="true">&gt;</span>
           <code class="terminal__cmd" id="hero-npx-command">npx -y @aswathas/trademcp</code>
-          <button class="terminal__copy" type="button" data-copy-target="hero-npx-command">Copy MCP config</button>
+          <button class="terminal__copy" type="button" data-copy-target="hero-npx-command" aria-label="Copy the npx install command">Copy install command</button>
         </div>
 
-        <div class="techs" role="group" aria-label="Cursed domain">
+        <p class="terminal__note">
+          <span class="terminal__flag">npm: waiting on publish</span>
+          The package is written and tested, but it is not on the registry yet, so that
+          command will not resolve yet. <a href="#install">Install from source</a> instead —
+          same server, same tools, no key.
+        </p>
+        <div class="techs" role="group" aria-label="Cursed technique">
           <span class="techs__cap">Cursed technique</span>
           <button class="tech tech--void" type="button" id="domain-btn" aria-pressed="false">
             <span class="tech__sig" aria-hidden="true"></span>
@@ -127,7 +135,7 @@
         </div>
 
         <div class="hud-readout hud-readout--hero">
-          <img class="shrine-fangs" src="assets/shrine/shrine-fang-frame.webp" alt="" aria-hidden="true" draggable="false" style="position:absolute">
+          <span class="shrine-fangs" aria-hidden="true"></span>
           <span class="hud-label">Last price</span>
           <span class="hud-value hud-value--xl"><span id="hud-price">1,202.00</span><span class="hud-unit">INR</span></span>
         </div>
@@ -171,9 +179,9 @@
         <div class="hud-gauge">
           <div class="hud-gauge__head">
             <span class="hud-label hud-label--score">Technical score</span>
-            <span class="hud-value hud-value--sm"><span id="hud-score">−2.70</span> <span class="hud-tag-inline" id="hud-score-label">Neutral</span></span>
+            <span class="hud-value hud-value--sm"><span id="hud-score">—</span> <span class="hud-tag-inline" id="hud-score-label">not in this snapshot</span></span>
           </div>
-          <div class="gauge" id="hud-gauge" role="img" aria-label="Technical score minus 2.70 on a scale from minus 100 Strong Sell to plus 100 Strong Buy, landing just below neutral.">
+          <div class="gauge" id="hud-gauge" role="img" aria-label="No technical score in this snapshot: the score is computed by the server on a live quote, and this page is showing a saved one.">
             <span class="gauge__zone gauge__zone--sell"></span>
             <span class="gauge__zone gauge__zone--neutral"></span>
             <span class="gauge__zone gauge__zone--buy"></span>
@@ -247,7 +255,7 @@
           <span class="theme-note theme-note--void">Infinite convergence chart</span>
           <span class="theme-note theme-note--plain">Live chart &amp; screener filter</span>
         </p>
-        <p>These candles come from the TradeMCP server right now, and the indicators below are
+        <p id="live-note">These candles come from the TradeMCP server right now, and the indicators below are
         recomputed in your browser from the same raw series. Type any NSE symbol
         and press Enter.</p>
       </header>
@@ -265,6 +273,7 @@
             <button class="btn btn--tiny" type="button" id="board-refresh">Refresh</button>
           </div>
 
+          <p class="board__error" id="board-error" role="alert" hidden></p>
           <div class="board__price">
             <span class="board__last" id="board-last">—</span>
             <span class="board__change" id="board-change"></span>
@@ -273,6 +282,7 @@
 
           <div class="chart" id="chart"></div>
           <div class="chart__legend" id="chart-legend"></div>
+          <p class="sr-only" id="chart-summary"></p>
           <div class="board__range" id="board-range"></div>
 
           <div class="tracker">
@@ -314,13 +324,13 @@
 
       <div class="screener">
         <div class="panel screener__controls">
-          <div class="presets" role="tablist" aria-label="Screener presets">
-            <button type="button" class="preset is-active" data-preset="all" role="tab" aria-selected="true">All 50</button>
-            <button type="button" class="preset" data-preset="quality" role="tab" aria-selected="false">Quality</button>
-            <button type="button" class="preset" data-preset="value" role="tab" aria-selected="false">Value</button>
-            <button type="button" class="preset" data-preset="dividend" role="tab" aria-selected="false">Dividend</button>
-            <button type="button" class="preset" data-preset="growth" role="tab" aria-selected="false">Growth</button>
-            <button type="button" class="preset" data-preset="momentum" role="tab" aria-selected="false">Momentum</button>
+          <div class="presets" role="group" aria-label="Screener presets">
+            <button type="button" class="preset is-active" data-preset="all" aria-pressed="true">All 50</button>
+            <button type="button" class="preset" data-preset="quality" aria-pressed="false">Quality</button>
+            <button type="button" class="preset" data-preset="value" aria-pressed="false">Value</button>
+            <button type="button" class="preset" data-preset="dividend" aria-pressed="false">Dividend</button>
+            <button type="button" class="preset" data-preset="growth" aria-pressed="false">Growth</button>
+            <button type="button" class="preset" data-preset="momentum" aria-pressed="false">Momentum</button>
           </div>
 
           <label class="field">
@@ -557,6 +567,10 @@
         <p>No pandas, no numpy, no yfinance. Every indicator is computed in pure Python, and
         every ratio is derived locally from raw statement lines.</p>
       </header>
+        <p class="metrics__note">Those names are a catalogue, not a manual. Every formula, its
+        parameters and a worked example are in the
+        <a href="https://github.com/aswathas/TradeMCP#the-tools">tool reference</a>, and the live
+        board above shows the ones that matter for the stock you are looking at.</p>
 
       <div class="metric-grid">
         <div class="panel metric-panel">
@@ -691,9 +705,9 @@
     <section class="section section--install" id="install" aria-labelledby="install-title">
       <header class="section__head">
         <span class="caption">INSTALL</span>
-        <h2 id="install-title">One command, then restart your client</h2>
-        <p>One command installs the server and hands it to your client. No key, no signup, no
-        dashboard.</p>
+        <h2 id="install-title">Install it, then restart your client</h2>
+        <p>The npm package is waiting on a publish, so the source path below is what works
+        today. Same server, same fourteen tools, no key, no signup, no dashboard.</p>
       </header>
 
       <div class="install">
@@ -701,7 +715,7 @@
           <div class="install__bar">
             <span>npx</span>
             <span class="install__bar-actions">
-              <button class="btn btn--tiny" type="button" data-copy-target="npx-command">Copy</button>
+              <button class="btn btn--tiny" type="button" data-copy-target="npx-command" aria-label="Copy the npx install command">Copy</button>
               <button class="btn btn--tiny" type="button" id="npx-cta">Download</button>
             </span>
           </div>
@@ -713,7 +727,7 @@
 
           <div class="install__bar install__bar--second">
             <span>Global install</span>
-            <button class="btn btn--tiny" type="button" data-copy-target="global-install">Copy</button>
+            <button class="btn btn--tiny" type="button" data-copy-target="global-install" aria-label="Copy the npm global install command">Copy</button>
           </div>
 <pre class="code" id="global-install">npm i -g @aswathas/trademcp</pre>
           <p class="install__note">If your MCP client has a short start-up timeout, install the
@@ -723,7 +737,7 @@
 
           <div class="install__bar install__bar--second">
             <span>claude_desktop_config.json</span>
-            <button class="btn btn--tiny" type="button" data-copy-target="mcp-config">Copy</button>
+            <button class="btn btn--tiny" type="button" data-copy-target="mcp-config" aria-label="Copy the MCP client config for npx">Copy</button>
           </div>
 <pre class="code" id="mcp-config">{
   "mcpServers": {
@@ -738,7 +752,7 @@
 
           <div class="install__bar install__bar--second">
             <span>Manual setup</span>
-            <button class="btn btn--tiny" type="button" data-copy-target="mcp-config-manual">Copy</button>
+            <button class="btn btn--tiny" type="button" data-copy-target="mcp-config-manual" aria-label="Copy the MCP client config for a manual Python install">Copy</button>
           </div>
 <pre class="code" id="mcp-config-manual">{
   "mcpServers": {
@@ -812,7 +826,22 @@ python -m pytest tests -q</pre>
             <tr><td><code>TRADEMCP_MAX_CONCURRENCY</code></td><td>8</td><td>Parallel outbound requests</td></tr>
             <tr><td><code>TRADEMCP_ENABLE_SCREENER_IN</code></td><td>1</td><td>Set to 0 to skip Screener.in</td></tr>
           </tbody>
+            <span>From source — works today</span>
+            <span class="install__bar-actions">
+              <button class="btn btn--tiny" type="button" data-copy-target="source-install" aria-label="Copy the from-source install commands">Copy</button>
+            </span>
+          </div>
+<pre class="code" id="source-install">git clone https://github.com/aswathas/TradeMCP.git
+cd TradeMCP
+python -m venv .venv
+.venv/Scripts/activate          # macOS / Linux: source .venv/bin/activate
+pip install -e .</pre>
+          <p class="install__note">Three dependencies, one of them optional. The server then runs
+          as <code>python -m trademcp</code> or as the <code>trademcp</code> command.</p>
+
+          <div class="install__bar install__bar--second">
         </table>
+            <span class="install__flag">waiting on publish</span>
         </div>
       </div>
     </section>
@@ -851,8 +880,13 @@ python -m pytest tests -q</pre>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="app.js?v=30"></script>
-<script src="live.js?v=30"></script>
-<script src="screener.js?v=30"></script>
+<script src="app.js?v=39"></script>
+<script src="live.js?v=39"></script>
+<script src="screener.js?v=39"></script>
 </body>
 </html>
+      <p class="footer__links">
+        <a href="https://github.com/aswathas/TradeMCP">Source on GitHub</a>
+        <a href="https://github.com/aswathas/TradeMCP/issues">Report an issue</a>
+        <a href="https://github.com/aswathas/TradeMCP#the-tools">Tool reference</a>
+      </p>

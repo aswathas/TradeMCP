@@ -35,13 +35,23 @@ const state = {
 
 /* ---------- fetch helpers ------------------------------------------------ */
 
+/* null = not probed yet, true = the API answered, false = this host has no
+   API at all. GitHub Pages serves static files, so every /api/* request
+   there comes back as a 5.5 KB HTML 404 page. Once we have seen one, we
+   stop asking: six failing requests a cycle is six 404 pages a cycle. */
+let apiIsLive = null;
+
 async function getJSON(path, timeoutMs = 20000) {
   const url = path.startsWith("http") ? path : `${API}/${path}`;
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
     const res = await fetch(url, { signal: controller.signal });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    if (!res.ok) {
+      if (res.status === 404 && !path.startsWith("http")) apiIsLive = false;
+      throw new Error(`HTTP ${res.status}`);
+    }
+    apiIsLive = true;
     return await res.json();
   } finally {
     clearTimeout(timer);
@@ -243,14 +253,20 @@ function crore(v, digits = 2) {
 function toCandles(payload) {
   const candles = payload?.candles || [];
   return {
-    rows: candles.map((c) => ({
-      date: c.date,
-      open: c.open ?? c.close,
-      high: c.high ?? c.close,
-      low: c.low ?? c.close,
-      close: c.close,
-      volume: c.volume || 0,
-    })),
+    rows: candles
+      .map((c) => ({
+        date: c.date,
+        open: c.open ?? c.close,
+        high: c.high ?? c.close,
+        low: c.low ?? c.close,
+        close: c.close,
+        volume: c.volume || 0,
+      }))
+      // Oldest first, always. The upstream stores the series newest first,
+      // and a chart that runs right-to-left reads as a rising market when the
+      // stock actually fell - and every indicator computed on it is then the
+      // reading from three months ago.
+      .sort((a, b) => String(a.date).localeCompare(String(b.date))),
     meta: payload || {},
   };
 }
@@ -553,11 +569,13 @@ function paintTape(rows, rowId, reverse) {
 
 async function refreshTape(snapshotTape) {
   let rows = null;
-  try {
-    const payload = await getJSON("tape", 20000);
-    if (Array.isArray(payload) && payload.length) rows = payload;
-  } catch {
-    rows = null;
+  if (apiIsLive !== false) {
+    try {
+      const payload = await getJSON("tape", 20000);
+      if (Array.isArray(payload) && payload.length) rows = payload;
+    } catch {
+      rows = null;
+    }
   }
   if (!rows) rows = snapshotTape || [];
   if (!rows.length) return;
@@ -609,6 +627,23 @@ function rollNumber(node, text) {
     span.textContent = text[i];
     if (prev[i] && prev[i] !== text[i]) span.classList.add("digit--changed");
     frag.appendChild(span);
+  /* A chart is a picture. The sentence behind it has to exist somewhere a
+     screen reader can reach, or the only way to read this series is to see
+     it - which is exactly the thing PRODUCT.md says must not happen. */
+  const summary = document.getElementById("chart-summary");
+  if (summary) {
+    const first = candles[0];
+    const last = candles[candles.length - 1];
+    const low = Math.min(...closes);
+    const high = Math.max(...closes);
+    const change = ((last.close - first.close) / first.close) * 100;
+    const direction = change > 0.05 ? "rose" : change < -0.05 ? "fell" : "was flat";
+    summary.textContent =
+      `${state.symbol} daily closes from ${first.date} to ${last.date}, ${candles.length} sessions. ` +
+      `The first close was ${nf(first.close, 2)} and the last was ${nf(last.close, 2)}, so over that window it ${direction} ` +
+      `${nf(Math.abs(change), 2)} percent. The lowest close was ${nf(low, 2)} and the highest was ${nf(high, 2)}.`;
+  }
+
   }
   node.appendChild(frag);
 }
@@ -733,6 +768,20 @@ function paintHud(quote, fundamentals, score, rsi, live) {
       hudSet("hud-netdebt", `net debt ₹${crore(l.net_debt, 0)} Cr`);
     }
     if (v.dividend_yield_pct !== undefined) hudSet("hud-dy", nf(v.dividend_yield_pct, 2));
+/* The ticker runs on its own, so it has to be stoppable on its own terms.
+   A pause button in the tape, and the tape stops when it holds focus. */
+function wireTapePause() {
+  const tape = document.querySelector(".tape");
+  const button = document.getElementById("tape-pause");
+  if (!tape || !button) return;
+  button.addEventListener("click", () => {
+    const paused = button.getAttribute("aria-pressed") !== "true";
+    button.setAttribute("aria-pressed", String(paused));
+    tape.classList.toggle("is-paused", paused);
+    button.textContent = paused ? "Play" : "Pause";
+  });
+}
+
     if (q.current_ratio !== undefined && q.current_ratio !== null) {
       hudSet("hud-cr", `current ratio ${nf(q.current_ratio, 2)}`);
     }
@@ -807,16 +856,18 @@ async function refreshHud(snapshot) {
   let fundamentals = null;
   let live = false;
 
-  try {
-    const [q, f] = await Promise.all([
-      getJSON(`quote?symbol=${encodeURIComponent(symbol)}`, 20000),
-      getJSON(fundamentalsPath(symbol), 20000),
-    ]);
-    quote = q;
-    fundamentals = f;
-    live = true;
-  } catch {
-    live = false;
+  if (apiIsLive !== false) {
+    try {
+      const [q, f] = await Promise.all([
+        getJSON(`quote?symbol=${encodeURIComponent(symbol)}`, 20000),
+        getJSON(fundamentalsPath(symbol), 20000),
+      ]);
+      quote = q;
+      fundamentals = f;
+      live = true;
+    } catch {
+      live = false;
+    }
   }
 
   if (!live) {
@@ -846,7 +897,7 @@ async function refreshHud(snapshot) {
     const stamp = new Date().toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" });
     foot.textContent = live
       ? `Live from the TradeMCP server at ${stamp} — Yahoo Finance, NSE archives and Screener.in.`
-      : `Server snapshot from Yahoo Finance, NSE archives and Screener.in — refreshed ${snapshotAge(snapshot?.generated_at)}. This host has no live endpoint, so the page updates every 30 minutes.`;
+      : `Server snapshot from Yahoo Finance, NSE archives and Screener.in — refreshed ${snapshotAge(snapshot?.generated_at)}. This host has no live endpoint, so what you see is the last server run, not a live feed.`;
   }
 }
 
@@ -887,7 +938,15 @@ async function refreshBoard(symbol, snapshot) {
    everything the live path paints, so the deployed page is the same page. */
 function paintSnapshot(symbol, snapshot, stamp) {
   const fallback = snapshot?.fundamentals?.[symbol];
-  const candles = snapshot?.candles || [];
+  /* The snapshot carries one series, for one symbol. Drawing it under
+     another company's name is how the page ended up showing TCS's price on
+     Reliance's chart. */
+  const chartSymbol = snapshot?.chart_symbol || "RELIANCE";
+  const hasSeries = chartSymbol === symbol && Array.isArray(snapshot?.candles);
+  const candles = hasSeries
+    ? snapshot.candles.slice().sort((a, b) => String(a.date).localeCompare(String(b.date)))
+    : [];
+
   if (candles.length) {
     const computed = renderChart(candles);
     state.computed = computed;
@@ -947,6 +1006,40 @@ function wireBoard() {
     if (event.key === "Enter") { event.preventDefault(); run(); }
   });
 
+  } else {
+    // There is no score in a snapshot. A hardcoded reading would be a lie
+    // wearing a number, so the gauge says it has nothing to show.
+    hudSet("hud-score", "—");
+    hudSet("hud-score-label", "not in this snapshot");
+    const needle = document.getElementById("hud-needle");
+    if (needle) needle.style.left = "50%";
+    const fill = document.getElementById("hud-gauge-fill");
+    if (fill) { fill.style.left = "50%"; fill.style.width = "0%"; }
+    const gauge = document.getElementById("hud-gauge");
+    if (gauge) {
+      gauge.setAttribute(
+        "aria-label",
+        "No technical score in this snapshot: the score is computed by the server on a live quote, and this page is showing a saved one."
+      );
+    }
+  }
+}
+
+/* The copy around the board has to match what the board is showing. On a
+   static host the numbers are a saved server run, so "live in this tab"
+   would be the one false sentence on the page. */
+function setLiveCopy(live) {
+  const title = document.getElementById("live-title");
+  const note = document.getElementById("live-note");
+  if (title) {
+    title.textContent = live
+      ? "The same numbers, live in this tab"
+      : "The same numbers, from the last server run";
+  }
+  if (note) {
+    note.textContent = live
+      ? "These candles come from the TradeMCP server right now, and the indicators below are recomputed in your browser from the same raw series."
+      : "These candles are a saved run of the TradeMCP server, and the indicators below are recomputed in your browser from that same raw series.";
   const refresh = document.getElementById("board-refresh");
   if (refresh) refresh.addEventListener("click", run);
 
@@ -961,7 +1054,13 @@ function wireBoard() {
       return refreshTape(data.tape || []);
     })
     .catch(() => refreshTape([]))
-    .finally(() => refreshHud(snapshot));
+    .finally(() => {
+      // The first run started before the snapshot had arrived, so the HUD
+      // painted from nothing. Paint it again from the snapshot - but only
+      // when the host has no live endpoint, or the API is asked twice for
+      // every number it already gave us.
+      if (!state.live) refreshHud(snapshot);
+    });
 
   // The board runs immediately; the tape is a background extra and must never
   // hold up the headline numbers.
@@ -974,3 +1073,44 @@ function wireBoard() {
 }
 
 wireBoard();
+  setLiveCopy(live);
+  if (apiIsLive === false) {
+    state.live = false;
+    paintSnapshot(symbol, snapshot, "server snapshot — live endpoint unavailable");
+    return;
+  }
+      setBoardName(fundamentals?.name || symbol);
+      setBoardError("");
+    setBoardError("");
+  } else {
+    setBoardError(
+      `The saved snapshot holds a series for ${chartSymbol} only. The live server draws any symbol you ask for.`
+    );
+
+    setBoardName(fallback.name || symbol);
+  } else {
+    setBoardName(symbol);
+
+
+/* The board's company name and any complaint about the input. A control that
+   silently does nothing is worse than one that says it cannot. */
+function setBoardName(name) {
+  const node = document.getElementById("board-name");
+  if (node) node.textContent = name;
+}
+
+function setBoardError(message) {
+  const node = document.getElementById("board-error");
+  if (!node) return;
+  node.textContent = message || "";
+  node.hidden = !message;
+}
+    if (!SYMBOL_LIST.includes(symbol)) {
+      // An unknown symbol used to leave the old price and the old company
+      // name on screen with no word about it.
+      setBoardError(`"${symbol}" is not on this board's NSE list. Try RELIANCE, TCS, INFY, HDFCBANK or SBIN.`);
+      setBoardName(symbol);
+      return;
+    }
+    setBoardError("");
+wireTapePause();

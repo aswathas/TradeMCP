@@ -397,22 +397,48 @@ function wireTilt() {
     ".panel--metrics, .metric-panel, .tool, .step, .source, .sc-table"
   );
   const MAX = 3.5;
+  /* One media query, read once, not on every pointermove. */
+  const still = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  const reset = (card) => {
+    card.classList.remove("tilt");
+    card.style.setProperty("--tilt-y", "0deg");
+    card.style.setProperty("--tilt-x", "0deg");
+  };
 
   cards.forEach((card) => {
-    card.addEventListener("pointermove", (event) => {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    /* The rect read is a forced layout, and pointermove fires sixty times a
+       second across forty cards. Reading it inside a rAF, once per frame,
+       is the same trick wireDolly already uses. */
+    let queued = false;
+    let px = 0;
+    let py = 0;
+
+    const apply = () => {
+      queued = false;
+      if (still.matches) return;
       const rect = card.getBoundingClientRect();
-      const x = (event.clientX - rect.left) / rect.width - 0.5;
-      const y = (event.clientY - rect.top) / rect.height - 0.5;
+      const x = (px - rect.left) / rect.width - 0.5;
+      const y = (py - rect.top) / rect.height - 0.5;
       card.classList.add("tilt");
       card.style.setProperty("--tilt-y", `${(x * MAX).toFixed(2)}deg`);
       card.style.setProperty("--tilt-x", `${(-y * MAX).toFixed(2)}deg`);
+    };
+
+    card.addEventListener("pointermove", (event) => {
+      if (still.matches) return;
+      px = event.clientX;
+      py = event.clientY;
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(apply);
     });
-    card.addEventListener("pointerleave", () => {
-      card.classList.remove("tilt");
-      card.style.setProperty("--tilt-y", "0deg");
-      card.style.setProperty("--tilt-x", "0deg");
-    });
+
+    /* A touch gesture that becomes a scroll cancels the pointer, and the
+       card would keep the skew it had when the finger lifted. */
+    card.addEventListener("pointerleave", () => reset(card));
+    card.addEventListener("pointercancel", () => reset(card));
+    card.addEventListener("pointerup", () => reset(card));
   });
 }
 

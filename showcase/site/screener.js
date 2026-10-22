@@ -142,7 +142,11 @@ function renderTable(rows) {
     tr.dataset.symbol = row.symbol;
 
     const cells = [];
-    cells.push(`<td class="sc-sym"><b>${row.symbol}</b><span>${row.name || ""}</span></td>`);
+    /* The symbol is a button, not just a label: clicking a row loads it, and
+       a keyboard has to be able to do the same thing. */
+    cells.push(
+      `<td class="sc-sym"><b><button type="button" class="sc-load" data-symbol="${row.symbol}">${row.symbol}</button></b><span>${row.name || ""}</span></td>`
+    );
     cells.push(`<td class="num">${nf(row.price, 2)}</td>`);
     const chg = num(row.change_pct);
     cells.push(`<td class="num ${chg === null ? "" : chg >= 0 ? "is-up" : "is-down"}">${chg === null ? "—" : `${chg >= 0 ? "▲" : "▼"} ${nf(Math.abs(chg), 2)}`}</td>`);
@@ -173,8 +177,19 @@ function renderHeader() {
     th.scope = "col";
     const active = screenerSort.key === col.key;
     th.className = `${col.type === "num" ? "num " : ""}${active ? "is-sorted" : ""}`;
-    th.innerHTML = `${col.label}${active ? `<i aria-hidden="true">${screenerSort.dir === "desc" ? "▼" : "▲"}</i>` : ""}`;
-    th.addEventListener("click", () => {
+    /* A sort control that only answers a mouse is not a control. The button
+       gives it a name, a focus ring and Enter/Space for free. */
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "sc-sort";
+    button.textContent = col.label;
+    if (active) {
+      const arrow = document.createElement("i");
+      arrow.setAttribute("aria-hidden", "true");
+      arrow.textContent = screenerSort.dir === "desc" ? "▼" : "▲";
+      button.appendChild(arrow);
+    }
+    button.addEventListener("click", () => {
       if (screenerSort.key === col.key) {
         screenerSort.dir = screenerSort.dir === "desc" ? "asc" : "desc";
       } else {
@@ -183,13 +198,23 @@ function renderHeader() {
       }
       render();
     });
+    th.appendChild(button);
+    /* aria-sort belongs on the header cell, and it says which column is
+       sorted and in which direction - or that none is. */
+    if (active) {
+      th.setAttribute("aria-sort", screenerSort.dir === "desc" ? "descending" : "ascending");
+    } else {
+      th.setAttribute("aria-sort", "none");
+    }
     head.appendChild(th);
   }
 }
 
 function buildToolCall() {
   const f = screenerFilters;
-  const args = { universe: "NIFTY 50", limit: 20 };
+  /* The table shows every row that passes; the call has to ask for the same
+     number, or the panel prints a command that returns less than it shows. */
+  const args = { universe: "NIFTY 50", limit: screenerRows.length || 50 };
   if (f.maxPe !== DEFAULT_FILTERS.maxPe) args.max_pe = f.maxPe;
   if (f.minRoe !== DEFAULT_FILTERS.minRoe) args.min_roe = f.minRoe;
   if (f.minRoce !== DEFAULT_FILTERS.minRoce) args.min_roce = f.minRoce;
@@ -277,7 +302,7 @@ function wire() {
       screenerFilters = { ...DEFAULT_FILTERS, ...preset.filters, search: search ? search.value : "" };
       document.querySelectorAll("[data-preset]").forEach((other) => {
         other.classList.toggle("is-active", other === button);
-        other.setAttribute("aria-selected", String(other === button));
+        other.setAttribute("aria-pressed", String(other === button));
       });
       syncControls();
       render();
@@ -295,16 +320,24 @@ function wire() {
   }
 
   // Clicking a row loads that symbol into the live board.
-  document.getElementById("sc-body")?.addEventListener("click", (event) => {
-    const row = event.target.closest("tr");
-    if (!row) return;
-    const symbol = row.dataset.symbol;
+  const loadSymbol = (symbol) => {
     const input = document.getElementById("symbol-input");
-    if (input) {
-      input.value = symbol;
-      input.dispatchEvent(new Event("change"));
-      document.getElementById("live")?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    if (!input) return;
+    input.value = symbol;
+    input.dispatchEvent(new Event("change"));
+    /* A smooth scroll is an animation the visitor did not ask for, and the
+       OS preference has to win over the page's taste. */
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    document.getElementById("live")?.scrollIntoView({
+      behavior: reduced ? "auto" : "smooth",
+      block: "start",
+    });
+  };
+
+  document.getElementById("sc-body")?.addEventListener("click", (event) => {
+    const symbol = event.target.closest("[data-symbol]")?.dataset?.symbol;
+    if (!symbol) return;
+    loadSymbol(symbol);
   });
 }
 
