@@ -775,6 +775,19 @@ function paintHud(quote, fundamentals, score, rsi, live) {
   }
 }
 
+/* How old the bundled snapshot is. A static host has no live endpoint, so
+   the page says how fresh the data actually is rather than apologising. */
+function snapshotAge(generatedAt) {
+  const t = Date.parse(generatedAt || "");
+  if (Number.isNaN(t)) return "recently";
+  const mins = Math.max(0, Math.round((Date.now() - t) / 60000));
+  if (mins < 2) return "just now";
+  if (mins < 60) return `${mins} min ago`;
+  const hrs = Math.round(mins / 60);
+  if (hrs < 24) return `${hrs} hr ago`;
+  return `${Math.round(hrs / 24)} d ago`;
+}
+
 async function refreshHud(snapshot) {
   const symbol = "RELIANCE";
   let quote = null;
@@ -820,7 +833,7 @@ async function refreshHud(snapshot) {
     const stamp = new Date().toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" });
     foot.textContent = live
       ? `Live from the TradeMCP server at ${stamp} — Yahoo Finance, NSE archives and Screener.in.`
-      : "Server snapshot from Yahoo Finance, NSE archives and Screener.in — this host has no live endpoint.";
+      : `Server snapshot from Yahoo Finance, NSE archives and Screener.in — refreshed ${snapshotAge(snapshot?.generated_at)}. This host has no live endpoint, so the page updates every 30 minutes.`;
   }
 }
 

@@ -13,6 +13,7 @@ import asyncio
 import json
 import logging
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -81,7 +82,7 @@ async def main() -> int:
             print(f"  skip fundamentals {symbol}: {exc}", file=sys.stderr)
 
     snapshot = {
-        "generated_at": "live",
+        "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "source": "TradeMCP server tools (Yahoo Finance, NSE archives, Screener.in)",
         "chart_symbol": CHART_SYMBOL,
         "tape": tape,

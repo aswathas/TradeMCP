@@ -13,6 +13,7 @@ import asyncio
 import json
 import logging
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 logging.basicConfig(level=logging.WARNING, stream=sys.stderr)
@@ -103,7 +104,7 @@ async def main() -> int:
 
     out = {
         "universe": "NIFTY 50",
-        "generated_at": "live",
+        "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "source": "trademcp_screen_stocks via the TradeMCP server",
         "fields": FIELDS,
         "rows": rows,
