@@ -3034,23 +3034,24 @@ html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
 /* One roof, over both boxes, edge to edge. It breaks out of the page gutter
    the way a temple roof runs past the wall it sits on: the grid area is
    centred on the viewport, so half the area less half the viewport slides
-   the eave out to both screen edges. The band is short - the roof is scenery
-   over the boxes, not the subject - and the crop keeps the ridge, the horned
-   crest and the upswept tips.
-   The roof is also kept behind the boxes by plain stacking order - it is
-   scenery over the wall, never over the content - so a panel can never slide
-   under the tiles. */
+   the eave out to both screen edges.
+
+   The plate itself is a flat band - the whole shrine, ridge and crest and
+   both end skulls, pressed down rather than cropped - so the page shows it
+   complete and only 162px tall at 1440. The roof is also kept behind the
+   boxes by plain stacking order - it is scenery over the wall, never over
+   the content - so a panel can never slide under the tiles. */
 [data-theme="shrine"] .shrine-roof--splash {
   grid-column: 1 / -1;
   justify-self: start;
   width: 100vw;
   max-width: none;
-  height: clamp(124px, 13.6vw, 196px);
+  height: auto;
   max-height: none;
-  margin: 0 0 -12px;
+  margin: 0 0 -8px;
   margin-left: calc(50% - 50vw);
-  object-fit: cover;
-  object-position: 50% 18%;
+  object-fit: contain;
+  object-position: 50% 50%;
   z-index: 0;
   pointer-events: none;
   user-select: none;
@@ -3062,7 +3063,7 @@ html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
 
 /* both boxes keep their content clear of the eave, and sit in front of it */
 [data-theme="shrine"] .panel--hero,
-[data-theme="shrine"] .panel--hud { padding-top: 30px; }
+[data-theme="shrine"] .panel--hud { padding-top: 24px; }
 [data-theme="shrine"] .panel--hero,
 [data-theme="shrine"] .panel--hud { position: relative; z-index: 1; }
 

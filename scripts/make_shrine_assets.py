@@ -8,7 +8,7 @@ Run from the repository root::
 Outputs (into ``showcase/site/assets/shrine/``)::
 
     shrine-fang-frame.png   demon fang/jaw frame, white studio background keyed out
-    shrine-roof-banner.png  Japanese shrine roof + demon skulls, black studio background keyed out
+    shrine-roof-banner.webp Japanese shrine roof + demon skulls, flattened to a band
     slash-divider.png       red slash divider            (source already has alpha)
     seal-badge.png          spiky sun/seal badge          (source already has alpha)
     corner-bracket.png      red corner bracket + triangle (source already has alpha)
@@ -59,6 +59,13 @@ OUT_DIR = ROOT / "showcase" / "site" / "assets" / "shrine"
 MAX_SIDE = 1600
 MAX_BYTES = 400 * 1024
 WEBP_QUALITY = 88
+
+# The roof is published as a flat band. Full bleed, the tall banner is a
+# quarter of the page; the reference draws the same shrine flattened, so the
+# plate is resampled down to this height instead of being cropped. The ridge,
+# the horned crest and both end skulls all survive - the shrine simply sits
+# lower on the page.
+ROOF_BAND_H = 180
 
 # Impossible in the greyscale copy used for flood filling, so "was this pixel
 # filled?" can be answered exactly.
@@ -293,6 +300,34 @@ def verify(path: Path) -> dict:
 # --------------------------------------------------------------------------- #
 # plate processing
 # --------------------------------------------------------------------------- #
+def publish_flattened(master: Path, stem: str, height: int) -> Path:
+    """Publish a vertically compressed copy of a master plate.
+
+    The master keeps the artwork at its own proportions in the repo; the file
+    the page loads is the same picture pressed down into a band. Nothing is
+    cropped - the whole shrine survives, only shorter.
+    """
+    with Image.open(master) as im:
+        rgba = im.convert("RGBA")
+        flat = rgba.resize((rgba.width, height), Image.LANCZOS)
+
+    buf = io.BytesIO()
+    flat.save(buf, "WEBP", quality=WEBP_QUALITY, method=6)
+    site = OUT_DIR / f"{stem}.webp"
+    site.write_bytes(buf.getvalue())
+
+    # The uncompressed copy the first pass wrote would be a dead request.
+    stale = OUT_DIR / f"{stem}.png"
+    if stale.exists():
+        stale.unlink()
+
+    print(
+        f"{stem + ' (flat)':24s} {site.stat().st_size:>8d} B  "
+        f"{flat.size[0]}x{flat.size[1]} px  [webp, squashed from {rgba.size[1]}px]"
+    )
+    return site
+
+
 def process_plate(
     source: str,
     stem: str,
@@ -393,6 +428,9 @@ def main() -> None:
         band_px=3,
         min_blob_area=1000,
     )
+    # The roof is the one plate the page shows whole and full bleed, so it is
+    # published as a flat band rather than cropped to a short box.
+    publish_flattened(MASTER_DIR / "shrine-roof-banner.png", "shrine-roof-banner", ROOF_BAND_H)
     print("-" * 62)
     process_plain("Code_Generated_Image (2).png", "slash-divider")
     process_plain("Code_Generated_Image (1).png", "seal-badge")
