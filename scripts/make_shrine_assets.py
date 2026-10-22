@@ -8,11 +8,14 @@ Run from the repository root::
 Outputs (into ``showcase/site/assets/shrine/``)::
 
     shrine-fang-frame.png   demon fang/jaw frame, white studio background keyed out
-    shrine-roof-banner.webp Japanese shrine roof + demon skulls, flattened to a band
     slash-divider.png       red slash divider            (source already has alpha)
     seal-badge.png          spiky sun/seal badge          (source already has alpha)
     corner-bracket.png      red corner bracket + triangle (source already has alpha)
     panel-frame.png         orange/red panel frame        (source already has alpha)
+
+The shrine roof is no longer on the page. Its master is still rebuilt, into
+``showcase/sources/shrine/shrine-roof-banner.png``, but nothing is published
+for it - putting it back is one ``publish=True`` away.
 
 Background-removal method (the two large plates)
 -------------------------------------------------
@@ -59,13 +62,6 @@ OUT_DIR = ROOT / "showcase" / "site" / "assets" / "shrine"
 MAX_SIDE = 1600
 MAX_BYTES = 400 * 1024
 WEBP_QUALITY = 88
-
-# The roof is published as a flat band. Full bleed, the tall banner is a
-# quarter of the page; the reference draws the same shrine flattened, so the
-# plate is resampled down to this height instead of being cropped. The ridge,
-# the horned crest and both end skulls all survive - the shrine simply sits
-# lower on the page.
-ROOF_BAND_H = 180
 
 # Impossible in the greyscale copy used for flood filling, so "was this pixel
 # filled?" can be answered exactly.
@@ -250,12 +246,16 @@ def flatten_transparent_rgb(rgba: Image.Image, color: tuple[int, int, int]) -> I
     return Image.merge("RGBA", (*flat.split(), a))
 
 
-def save_asset(img: Image.Image, stem: str) -> dict:
+def save_asset(img: Image.Image, stem: str, publish: bool = True) -> dict:
     """Write the lossless master and the file the page actually loads.
 
     The master PNG lands in showcase/sources/shrine so the art survives in the
     repo without the published site carrying megabytes of files no page ever
     requests. The site copy is whichever of WebP and PNG is smaller.
+
+    ``publish=False`` writes the master only. A plate the page no longer shows
+    keeps its art in the repo - restoring it is one line - and stops costing
+    the site a download.
 
     The PNG is always a real PNG: serving WebP bytes under a .png name makes
     the server send the wrong Content-Type and the file is a lie.
@@ -266,6 +266,9 @@ def save_asset(img: Image.Image, stem: str) -> dict:
     master = MASTER_DIR / f"{stem}.png"
     img.save(master, "PNG", optimize=True)
     size = master.stat().st_size
+
+    if not publish:
+        return {"bytes": size, "note": "master only", "master": master, "site": None}
 
     buf = io.BytesIO()
     img.save(buf, "WEBP", quality=WEBP_QUALITY, method=6)
@@ -300,34 +303,6 @@ def verify(path: Path) -> dict:
 # --------------------------------------------------------------------------- #
 # plate processing
 # --------------------------------------------------------------------------- #
-def publish_flattened(master: Path, stem: str, height: int) -> Path:
-    """Publish a vertically compressed copy of a master plate.
-
-    The master keeps the artwork at its own proportions in the repo; the file
-    the page loads is the same picture pressed down into a band. Nothing is
-    cropped - the whole shrine survives, only shorter.
-    """
-    with Image.open(master) as im:
-        rgba = im.convert("RGBA")
-        flat = rgba.resize((rgba.width, height), Image.LANCZOS)
-
-    buf = io.BytesIO()
-    flat.save(buf, "WEBP", quality=WEBP_QUALITY, method=6)
-    site = OUT_DIR / f"{stem}.webp"
-    site.write_bytes(buf.getvalue())
-
-    # The uncompressed copy the first pass wrote would be a dead request.
-    stale = OUT_DIR / f"{stem}.png"
-    if stale.exists():
-        stale.unlink()
-
-    print(
-        f"{stem + ' (flat)':24s} {site.stat().st_size:>8d} B  "
-        f"{flat.size[0]}x{flat.size[1]} px  [webp, squashed from {rgba.size[1]}px]"
-    )
-    return site
-
-
 def process_plate(
     source: str,
     stem: str,
@@ -339,13 +314,16 @@ def process_plate(
     flat_rgb: tuple[int, int, int],
     band_px: int = 0,
     min_blob_area: int = 0,
-) -> Path:
+    publish: bool = True,
+) -> Path | None:
     """Key out a studio background and write a transparent PNG.
 
     ``band_px`` > 0 feathers only a thin fringe around the flood-filled core
     (used for the black plate, whose artwork contains large near-black areas);
     ``band_px`` == 0 feathers the whole background-connected pale region (used
     for the white plate, whose glow is a broad but shallow halo).
+
+    ``publish=False`` keeps the master in the repo and writes no site copy.
     """
     src_path = SRC_DIR / source
     img = Image.open(src_path).convert("RGB")
@@ -367,7 +345,7 @@ def process_plate(
     rgba = trim_to_content(rgba)
     small = downscale(rgba)
     small = flatten_transparent_rgb(small, flat_rgb)
-    meta = save_asset(small, stem)
+    meta = save_asset(small, stem, publish=publish)
     print(
         f"{stem:24s} {meta['bytes']:>8d} B  {small.size[0]}x{small.size[1]} px"
         + (f"  [{meta['note']}]" if meta["note"] else "")
@@ -416,6 +394,8 @@ def main() -> None:
     # Black plate: near-black is transparent, but the roof artwork contains
     # near-black shadowed tiles, so only what is connected to the image border
     # is treated as background and the feather is limited to a thin fringe.
+    # The roof was taken off the page, so only the master is written - the art
+    # stays in the repo and the site stops serving a file nobody loads.
     process_plate(
         SOURCE_ROOF,
         "shrine-roof-banner",
@@ -427,10 +407,8 @@ def main() -> None:
         flat_rgb=(0, 0, 0),
         band_px=3,
         min_blob_area=1000,
+        publish=False,
     )
-    # The roof is the one plate the page shows whole and full bleed, so it is
-    # published as a flat band rather than cropped to a short box.
-    publish_flattened(MASTER_DIR / "shrine-roof-banner.png", "shrine-roof-banner", ROOF_BAND_H)
     print("-" * 62)
     process_plain("Code_Generated_Image (2).png", "slash-divider")
     process_plain("Code_Generated_Image (1).png", "seal-badge")
@@ -457,6 +435,10 @@ def main() -> None:
         site = OUT_DIR / f"{stem}.webp"
         if not site.exists():
             site = OUT_DIR / f"{stem}.png"
+        if not site.exists():
+            # a plate the page does not show keeps its master only
+            print(f"  site {stem:22s} (not published)")
+            continue
         magic = site.read_bytes()[:4]
         if site.suffix == ".webp" and magic != b"RIFF":
             raise SystemExit(f"{site.name} is not a real webp")
@@ -467,8 +449,8 @@ def main() -> None:
             f"{'webp' if site.suffix == '.webp' else 'png'}"
         )
     published = sorted(p.name for p in OUT_DIR.iterdir())
-    if len(published) != 6:
-        raise SystemExit(f"site folder should hold exactly 6 files, holds {len(published)}: {published}")
+    if len(published) != 5:
+        raise SystemExit(f"site folder should hold exactly 5 files, holds {len(published)}: {published}")
 
 
 if __name__ == "__main__":

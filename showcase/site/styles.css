@@ -2912,25 +2912,23 @@ html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
   pointer-events: none;
 }
 /* ---------- the plates ----------------------------------------------------
-   The shrine is built from plates: the roof over the live panel, the jaws
-   around the price, a beam at the foot, a seal cut into every card and a
-   mark in the corner. They are art the owner drew, cut to transparent PNG,
-   and they sit INSIDE their panels - never over the copy. */
+   The shrine is built from plates: the jaws around the price, a beam at the
+   foot, a seal cut into every card and a mark in the corner. They are art the
+   owner drew, cut to transparent PNG, and they sit INSIDE their panels -
+   never over the copy. */
 
 /* The shrine plates carry a src, so they paint even outside the shrine - at
    their full intrinsic size, straight over the void theme's copy. They are
    shrine-only furniture: park them everywhere else. */
-.shrine-roof,
 .shrine-fangs {
   display: none;
 }
-[data-theme="shrine"] .shrine-roof,
 [data-theme="shrine"] .shrine-fangs {
   display: block;
 }
 
-/* the roof crowns the Live Analysis Panel and breaks its top edge, the way
-   a temple eave breaks the line of a wall */
+/* the roof is gone from the page: the shrine keeps the jaws, the beam, the
+   seals and the corner mark, and the two boxes carry the shrine on their own */
 
 
 
@@ -2974,7 +2972,7 @@ html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
   pointer-events: none;
 }
 
-/* the beam under the eaves: the roof catching the furnace light */
+/* the beam across the top of the panel: the furnace light falling on it */
 [data-theme="shrine"] .panel--hud::after {
   content: "";
   position: absolute;
@@ -3012,11 +3010,10 @@ html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
 
 /* ==========================================================================
    THE HERO AS A GATE
-   The roof no longer crowns one card. One eave now runs the full width of
-   the screen, the great skull hanging over the gutter between the two boxes,
-   so the left hero column and the right Live Analysis Panel share a crown.
-   The neon plate that framed the hero panel moved onto the Fuga button,
-   where it becomes the furnace opening.
+   The painted roof is gone from the page. What is left is the gate itself:
+   the left hero column and the right Live Analysis Panel, cut at 45 degrees,
+   with the neon plate that used to frame the hero panel moved onto the Fuga
+   button, where it becomes the furnace opening.
    ========================================================================== */
 
 /* The drawn eaves used to be the panel's roof. The painted one is now the
@@ -3031,44 +3028,8 @@ html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
   background-image: radial-gradient(circle at 50% 0%, rgba(165, 0, 12, 0.2) 0%, transparent 62%);
 }
 
-/* One roof, over both boxes, edge to edge. It breaks out of the page gutter
-   the way a temple roof runs past the wall it sits on: the grid area is
-   centred on the viewport, so half the area less half the viewport slides
-   the eave out to both screen edges.
-
-   The plate itself is a flat band - the whole shrine, ridge and crest and
-   both end skulls, pressed down rather than cropped - so the page shows it
-   complete and only 162px tall at 1440. The roof is also kept behind the
-   boxes by plain stacking order - it is scenery over the wall, never over
-   the content - so a panel can never slide under the tiles. */
-[data-theme="shrine"] .shrine-roof--splash {
-  grid-column: 1 / -1;
-  justify-self: start;
-  width: 100vw;
-  max-width: none;
-  height: auto;
-  max-height: none;
-  margin: 0 0 -8px;
-  margin-left: calc(50% - 50vw);
-  object-fit: contain;
-  object-position: 50% 50%;
-  z-index: 0;
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-select: none;
-  -webkit-mask-image: radial-gradient(ellipse 120% 92% at 50% 44%, #000 58%, transparent 100%);
-  mask-image: radial-gradient(ellipse 120% 92% at 50% 44%, #000 58%, transparent 100%);
-  filter: drop-shadow(0 10px 20px rgba(229, 9, 20, 0.26));
-}
-
-/* both boxes keep their content clear of the eave, and sit in front of it */
-[data-theme="shrine"] .panel--hero,
-[data-theme="shrine"] .panel--hud { padding-top: 24px; }
-[data-theme="shrine"] .panel--hero,
-[data-theme="shrine"] .panel--hud { position: relative; z-index: 1; }
-
 /* the shrine is dense on purpose: the panels hold their content close, so the
-   roof and the two boxes read as one carved plate rather than three pieces */
+   two boxes read as one carved plate rather than two pieces */
 [data-theme="shrine"] .panel { --panel-pad: 22px; }
 [data-theme="shrine"] .panel--hero { gap: 20px; }
 

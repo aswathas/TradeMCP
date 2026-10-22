@@ -56,7 +56,7 @@ setTimeout(() => {{
     const out = {{}};
     for (const theme of {themes}) {{
       d.documentElement.dataset.theme = theme;
-      const plates = Array.from(d.querySelectorAll(".shrine-roof, .shrine-fangs"))
+      const plates = Array.from(d.querySelectorAll(".shrine-fangs"))
         .map((el) => {{
           const cs = getComputedStyle(el);
           const r = el.getBoundingClientRect();
@@ -102,8 +102,9 @@ setTimeout(() => {{
     ];
 
     /* The pointer must not be able to hide the first box. The two hero planes
-       are walls under a roof; when they tilted toward the cursor their top edge
-       slipped behind the tiles and the box vanished under the eaves. Hover the
+       are full-height walls; when they tilted toward the cursor their top edge
+       slipped behind the roof that used to hang over them and the box vanished
+       under the eaves. The roof is gone now, but the rule stays: hover the
        hero and it must not move and must not take the tilt class. */
     d.documentElement.dataset.theme = "shrine";
     const heroEl = d.querySelector(".panel--hero");
@@ -188,7 +189,7 @@ def main() -> int:
             ok = overflow <= 0
             # the plates and the neon frame belong to the shrine and nowhere else
             if theme == "shrine":
-                ok = ok and len(painted) == 2 and frame_on
+                ok = ok and len(painted) == 1 and frame_on
             else:
                 ok = ok and not painted and not frame_on
             if width >= 1000:
