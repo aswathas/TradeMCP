@@ -16,7 +16,8 @@
 [CmdletBinding()]
 param(
     [string]$Repo = "aswathas/TradeMCP",
-    [string]$Branch = "gh-pages"
+    [string]$Branch = "gh-pages",
+    [switch]$FromGit
 )
 
 $ErrorActionPreference = "Continue"
@@ -30,6 +31,24 @@ if (-not (Test-Path (Join-Path $site "index.html"))) {
 $git = (Get-Command git -ErrorAction SilentlyContinue).Source
 if (-not $git) { $git = "C:\Program Files\Git\cmd\git.exe" }
 if (-not (Test-Path $git)) { throw "git not found on PATH." }
+
+# -FromGit publishes what is committed, not what is sitting in the working
+# tree. Useful when there is work in flight that is not ready to be public.
+$export = $null
+if ($FromGit) {
+    $export = Join-Path ([System.IO.Path]::GetTempPath()) ("trademcp-export-" + [guid]::NewGuid().ToString("N"))
+    New-Item -ItemType Directory -Force -Path $export | Out-Null
+    $zip = Join-Path $export "head.zip"
+    Write-Host "Exporting HEAD:showcase/site ..."
+    & $git -C $root archive --format=zip --output=$zip HEAD showcase/site
+    if ($LASTEXITCODE -ne 0) { throw "git archive failed" }
+    Expand-Archive -Path $zip -DestinationPath $export -Force
+    $site = Join-Path $export "showcase\site"
+    if (-not (Test-Path (Join-Path $site "index.html"))) {
+        throw "the export has no index.html - nothing to publish."
+    }
+    Write-Host "Publishing the committed tree, not the working tree."
+}
 
 $stage = Join-Path ([System.IO.Path]::GetTempPath()) ("trademcp-pages-" + [guid]::NewGuid().ToString("N"))
 $url = "https://github.com/$Repo.git"
@@ -57,6 +76,7 @@ try {
 }
 finally {
     Remove-Item -LiteralPath $stage -Recurse -Force -ErrorAction SilentlyContinue
+    if ($export) { Remove-Item -LiteralPath $export -Recurse -Force -ErrorAction SilentlyContinue }
 }
 
 Write-Host "Published. Point GitHub Pages at the $Branch branch (root)."
