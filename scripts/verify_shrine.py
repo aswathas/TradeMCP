@@ -101,7 +101,28 @@ setTimeout(() => {{
       d.getElementById("domain-void").getAttribute("aria-pressed"),
     ];
 
-    document.title = "RESULT" + JSON.stringify(out);
+    /* The pointer must not be able to hide the first box. The two hero planes
+       are walls under a roof; when they tilted toward the cursor their top edge
+       slipped behind the tiles and the box vanished under the eaves. Hover the
+       hero and it must not move and must not take the tilt class. */
+    d.documentElement.dataset.theme = "shrine";
+    const heroEl = d.querySelector(".panel--hero");
+    const before = heroEl.getBoundingClientRect();
+    heroEl.dispatchEvent(new d.defaultView.PointerEvent("pointermove", {{
+      clientX: before.left + before.width / 2,
+      clientY: before.top + 24,
+      bubbles: true,
+    }}));
+    setTimeout(() => {{
+      const after = heroEl.getBoundingClientRect();
+      out.hover = {{
+        tilt: heroEl.classList.contains("tilt"),
+        moved: Math.round(Math.abs(after.top - before.top) + Math.abs(after.left - before.left)),
+        wBefore: Math.round(before.width),
+        wAfter: Math.round(after.width),
+      }};
+      document.title = "RESULT" + JSON.stringify(out);
+    }}, 500);
   }} catch (e) {{ document.title = "ERR(" + e.message + ")"; }}
 }}, 4000);
 </script>
@@ -206,6 +227,29 @@ def main() -> int:
           f"after={got[1] if got else '?'} shrine={got[2] if got else '?'} void={got[3] if got else '?'}")
     if not ok:
         failures.append(f"dismantle: got {got} want {want}")
+
+    print("\n== hover must not hide the first box ==")
+    hover = data.get("hover") or {}
+    # The static half: the hero planes must stay out of the tilt list. The
+    # browser half of the check is skipped when the headless run reports
+    # prefers-reduced-motion, so the source is what actually guards it.
+    selector = ""
+    app_js = SITE / "app.js"
+    if app_js.exists():
+        src = app_js.read_text(encoding="utf-8")
+        m = re.search(r"function wireTilt\(\).*?querySelectorAll\(\s*(.*?)\s*\)", src, re.S)
+        selector = " ".join(m.group(1).split()) if m else ""
+    listed = ".panel--hero" in selector or ".panel--hud" in selector
+    tilt_on = bool(hover.get("tilt"))
+    moved = int(hover.get("moved", 999))
+    src_ok = not listed
+    beh_ok = not tilt_on and moved <= 1
+    print(f"  {'ok ' if src_ok else 'FAIL'} tilt list excludes the hero planes: {selector or '(not found)'}")
+    print(f"  {'ok ' if beh_ok else 'FAIL'} hero on hover: tilt={tilt_on} moved={moved}px")
+    if not src_ok:
+        failures.append("the hero panels are back in the tilt list - the roof can hide them again")
+    if not beh_ok:
+        failures.append(f"hover moved the hero: tilt={tilt_on} moved={moved}px")
 
     if failures:
         print("\nFAILURES:")

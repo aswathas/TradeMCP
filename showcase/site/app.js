@@ -388,8 +388,13 @@ function wireToolCards() {
 /* ---------- 3D: pointer tilt and scroll dolly ---------------------------- */
 
 function wireTilt() {
+  /* The two hero planes do not tilt. They are full-height walls under a roof
+     that is drawn on its own plane; rotating them toward the pointer used to
+     push their top edge behind the roof tiles, so moving the cursor near the
+     first box made the box disappear under the eaves. The small cards below
+     keep the tilt - there is nothing behind them to hide under. */
   const cards = document.querySelectorAll(
-    ".panel--hero, .panel--hud, .panel--metrics, .metric-panel, .tool, .step, .source, .sc-table"
+    ".panel--metrics, .metric-panel, .tool, .step, .source, .sc-table"
   );
   const MAX = 3.5;
 
