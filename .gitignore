@@ -52,3 +52,6 @@ Assets for ui/
 # Temporary probe pages the layout tools drop into the site directory
 showcase/site/_probe.html
 showcase/site/_frame.html
+
+# Knowledge-graph build output from /graphify. A generated artefact, not source.
+graphify-out/
