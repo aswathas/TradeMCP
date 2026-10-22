@@ -35,8 +35,8 @@ FRAME = 900
 # The tall frame must be at least offset + FRAME for every crop it feeds.
 PLAN = {
     "paper": (FRAME, [("01-paper", 0)]),
-    "void": (3400, [("02-infinite-void", 0), ("05-live-board-void", 1150)]),
-    "shrine": (3800, [("03-malevolent-shrine", 0), ("04-live-board-shrine", 1406), ("06-screener", 2496)]),
+    "void": (3400, [("02-infinite-void", 0), ("05-live-board-void", 1205)]),
+    "shrine": (3800, [("03-malevolent-shrine", 0), ("04-live-board-shrine", 1465), ("06-screener", 2566, 1100)]),
 }
 
 
@@ -70,7 +70,7 @@ def run_chrome(chrome: str, url: str, out: Path, height: int, profile: Path) -> 
         raise SystemExit(f"Chrome produced no screenshot for {url}")
 
 
-def crop(chrome: str, src: Path, out: Path, offset: int, profile: Path) -> None:
+def crop(chrome: str, src: Path, out: Path, offset: int, profile: Path, height: int = FRAME) -> None:
     """Cut a frame out of a tall capture by rendering the PNG in a wrapper."""
     page = src.with_suffix(".frame.html")
     page.write_text(
@@ -81,7 +81,7 @@ def crop(chrome: str, src: Path, out: Path, offset: int, profile: Path) -> None:
         f"<img src='file:///{src.as_posix()}'>",
         encoding="utf-8",
     )
-    run_chrome(chrome, page.as_uri(), out, FRAME, profile)
+    run_chrome(chrome, page.as_uri(), out, height, profile)
     page.unlink(missing_ok=True)
 
 
@@ -104,13 +104,15 @@ def main() -> None:
             url = f"{base}?flat=1&theme={theme}"
             print(f"capture {tall.name} <- {url}")
             run_chrome(chrome, url, tall, height, profile)
-            for name, offset in frames:
+            for frame in frames:
+                name, offset = frame[0], frame[1]
+                frame_height = frame[2] if len(frame) > 2 else FRAME
                 target = out_dir / f"{name}.png"
-                print(f"  frame {target.name} at y={offset}")
-                if offset == 0 and height == FRAME:
+                print(f"  frame {target.name} at y={offset} h={frame_height}")
+                if offset == 0 and height == frame_height:
                     shutil.copyfile(tall, target)
                 else:
-                    crop(chrome, tall, target, offset, profile)
+                    crop(chrome, tall, target, offset, profile, frame_height)
             tall.unlink(missing_ok=True)
     print(f"\nScreenshots written to {out_dir}")
 
