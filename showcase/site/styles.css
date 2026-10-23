@@ -1826,27 +1826,6 @@ html.is-flat .panel--hud { transform: none; }
   .tool { break-inside: avoid; }
 }
 
-/* ---------- the narrowest phones ------------------------------------------
-   At 320px the technique rail cannot hold a label, a cut and two buttons on
-   one line: the shrine's 58px blade pushed the Fuga button off the edge and
-   `overflow-x: clip` turned that into a control that could not be reached.
-   The blade goes, the tick gets its own line, and the stat strip stacks. */
-@media (max-width: 380px) {
-  .strip__list { grid-template-columns: 1fr; }
-  .strip__list li {
-    padding: 14px 12px;
-    border-right: 0;
-    border-bottom: var(--edge) solid var(--rule);
-  }
-  .strip__list li:last-child { border-bottom: 0; }
-  .techs {
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas: "cap cap" "tick tick" "void shrine";
-  }
-  .techs__slash { display: none; }
-  .techs__tick { justify-self: start; margin-left: 0; }
-}
-
 /* ---------- the domain: cursed energy, drawn in code ------------------------
    A barrier the page can open over itself. The vocabulary is the technique,
    not the character: shockwave, veil, motes, reversed palette. No licensed
@@ -2595,7 +2574,10 @@ html.is-cast .panel--hero { animation: cast-flash 800ms ease-out; }
   color: var(--ink-3);
   border: 1px dashed var(--rule);
 }
-.techs__tick[data-tone="ao"] { color: #0077b6; border-color: #0077b6; }
+/* The tick's blue has to be read on the card's own ground, #e9eaea, and the
+   first blue was 4.04:1 there. It only shows when the market is up, so a
+   sweep run on a red day would never have caught it. */
+.techs__tick[data-tone="ao"] { color: #006ba8; border-color: #006ba8; }
 .techs__tick[data-tone="aka"] { color: #a4161a; border-color: #a4161a; }
 /* the night theme's ground is dark, so the crimson of the red pull has to be
    the lit one - the dark crimson reads as a smudge on #1e2025 */
@@ -3367,6 +3349,35 @@ html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
   .tech--void { grid-area: void; justify-self: start; }
   .techs__slash { grid-area: slash; justify-self: center; width: 44px; }
   .tech--shrine { grid-area: shrine; justify-self: end; }
+}
+
+/* ---------- the narrowest phones ------------------------------------------
+   At 320px the technique rail cannot hold a label, a cut and two buttons on
+   one line: the shrine's 58px blade pushed the Fuga button off the edge and
+   `overflow-x: clip` turned that into a control that could not be reached.
+   The blade goes, the tick gets its own line, and the stat strip stacks.
+
+   This block has to come AFTER the 720px block above it. Two media queries
+   that both match a 320px phone are settled by source order, not by which
+   one is more specific, and a rule written first loses: this block used to
+   sit above the 720px block and every rule in it was dead. The blade also
+   has to be hidden with the shrine's own weight, because the shrine turns it
+   back on with a more specific selector than the plain one. */
+@media (max-width: 380px) {
+  .strip__list { grid-template-columns: 1fr; }
+  .strip__list li {
+    padding: 14px 12px;
+    border-right: 0;
+    border-bottom: var(--edge) solid var(--rule);
+  }
+  .strip__list li:last-child { border-bottom: 0; }
+  .techs {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "cap cap" "tick tick" "void shrine";
+  }
+  .techs__slash,
+  [data-theme="shrine"] .techs__slash { display: none; }
+  .techs__tick { justify-self: start; margin-left: 0; }
 }
 
 /* ---------- the furnace button ------------------------------------------
