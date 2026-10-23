@@ -40,6 +40,10 @@
   --edge: 3px;
   --panel-pad: clamp(18px, 2.4vw, 30px);
 
+  /* the sticky masthead's height, measured by app.js. It is a guess here so
+     that an anchor still lands in a sane place if the script never runs. */
+  --masthead-h: 64px;
+
   --font-script: "Kaushan Script", "Segoe Script", cursive;
   --font-shout: "Permanent Marker", "Comic Sans MS", cursive;
   --font-ui: "Saira Condensed", "Arial Narrow", sans-serif;
@@ -111,24 +115,25 @@ body {
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  /* Sukuna's attacks live in the cursor: a razor edge (Dismantle) with a
-     burning tip (Divine Flame). Original drawing, no borrowed artwork. */
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26'%3E%3Cpath d='M2 2 L17 17' stroke='%23e0243a' stroke-width='6' opacity='.35'/%3E%3Cpath d='M2 2 L17 17' stroke='%23ffffff' stroke-width='1.8' stroke-linecap='round'/%3E%3Cpath d='M17 17c4.5-4.5 7.5-1.8 5.5 1.4 3.6-1.2 3-6.6-1.8-7.2-3-.4-4.8 3-3.7 5.8z' fill='%23ffba08'/%3E%3C/svg%3E") 2 2, crosshair;
+  /* The cursor is drawn by cursor.js: a fountain-pen nib that transfigures
+     whatever it touches. The native arrow is only hidden once that script
+     has proved it can take over, so a failure leaves the visitor a working
+     pointer. ?cursor=system brings the native cursor back on demand. */
 }
 
 input,
 textarea,
 select { cursor: text; }
 
-/* A control must look like a control. The razor cursor belongs to the page,
-   but drawn over a button it hides the very thing you are trying to tap —
-   so anything clickable gets the ordinary pointer back. */
-button,
-a,
-summary,
-label[for],
-[role="button"],
-[role="tab"] { cursor: pointer; }
+/* A control must look like a control. The nib belongs to the page, but drawn
+   over a button it hides the very thing you are trying to tap — so anything
+   clickable keeps the ordinary pointer until the custom cursor is live. */
+html:not(.has-cursor) button,
+html:not(.has-cursor) a,
+html:not(.has-cursor) summary,
+html:not(.has-cursor) label[for],
+html:not(.has-cursor) [role="button"],
+html:not(.has-cursor) [role="tab"] { cursor: pointer; }
 
 .sr-only {
   position: absolute;
@@ -155,6 +160,39 @@ label[for],
 :focus-visible {
   outline: 3px solid var(--cyan);
   outline-offset: 3px;
+}
+
+/* The parts of the page that were not drawn still have to belong to it.
+   Selection, the caret, the scrollbars and the underline of a link ship as
+   the browser's defaults, and on a printed-manga page they are the first
+   thing that looks borrowed. */
+::selection {
+  background: var(--ink);
+  color: var(--paper);
+}
+html {
+  caret-color: var(--ink);
+  scrollbar-color: var(--rule) var(--paper-2);
+  scrollbar-width: thin;
+}
+a { text-underline-offset: 3px; }
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: var(--paper-2); }
+::-webkit-scrollbar-thumb {
+  background: var(--rule);
+  border: 3px solid var(--paper-2);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--ink); }
+
+/* The readouts are numbers, and a number that changes width when it
+   changes value makes the whole row twitch. */
+.hud-value,
+.hud-value--xl,
+.hud-value--sm,
+.board__change,
+.readouts,
+.sc-table {
+  font-variant-numeric: tabular-nums;
 }
 
 .sheet {
@@ -255,33 +293,9 @@ label[for],
 }
 .theme-toggle:hover { background: var(--paper-2); }
 
-/* The domain switch. It lives in the header so a thumb can reach it on a
-   phone; on wide screens the hero rail carries the same control and this
-   copy stands down, so there is only ever one switch on screen. */
-.domain-toggle {
-  display: inline-flex;
-  border: 1px solid var(--rule);
-  background: var(--paper-2);
-}
-.domain-toggle__btn {
-  font-family: var(--font-ui);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-2);
-  background: transparent;
-  border: 0;
-  padding: 12px 16px;
-  cursor: pointer;
-  transition: background 150ms ease, color 150ms ease;
-}
-.domain-toggle__btn + .domain-toggle__btn { border-left: 1px solid var(--rule); }
-.domain-toggle__btn:hover { color: var(--ink); }
-.domain-toggle__btn[aria-pressed="true"] { background: var(--cyan); color: var(--paper); }
-@media (min-width: 721px) {
-  .domain-toggle { display: none; }
-}
+/* The domain switch lives once, in the hero rail, where the reader is
+   already standing. A second copy in the header put two switches on the
+   same phone, which is the one thing the site's own rule forbids. */
 
 /* ---------- splash ------------------------------------------------------- */
 
@@ -614,6 +628,7 @@ label[for],
   background: var(--rule);
   transform: translateX(-2px);
 }
+.gauge[data-state="empty"] .gauge__needle { opacity: 0; }
 
 .gauge__scale {
   display: flex;
@@ -728,6 +743,13 @@ label[for],
 /* ---------- sections ----------------------------------------------------- */
 
 .section { padding: clamp(34px, 5vw, 64px) 0; }
+
+/* The masthead is sticky, so an anchor jump that puts the top of a section at
+   the top of the viewport hides its heading underneath the header. Every
+   anchored section keeps the masthead's height clear. */
+.section[id] {
+  scroll-margin-top: calc(var(--masthead-h) + 12px);
+}
 
 .section__head { max-width: 68ch; margin-bottom: clamp(18px, 2.4vw, 30px); }
 .section__head h2 {
@@ -970,6 +992,9 @@ code {
 }
 
 .install__code { padding: 0; overflow: hidden; }
+/* The install command is a long line. Cutting it off mid-word made it
+   impossible to read, so it wraps instead of being clipped. */
+.install__code pre { white-space: pre-wrap; overflow-wrap: anywhere; }
 .install__bar {
   display: flex;
   justify-content: space-between;
@@ -1100,7 +1125,7 @@ code {
   font-size: 14px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  transition: transform 220ms cubic-bezier(0.2, 1.4, 0.4, 1);
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .toast.is-on { transform: translate(-50%, 0); }
 
@@ -1285,8 +1310,10 @@ code {
 .board__change.is-up { color: var(--green); }
 .board__change.is-down { color: var(--verm); }
 
-.chart { padding: 6px 10px 0; }
-.chart__svg { width: 100%; height: auto; display: block; }
+/* The chart holds its space even before the series arrives, so the panel
+   never jumps when the SVG is written into it. */
+.chart { padding: 6px 10px 0; aspect-ratio: 900 / 380; }
+.chart__svg { width: 100%; height: 100%; display: block; }
 .chart__empty { padding: 40px 10px; color: var(--ink-3); font-size: 14px; }
 
 .chart__grid { stroke: var(--tone); stroke-width: 1; vector-effect: non-scaling-stroke; opacity: 0.5; }
@@ -1304,6 +1331,241 @@ code {
 .chart__last-line { stroke: var(--verm); stroke-width: 1; stroke-dasharray: 2 3; vector-effect: non-scaling-stroke; }
 .chart__vol-up { fill: var(--ink-3); opacity: 0.55; }
 .chart__vol-down { fill: var(--verm); opacity: 0.5; }
+/* the volume bars grow out of their own baseline, so the origin is set in
+   view-box units per bar by the script */
+.chart__vol { transform-box: view-box; }
+
+/* ==========================================================================
+   THE CHART IGNITES
+   ==========================================================================
+   The price line is not a static drawing. A front runs along it, and the ink
+   behind the front is drawn while ahead of the front there is nothing. Which
+   way the front runs depends on what happened:
+
+     enter   the chart is being born. The front starts at the oldest close
+             and runs right, so the series is written in reading order.
+     ignite  the data changed. The newest close - the current price -
+             ignites first and the heat runs back through the history. A
+             refresh never leaves a line running from the left edge of the
+             chart to the current price.
+
+   The front is an SVG dash. Every wipe path carries pathLength="1", so
+   stroke-dashoffset travels 1 -> 0 (left to right) or -1 -> 0 (right to
+   left) without measuring a single pixel. The ember is a short dash of the
+   same path, so it rides the front for free.
+
+   The chart's own state is on the host: data-motion says which way the front
+   runs, data-draw says whether it is running. Without those attributes the
+   chart is simply whole, which is the safe default and the reduced-motion
+   path: if the script never runs, nothing is hidden.
+   -------------------------------------------------------------------------- */
+
+.chart {
+  --chart-from: 1;          /* where the front starts, in path lengths */
+  --chart-ember-from: 0;    /* where the ember starts */
+  --chart-ember-to: -1;     /* where the ember ends up */
+  --chart-ember-tail-from: 0.16;   /* the tail sits just behind the head */
+  --chart-ember-tail-to: -0.84;
+  --chart-dur: 8000ms;
+  --chart-ease: cubic-bezier(0.16, 0.84, 0.44, 1);
+  --chart-trail: 0.18;      /* the averages follow the price by this much */
+  transform-origin: 50% 100%;
+}
+
+/* the ember: a hot bead riding the front. Cyan is the page's one accent,
+   and in the shrine domain it is the furnace. */
+.chart__ember {
+  fill: none;
+  stroke: var(--cyan);
+  stroke-width: 7;
+  stroke-linecap: round;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* the tail: the stretch of the line the head has just crossed, held at half
+   strength. It is what turns a bead into a spark. */
+.chart__ember-tail {
+  fill: none;
+  stroke: var(--cyan);
+  stroke-width: 3.5;
+  stroke-linecap: butt;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* The asteroid. A burning rock that rides the line from the oldest close to
+   the current price, banking along the tangent as it travels. It is drawn
+   around the origin, because that is the point the motion path puts it on,
+   and it is moved by SMIL rather than by CSS, so the transform belongs to
+   the path and nothing else may claim it. */
+.chart__rock { opacity: 0; pointer-events: none; }
+.chart__rock-glow { fill: url(#rockGlow); }
+.chart__rock-glow-stop { stop-color: var(--cyan); stop-opacity: 0.5; }
+.chart__rock-glow-stop--out { stop-color: var(--cyan); stop-opacity: 0; }
+.chart__rock-body {
+  fill: #14100f;
+  stroke: var(--cyan);
+  stroke-width: 2.2;
+  stroke-linejoin: round;
+}
+.chart__rock-facet {
+  fill: none;
+  stroke: var(--cyan);
+  stroke-width: 1.2;
+  opacity: 0.75;
+}
+.chart__rock-core { fill: #ffffff; }
+
+/* Time runs one way, so the front runs one way. It always starts at the
+   oldest close on the left and arrives at the current price on the right: a
+   falling market is written exactly like a rising one, and choosing another
+   stock writes the series again in reading order instead of sweeping back
+   through it. The modes differ in character, not in direction - enter is the
+   chart being born, ignite is the reader asking for that series again. */
+.chart[data-motion="enter"] {
+  --chart-from: 1;
+  --chart-ember-from: 0;
+  --chart-ember-to: -1;
+  --chart-ember-tail-from: 0.16;
+  --chart-ember-tail-to: -0.84;
+  --chart-dur: 8000ms;
+}
+.chart[data-motion="ignite"] {
+  --chart-from: 1;
+  --chart-ember-from: 0;
+  --chart-ember-to: -1;
+  --chart-ember-tail-from: 0.10;
+  --chart-ember-tail-to: -0.90;
+  --chart-dur: 8000ms;
+}
+
+/* pending: the chart is present but not yet written. It is off-screen when
+   this state is set, so nothing is hidden in plain sight. */
+.chart[data-draw="pending"] .chart__price,
+.chart[data-draw="pending"] .chart__sma20,
+.chart[data-draw="pending"] .chart__sma50,
+.chart[data-draw="pending"] .chart__rsi,
+.chart[data-draw="pending"] .chart__wipe-mask {
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: var(--chart-from);
+}
+.chart[data-draw="pending"] .chart__vol { transform: scaleY(0); }
+
+/* playing: the front runs. */
+.chart[data-draw="playing"] .chart__price,
+.chart[data-draw="playing"] .chart__sma20,
+.chart[data-draw="playing"] .chart__sma50,
+.chart[data-draw="playing"] .chart__rsi,
+.chart[data-draw="playing"] .chart__wipe-mask {
+  animation: chart-wipe var(--chart-dur) var(--chart-ease) both;
+}
+.chart[data-draw="playing"] .chart__sma20,
+.chart[data-draw="playing"] .chart__sma50,
+.chart[data-draw="playing"] .chart__rsi {
+  animation-delay: calc(var(--chart-dur) * var(--chart-trail));
+}
+.chart[data-draw="playing"] .chart__ember {
+  animation: chart-ember var(--chart-dur) var(--chart-ease) both;
+}
+.chart[data-draw="playing"] .chart__ember-tail {
+  animation: chart-ember-tail var(--chart-dur) var(--chart-ease) both;
+}
+.chart[data-draw="playing"] .chart__rock {
+  animation: rock-burn var(--chart-dur) var(--chart-ease) both;
+}
+.chart[data-draw="playing"] .chart__vol {
+  animation: chart-vol 420ms cubic-bezier(0.2, 0.9, 0.3, 1) both;
+  animation-delay: calc(var(--t) * var(--chart-dur));
+}
+/* The grid and the axis labels only fade in when the chart is born. A
+   re-draw of a chart that is already on screen leaves them standing. */
+.chart[data-motion="enter"][data-draw="playing"] .chart__grid {
+  animation: chart-grid 700ms ease-out both;
+  animation-delay: 120ms;
+}
+.chart[data-motion="enter"][data-draw="playing"] .chart__axis {
+  animation: chart-fade 700ms ease-out both;
+  animation-delay: 120ms;
+}
+/* the last-price guide draws on when the front reaches the current price:
+   at the end of a birth, at the start of an ignition. */
+.chart[data-draw="playing"] .chart__last-line {
+  animation: chart-fade 480ms ease-out both;
+  animation-delay: var(--chart-last-delay, 0ms);
+}
+.chart[data-motion="enter"] { --chart-last-delay: calc(var(--chart-dur) * 0.92); }
+.chart[data-motion="ignite"] { --chart-last-delay: calc(var(--chart-dur) * 0.86); }
+
+/* the plane: the chart tips back off the page as it catches and settles.
+   The light comes from the top left, so the top edge is the one that lifts. */
+.chart[data-draw="playing"] {
+  animation: chart-plane var(--chart-dur) var(--chart-ease);
+}
+
+@keyframes chart-wipe {
+  0% { stroke-dasharray: 1 1; stroke-dashoffset: var(--chart-from); }
+  100% { stroke-dasharray: 1 1; stroke-dashoffset: 0; }
+}
+@keyframes chart-ember {
+  0% { stroke-dasharray: 0.035 1; stroke-dashoffset: var(--chart-ember-from); opacity: 1; }
+  92% { opacity: 1; }
+  100% { stroke-dasharray: 0.035 1; stroke-dashoffset: var(--chart-ember-to); opacity: 0; }
+}
+@keyframes chart-ember-tail {
+  0% { stroke-dasharray: 0.16 1; stroke-dashoffset: var(--chart-ember-tail-from); opacity: 0.5; }
+  92% { opacity: 0.5; }
+  100% { stroke-dasharray: 0.16 1; stroke-dashoffset: var(--chart-ember-tail-to); opacity: 0; }
+}
+@keyframes rock-burn {
+  0% { opacity: 0; }
+  5% { opacity: 1; }
+  86% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes chart-vol {
+  0% { transform: scaleY(0); }
+  100% { transform: scaleY(1); }
+}
+@keyframes chart-grid {
+  0% { opacity: 0; }
+  100% { opacity: 0.5; }
+}
+@keyframes chart-fade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes chart-plane {
+  0% { transform: perspective(1200px) rotateX(0deg); }
+  22% { transform: perspective(1200px) rotateX(4.5deg); }
+  100% { transform: perspective(1200px) rotateX(0deg); }
+}
+
+/* Reduced motion: the chart is whole and still. The data still arrives and
+   the price still changes, so the feedback survives; only the travel does
+   not. */
+@media (prefers-reduced-motion: reduce) {
+  .chart[data-draw] .chart__price,
+  .chart[data-draw] .chart__sma20,
+  .chart[data-draw] .chart__sma50,
+  .chart[data-draw] .chart__rsi,
+  .chart[data-draw] .chart__wipe-mask,
+  .chart[data-draw] .chart__ember,
+  .chart[data-draw] .chart__ember-tail,
+  .chart[data-draw] .chart__rock,
+  .chart[data-draw] .chart__vol,
+  .chart[data-draw] .chart__band,
+  .chart[data-draw] .chart__grid,
+  .chart[data-draw] .chart__axis,
+  .chart[data-draw] .chart__last-line,
+  .chart[data-draw] { animation: none; }
+  .chart[data-draw="pending"] .chart__price,
+  .chart[data-draw="pending"] .chart__sma20,
+  .chart[data-draw="pending"] .chart__sma50,
+  .chart[data-draw="pending"] .chart__rsi,
+  .chart[data-draw="pending"] .chart__wipe-mask { stroke-dasharray: none; stroke-dashoffset: 0; }
+  .chart[data-draw="pending"] .chart__vol { transform: none; }
+}
 
 .chart__legend {
   display: flex;
@@ -1520,7 +1782,8 @@ code {
 .source,
 .metric-panel,
 .preset {
-  transition: transform 220ms cubic-bezier(0.22, 0.9, 0.3, 1), box-shadow 220ms ease;
+  transition: transform 220ms cubic-bezier(0.22, 0.9, 0.3, 1), box-shadow 220ms ease,
+    border-radius 180ms cubic-bezier(0.22, 0.9, 0.3, 1);
 }
 
 /* tilt toward the pointer, set per-card by app.js */
@@ -1529,7 +1792,8 @@ code {
 .step.tilt,
 .source.tilt,
 .metric-panel.tilt {
-  transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateZ(14px);
+  transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateZ(14px)
+    scale(var(--touch-scale, 1));
   box-shadow: 10px 12px 0 rgba(16, 15, 16, 0.16);
 }
 
@@ -1551,7 +1815,7 @@ code {
 }
 
 /* the hero is a stack of planes on a dolly */
-.splash { transform-style: preserve-3d; }
+.splash { transform-style: flat; }
 
 /* still capture asks for a flat page */
 html.is-flat .sheet { perspective: none; }
@@ -1559,11 +1823,18 @@ html.is-flat .splash { transform-style: flat; }
 html.is-flat .panel--hero,
 html.is-flat .panel--hud { transform: none; }
 
+/* The hero and the board are the page's two planes. They used to ride the
+   dolly in Z, and a panel with a Z translation can fail to paint its own
+   content - the hero went blank while the page was still standing there,
+   which is the worst bug this page has ever had. The dolly now works in the
+   plane, where it is safe: the hero eases back as the reader scrolls and the
+   board comes forward. The perspective on the sheet still carries the pointer
+   tilt on the cards further down. */
 .panel--hero {
-  transform: translateZ(calc(var(--dolly, 0) * -26px)) translateY(calc(var(--dolly, 0) * -8px));
+  transform: translateY(calc(var(--dolly, 0) * -8px)) scale(calc(1 - var(--dolly, 0) * 0.018));
 }
 .panel--hud {
-  transform: translateZ(calc(var(--dolly, 0) * 34px));
+  transform: scale(calc(1 + var(--dolly, 0) * 0.024));
 }
 [data-theme="night"] /* holo ring around the live price */
 .board__last {
@@ -1810,9 +2081,29 @@ html.is-flat .panel--hud { transform: none; }
   }
 
 @media (max-width: 720px) {
-  .masthead { flex-wrap: wrap; gap: 10px; }
-  .nav { order: 3; width: 100%; margin-left: 0; justify-content: space-between; flex-wrap: wrap; }
-  .theme-toggle { margin-left: auto; }
+  .masthead { flex-wrap: wrap; gap: 6px 10px; padding: 8px 0 6px; }
+  .wordmark { font-size: clamp(22px, 6vw, 25px); }
+  .nav {
+    order: 3;
+    width: 100%;
+    margin-left: 0;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 14px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav a {
+    font-size: 12px;
+    letter-spacing: 0.09em;
+    white-space: nowrap;
+    padding: 2px 0;
+  }
+  .theme-toggle { margin-left: auto; gap: 5px; font-size: 11px; padding: 4px 9px; }
   .strip__list { grid-template-columns: repeat(2, 1fr); }
   .strip__list li { border-right: var(--edge) solid var(--rule); border-bottom: var(--edge) solid var(--rule); }
   .strip__list li:nth-child(2n) { border-right: 0; }
@@ -2256,8 +2547,9 @@ html.is-flat .panel--hud { transform: none; }
 }
 .tracker__head {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  gap: 10px;
+  gap: 4px 10px;
   margin-bottom: 8px;
   font-family: var(--font-ui);
   font-size: 12px;
@@ -2967,7 +3259,6 @@ html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
 [data-theme="shrine"] .step { padding-top: 44px; }
 [data-theme="shrine"] .step__no { top: 12px; left: 16px; }
 [data-theme="shrine"] .preset.is-active { background: #e50914; color: #fff; }
-[data-theme="shrine"] .domain-toggle__btn[aria-pressed="true"] { background: #e50914; color: #fff; }
 [data-theme="shrine"] .tech--shrine[aria-pressed="true"] {
   background: #e50914;
   color: #fff;
@@ -3154,7 +3445,7 @@ html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
   align-items: stretch;
   gap: 10px;
   width: 100%;
-  padding: 9px 9px 9px 13px;
+  padding: 12px 12px 12px 15px;
   background: var(--paper);
   border: 1px solid var(--tone);
   border-color: color-mix(in srgb, var(--cyan) 40%, transparent);
@@ -3277,8 +3568,8 @@ html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
   align-self: center;
   min-width: 0;
   font-family: var(--font-data);
-  font-size: 12.5px;
-  line-height: 1.35;
+  font-size: 17px;
+  line-height: 1.3;
   color: var(--cyan);
   background: none;
   border: 0;
@@ -3304,12 +3595,73 @@ html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
 .terminal__copy:hover { background: var(--cyan); color: var(--paper); }
 .terminal__copy:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
 
+/* The source install. The npx command above it is the product's front door,
+   but it does not resolve until the package is published, so the command that
+   works today sits right under it, in the same hand. */
+.terminal__src {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 8px 8px 12px;
+  background: var(--paper-2);
+  border: 1px solid color-mix(in srgb, var(--cyan) 45%, transparent);
+}
+.terminal__src code {
+  flex: 1 1 200px;
+  min-width: 0;
+  font-family: var(--font-data);
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+.terminal__src .terminal__copy { width: auto; flex: none; font-size: 11px; padding: 6px 10px; }
+[data-theme="shrine"] .terminal__src { background: #120a0c; border-color: rgba(229, 9, 20, 0.55); }
+[data-theme="shrine"] .terminal__src code { color: #ff5500; }
+
 /* the shrine burns: amber command on black */
 [data-theme="shrine"] .terminal { background: #050304; }
 [data-theme="shrine"] .terminal__cmd { color: #ff5500; }
 [data-theme="shrine"] .terminal__prompt { color: #ff5500; opacity: 0.9; }
 [data-theme="shrine"] .terminal__copy { background: #120a0c; color: #f5f2eb; }
 [data-theme="shrine"] .terminal__copy:hover { background: #e50914; color: #f5f2eb; }
+
+/* ---------- the nameplate --------------------------------------------------
+   Casting a domain stamps its name across the hero and lets it go. It is the
+   one place where the page says out loud which domain is open, in the site's
+   own language, and it is the only thing the cast does that the palette
+   cannot say by itself. */
+.cast-plate {
+  position: absolute;
+  left: 50%;
+  top: 34%;
+  z-index: 4;
+  transform: translate(-50%, -50%) rotate(-4deg);
+  pointer-events: none;
+  opacity: 0;
+}
+.cast-plate__name {
+  display: inline-block;
+  font-family: var(--font-shout);
+  font-size: clamp(28px, 6.5vw, 58px);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: var(--paper);
+  background: var(--ink);
+  border: 3px solid var(--cyan);
+  box-shadow: 8px 8px 0 var(--rule);
+  padding: 10px 20px 12px;
+  white-space: nowrap;
+}
+.cast-plate.is-stamped { animation: cast-plate 1800ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+@keyframes cast-plate {
+  0% { opacity: 0; transform: translate(-50%, -50%) rotate(-4deg) scale(1.45); }
+  12% { opacity: 1; transform: translate(-50%, -50%) rotate(-4deg) scale(1); }
+  74% { opacity: 1; transform: translate(-50%, -50%) rotate(-4deg) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) rotate(-4deg) scale(0.94); }
+}
 
 /* ---------- the technique panel ------------------------------------------
    The rail is a bordered plate with the cut between the two techniques, the
@@ -3541,3 +3893,688 @@ html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
 .shrine-brackets i:nth-child(2) { top: 8px; right: 8px; border-left: 0; border-bottom: 0; }
 .shrine-brackets i:nth-child(3) { bottom: 8px; left: 8px; border-right: 0; border-top: 0; }
 .shrine-brackets i:nth-child(4) { bottom: 8px; right: 8px; border-left: 0; border-top: 0; }
+
+/* ==========================================================================
+   THE TOUCH — the cursor that transfigures what it touches
+   ==========================================================================
+   cursor.js draws a fountain-pen nib and hands it the pointer. The native
+   arrow is only hidden once that script has proved it can take over, so a
+   failure anywhere leaves the visitor with a working pointer.
+   -------------------------------------------------------------------------- */
+
+html.has-cursor,
+html.has-cursor body { cursor: none; }
+
+/* the caret must survive — a text field is not a place to lose the cursor */
+html.has-cursor input,
+html.has-cursor textarea,
+html.has-cursor select,
+html.has-cursor [contenteditable] { cursor: text; }
+
+/* drag targets keep their own affordance */
+html.has-cursor input[type="range"]::-webkit-slider-thumb { cursor: grab; }
+html.has-cursor input[type="range"]::-moz-range-thumb { cursor: grab; }
+
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2147483000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 120ms ease;
+  will-change: transform;
+}
+.cursor.is-on { opacity: 1; }
+/* over a text field the nib steps aside and the caret takes over */
+.cursor.is-text { opacity: 0; }
+
+.cursor__nib {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-11px, -20px);
+  /* the hard offset of the page's own panels: the nib reads on any ground */
+  filter: drop-shadow(1.5px 1.5px 0 var(--paper));
+}
+.cursor__nib-body { fill: var(--ink); }
+.cursor__nib-slit { stroke: var(--paper); stroke-width: 1.4; fill: none; }
+.cursor__nib-hole { fill: var(--paper); }
+.cursor__nib-tip { fill: var(--verm); }
+
+.cursor__trail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 28px;
+  height: 2px;
+  margin: -1px 0 0 -1px;
+  background: linear-gradient(90deg, transparent, var(--ink));
+  transform-origin: right center;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* the ring with four focus ticks — the manga vocabulary, already on the page */
+.cursor__ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 38px;
+  height: 38px;
+  margin: -19px 0 0 -19px;
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+  background:
+    linear-gradient(var(--ink), var(--ink)) 50% 0 / 1.5px 8px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) 50% 100% / 1.5px 8px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) 0 50% / 8px 1.5px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) 100% 50% / 8px 1.5px no-repeat;
+  opacity: 0;
+  transform: scale(0.55);
+  transition: opacity 140ms ease, transform 140ms cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+.cursor.is-target .cursor__ring { opacity: 1; transform: scale(1); }
+
+/* the press: the nib squashes into the paper */
+.cursor.is-press .cursor__nib { transform: translate(-11px, -20px) scale(0.86); }
+.cursor__nib { transition: transform 140ms cubic-bezier(0.2, 1.4, 0.4, 1); }
+
+/* the control that was clicked gets a cyan flash */
+.is-hit { outline: 2px solid var(--cyan); outline-offset: 3px; }
+
+/* ---------- the transfigure ------------------------------------------------
+   The pointer is a hand. What it touches is reshaped: the hard rule softens
+   into an organic seam and the box lifts a hair off the page.
+
+   This part is deliberately pure CSS. :hover works even where pointer
+   events never reach the page, so the effect is not held hostage to a
+   script. The script adds the angle on top of it.
+
+   Transform and opacity only — no filter, no repaint of the whole panel.
+   -------------------------------------------------------------------------- */
+
+.panel:hover,
+.tool:hover,
+.metric-panel:hover,
+.step:hover,
+.source:hover,
+.call__board:hover,
+.panel.is-touched,
+.tool.is-touched,
+.metric-panel.is-touched,
+.step.is-touched,
+.source.is-touched,
+.call__board.is-touched {
+  --touch-scale: 1.02;
+  border-radius: 18px 6px 16px 8px / 10px 16px 8px 14px;
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+/* The ring with the four focus ticks also answers to CSS, so a control shows
+   its target state even if the script never hears a pointer. */
+body:has(a:hover, button:hover, summary:hover, [role="button"]:hover, [role="tab"]:hover)
+  .cursor__ring {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel:hover,
+  .tool:hover,
+  .metric-panel:hover,
+  .step:hover,
+  .source:hover,
+  .call__board:hover,
+  .is-touched {
+    --touch-scale: 1;
+    border-radius: 0;
+    outline: 2px solid var(--cyan);
+    outline-offset: 3px;
+  }
+}
+
+/* ==========================================================================
+   THE CALL — one MCP handshake, in CSS 3D
+   ==========================================================================
+   Two stations and the wire between them: the agent on the left, the market
+   on the right, and one packet that crosses the wire and comes back with the
+   answer. The 3D here is a diagram of a real call, not a decoration.
+
+   The light comes from the top left — the same light as every hard offset
+   shadow on the page. The top face of each slab is lit, the side face is in
+   shadow, and the plate on the floor falls down and to the right.
+
+   call.js only says which phase the diagram is in. The flight itself is
+   keyframes here, so the panel still reads with the script turned off.
+   -------------------------------------------------------------------------- */
+
+.call__state {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 3px 8px;
+  border: 1px solid var(--rule);
+  background: var(--paper-2);
+  color: var(--ink-3);
+  font-family: var(--font-data);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  vertical-align: 2px;
+}
+.call__state[data-state="live"] { color: var(--cyan); border-color: var(--cyan); }
+.call__state[data-state="snapshot"] { color: var(--ink); border-color: var(--ink); }
+.call__state[data-state="error"] { color: var(--verm); border-color: var(--verm); }
+
+/* ---------- the board ----------------------------------------------------- */
+
+.section--call .call__board { max-width: 1080px; }
+
+.call__board {
+  display: grid;
+  grid-template-columns: minmax(0, 430px) minmax(0, 1fr);
+  grid-template-areas:
+    "scene    io"
+    "answer   io"
+    "meta     io"
+    "controls io";
+  gap: var(--gutter);
+  align-items: start;
+  background: var(--paper);
+  border: var(--edge) solid var(--rule);
+  padding: var(--panel-pad);
+}
+
+@media (max-width: 900px) {
+  .call__board {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "scene" "answer" "meta" "controls" "io";
+  }
+}
+
+/* ---------- the 3D scene --------------------------------------------------- */
+
+.call__scene {
+  grid-area: scene;
+  position: relative;
+  height: 288px;
+  perspective: 1100px;
+  perspective-origin: 50% 44%;
+  transform-style: preserve-3d;
+  --call-node-w: clamp(96px, 13vw, 136px);
+  --call-node-h: clamp(74px, 9.5vw, 104px);
+}
+
+/* the floor: the same screentone lattice the rest of the page is printed on,
+   tipped back into the page so the stations have something to stand on */
+.call__ground {
+  position: absolute;
+  left: -6%;
+  right: -6%;
+  bottom: -10px;
+  height: 200px;
+  background-image: var(--plate-tone-light);
+  background-size: 8px 8px;
+  border-top: 2px solid var(--ink-3);
+  opacity: 0.8;
+  transform: rotateX(64deg);
+  transform-origin: bottom center;
+}
+
+/* the wire: a plain ink rule at the back of the scene, so the stations
+   stand in front of it and the packet crosses in front of everything */
+.call__wire {
+  position: absolute;
+  left: calc(6% + var(--call-node-w) / 2);
+  right: calc(6% + var(--call-node-w) / 2);
+  top: 50%;
+  height: 3px;
+  margin-top: -1.5px;
+  background: var(--rule);
+  transform: translateZ(16px);
+  transform-style: preserve-3d;
+}
+
+.call__station {
+  position: absolute;
+  top: 50%;
+  width: var(--call-node-w);
+  height: var(--call-node-h);
+  transform-style: preserve-3d;
+}
+.call__station--agent {
+  left: 6%;
+  transform: translateY(-52%) translateZ(44px) rotateY(20deg);
+}
+.call__station--market {
+  right: 6%;
+  transform: translateY(-52%) translateZ(44px) rotateY(-20deg);
+}
+
+.call__face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  padding: 8px 10px;
+  background: var(--paper);
+  border: 2px solid var(--rule);
+}
+
+.call__node-kicker {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.call__node-name {
+  font-family: var(--font-ui);
+  font-weight: 800;
+  font-size: clamp(13px, 1.5vw, 17px);
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.call__node-value {
+  font-family: var(--font-data);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--cyan);
+}
+
+/* the two planes that give the slab its thickness. The top face is lit,
+   the side face is in shadow — one light, shared with the 2D page. */
+.call__node-side {
+  position: absolute;
+  top: 0;
+  width: 12px;
+  height: 100%;
+  background: var(--paper-2);
+  background: color-mix(in srgb, var(--paper) 66%, #000);
+  border-top: 2px solid var(--rule);
+  border-bottom: 2px solid var(--rule);
+}
+.call__node-side--left {
+  left: -12px;
+  transform-origin: right center;
+  transform: rotateY(-90deg);
+}
+.call__node-side--right {
+  right: -12px;
+  transform-origin: left center;
+  transform: rotateY(90deg);
+}
+.call__node-top {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 12px;
+  background: var(--paper-2);
+  background: color-mix(in srgb, var(--paper) 88%, #fff);
+  border-left: 2px solid var(--rule);
+  border-right: 2px solid var(--rule);
+  transform-origin: top center;
+  transform: rotateX(90deg);
+}
+
+/* the plate on the floor, thrown down and to the right like every hard
+   offset shadow on this page */
+.call__shadow {
+  position: absolute;
+  top: 50%;
+  height: 13px;
+  background: var(--rule);
+  opacity: 0.16;
+  transform: skewX(-38deg);
+  pointer-events: none;
+}
+.call__shadow--agent {
+  left: calc(6% + 8px);
+  width: calc(var(--call-node-w) + 12px);
+  margin-top: calc(var(--call-node-h) / 2 - 8px);
+}
+.call__shadow--market {
+  right: calc(6% - 8px);
+  width: calc(var(--call-node-w) + 12px);
+  margin-top: calc(var(--call-node-h) / 2 - 8px);
+}
+
+/* the server says it is working */
+.call__reading {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 9px);
+  transform: translateX(-50%);
+  font-family: var(--font-data);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  opacity: 0;
+  white-space: nowrap;
+}
+
+/* one ring per update: the market answers, the agent receives. The ring
+   starts already outside the face, so it reads as a ring leaving the node
+   and not as an outline drawn around it. */
+.call__aura {
+  position: absolute;
+  inset: -16px;
+  border: 3px solid var(--cyan);
+  opacity: 0;
+  pointer-events: none;
+}
+.call__board[data-phase="answer"] .call__station--market .call__aura {
+  animation: call-aura 1200ms ease-out forwards;
+}
+.call__board[data-phase="done"] .call__station--agent .call__aura {
+  animation: call-aura 1200ms ease-out forwards;
+}
+@keyframes call-aura {
+  0% { opacity: 0.85; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.55); }
+}
+
+/* a still is a settled frame, not a frame caught mid-ring */
+html.is-flat .call__aura { display: none; }
+
+/* the packet: one small card, crossing the wire and coming back */
+.call__packet {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 46px;
+  height: 30px;
+  margin: -15px 0 0 -23px;
+  display: grid;
+  place-items: center;
+  background: var(--paper);
+  border: 2px solid var(--cyan);
+  box-shadow: 4px 4px 0 var(--cyan);
+  opacity: 0;
+  transform: translateZ(46px);
+}
+.call__packet-tag {
+  font-family: var(--font-data);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--cyan);
+}
+[data-theme="shrine"] .call__packet-tag,
+[data-theme="shrine"] .call__node-value { color: #ff8a6b; }
+
+.call__board[data-phase="ask"] .call__packet {
+  animation: call-out 760ms cubic-bezier(0.42, 0, 0.2, 1) forwards;
+}
+.call__board[data-phase="answer"] .call__packet {
+  animation: call-back 760ms cubic-bezier(0.42, 0, 0.2, 1) forwards;
+}
+.call__board[data-phase="ask"] .call__reading {
+  animation: call-read 200ms 620ms ease-out forwards;
+}
+@keyframes call-out {
+  0% { left: 0%; opacity: 0; transform: translateZ(46px) scale(0.78) rotateY(-16deg); }
+  12% { opacity: 1; }
+  100% { left: 100%; opacity: 1; transform: translateZ(46px) scale(1) rotateY(14deg); }
+}
+@keyframes call-back {
+  0% { left: 100%; opacity: 1; transform: translateZ(46px) scale(1) rotateY(14deg); }
+  88% { opacity: 1; }
+  100% { left: 0%; opacity: 0; transform: translateZ(46px) scale(0.78) rotateY(-16deg); }
+}
+@keyframes call-read {
+  from { opacity: 0; transform: translateX(-50%) translateY(4px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ---------- what came back -------------------------------------------------- */
+
+.call__answer {
+  grid-area: answer;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 14px;
+  padding: 10px 12px;
+  border: var(--edge) solid var(--rule);
+  background: var(--paper-2);
+}
+.call__answer-sym {
+  font-family: var(--font-ui);
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.call__answer-price {
+  font-family: var(--font-data);
+  font-weight: 600;
+  font-size: clamp(20px, 2.4vw, 27px);
+  line-height: 1;
+  color: var(--ink);
+}
+.call__answer-chg {
+  font-family: var(--font-data);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.call__answer[data-tone="up"] .call__answer-chg { color: var(--green); }
+.call__answer[data-tone="down"] .call__answer-chg { color: var(--verm); }
+.call__answer-time {
+  margin-left: auto;
+  font-family: var(--font-data);
+  font-size: 11px;
+  color: var(--ink-3);
+}
+
+/* ---------- the two halves of the handshake --------------------------------- */
+
+.call__io {
+  grid-area: io;
+  display: grid;
+  /* minmax(0, 1fr), not auto: a <pre> that does not wrap has a huge
+     min-content width, and a grid item's automatic minimum size would let
+     it push the whole page sideways on a phone. */
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--gutter);
+  align-content: start;
+  min-width: 0;
+}
+.call__pane {
+  border: var(--edge) solid var(--rule);
+  background: var(--paper);
+  min-width: 0;
+}
+
+/* On a wide screen the two panes share the height of the board, so the JSON
+   gets the room it deserves instead of a short box and a hole underneath.
+   The request is short and fixed, so it takes what it needs and the response
+   takes the rest. */
+@media (min-width: 901px) {
+  .call__io {
+    align-self: stretch;
+    grid-template-rows: auto minmax(0, 1fr);
+    align-content: stretch;
+  }
+  .call__pane {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .call__code {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: none;
+  }
+}
+.call__pane-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 7px 10px;
+  border-bottom: 2px solid var(--rule);
+  background: var(--paper-2);
+}
+.call__pane-tag {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.call__pane-meta {
+  font-family: var(--font-data);
+  font-size: 11px;
+  color: var(--ink-3);
+}
+.call__code {
+  margin: 0;
+  padding: 10px 12px;
+  max-height: 196px;
+  overflow: auto;
+  font-family: var(--font-data);
+  font-size: 11px;
+  line-height: 1.55;
+  color: var(--ink);
+  white-space: pre;
+  tab-size: 2;
+}
+.call__code:focus-visible { outline: 2px solid var(--cyan); outline-offset: -2px; }
+
+/* ---------- what it cost ---------------------------------------------------- */
+
+.call__meta {
+  grid-area: meta;
+  display: grid;
+  grid-template-columns: minmax(0, 5.6rem) minmax(0, 1fr);
+  gap: 5px 12px;
+  margin: 0;
+}
+.call__meta dt {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding-top: 3px;
+}
+.call__meta dd {
+  margin: 0;
+  font-family: var(--font-data);
+  font-size: 12px;
+  color: var(--ink);
+}
+
+/* ---------- the controls ---------------------------------------------------- */
+
+.call__controls {
+  grid-area: controls;
+  display: grid;
+  gap: 10px;
+}
+.call__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+}
+.call__syms { display: flex; flex-wrap: wrap; gap: 6px; flex: 1 1 auto; }
+.call__sym {
+  font-family: var(--font-data);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  padding: 5px 9px;
+  border: 2px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink-3);
+}
+.call__sym:hover { color: var(--ink); }
+.call__sym[aria-pressed="true"] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+.call__go {
+  flex: 0 0 auto;
+  padding: 7px 13px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+}
+.call__foot {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+.call__foot code {
+  font-family: var(--font-data);
+  font-size: 11.5px;
+  color: var(--ink);
+}
+
+/* the charge bar: a segmented energy bar, 60ms per segment, 2px ink cap.
+   A full bar means a full response. The end state is a plain rule, so the
+   bar is right whether you arrive during the fill or after it. */
+.call__charge {
+  display: flex;
+  gap: 3px;
+  height: 12px;
+}
+.call__charge i {
+  flex: 1 1 0;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  transition: background-color 60ms linear;
+  transition-delay: calc(var(--i) * 60ms);
+}
+.call__charge-cap {
+  width: 3px;
+  background: var(--rule);
+  opacity: 0;
+  transition: opacity 60ms linear 720ms;
+}
+.call__board[data-phase="done"] .call__charge i { background: var(--cyan); }
+.call__board[data-phase="done"] .call__charge-cap { opacity: 1; }
+
+/* a still must not be caught halfway through a fill */
+html.is-flat .call__board[data-phase="done"] .call__charge i {
+  background: var(--cyan);
+  transition: none;
+}
+html.is-flat .call__board[data-phase="done"] .call__charge-cap {
+  opacity: 1;
+  transition: none;
+}
+
+/* ---------- reduced motion --------------------------------------------------
+   The flight is removed, the call is not. The request still goes out and the
+   real response still lands; the packet simply stops crossing the wire. */
+@media (prefers-reduced-motion: reduce) {
+  .call__board[data-phase="ask"] .call__packet,
+  .call__board[data-phase="answer"] .call__packet { animation-duration: 1ms; }
+  .call__board[data-phase="ask"] .call__reading {
+    animation-duration: 1ms;
+    animation-delay: 0ms;
+  }
+  .call__aura { animation: none !important; opacity: 0; }
+  .call__board[data-phase="done"] .call__charge i,
+  .call__board[data-phase="done"] .call__charge-cap { transition-delay: 0ms; }
+}

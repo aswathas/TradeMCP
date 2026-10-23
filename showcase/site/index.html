@@ -26,6 +26,7 @@
       <a href="#screener">Screener</a>
       <a href="#tools">Tools</a>
       <a href="#metrics">Metrics</a>
+      <a href="#call">Call</a>
       <a href="#install">Install</a>
       <a href="#sources">Sources</a>
     </nav>
@@ -33,13 +34,9 @@
       <span class="theme-toggle__glyph" aria-hidden="true">◐</span>
       <span class="theme-toggle__text">Night</span>
     </button>
-    <div class="domain-toggle" role="group" aria-label="Cursed domain switcher">
-      <button class="domain-toggle__btn" type="button" id="domain-void" aria-pressed="false">Void</button>
-      <button class="domain-toggle__btn" type="button" id="domain-shrine" aria-pressed="false">Shrine</button>
-    </div>
   </header>
 
-  <div class="tape" aria-label="Live quotes for NSE stocks">
+  <div class="tape" role="group" aria-label="Live quotes for NSE stocks">
     <div class="tape__row" id="tape-row-a"></div>
     <div class="tape__row tape__row--reverse" id="tape-row-b"></div>
     <span class="tape__stamp" id="tape-stamp"></span>
@@ -71,13 +68,14 @@
         </svg>
         <span class="shrine-scrim" aria-hidden="true"></span>
         <span class="shrine-brackets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span class="cast-plate" id="cast-plate" aria-hidden="true"><span class="cast-plate__name"></span></span>
         <span class="caption caption--badge">● FREE · NO API KEY · NO ACCOUNT</span>
         <h1 class="hero-title" id="hero-title">
           LIVE MARKET DATA<br>FOR YOUR AI AGENT
         </h1>
         <p class="hero-lede">
           A Model Context Protocol server for Indian equities. Live NSE and BSE quotes,
-          57 technical indicators, 54 fundamental ratios and a stock screener — over plain
+          57 technical indicators, 54 fundamental ratios and a stock screener, over plain
           MCP stdio, from three free public sources.
         </p>
 
@@ -89,9 +87,13 @@
         <p class="terminal__note">
           <span class="terminal__flag">npm: waiting on publish</span>
           The package is written and tested, but it is not on the registry yet, so that
-          command will not resolve yet. <a href="#install">Install from source</a> instead —
-          same server, same tools, no key.
+          command will not resolve yet. The one below works today: same server, same
+          tools, no key. <a href="#install">Full install</a>.
         </p>
+        <div class="terminal__src">
+          <code id="hero-source-command">git clone https://github.com/aswathas/TradeMCP &amp;&amp; pip install -e .</code>
+          <button class="terminal__copy" type="button" data-copy-target="hero-source-command" aria-label="Copy the source install command">Copy</button>
+        </div>
 
         <div class="techs" role="group" aria-label="Cursed technique">
           <span class="techs__cap">Cursed technique</span>
@@ -137,7 +139,7 @@
         <div class="hud-readout hud-readout--hero">
           <span class="shrine-fangs" aria-hidden="true"></span>
           <span class="hud-label">Last price</span>
-          <span class="hud-value hud-value--xl"><span id="hud-price">1,202.00</span><span class="hud-unit">INR</span></span>
+          <span class="hud-value hud-value--xl"><span id="hud-price">—</span><span class="hud-unit">INR</span></span>
         </div>
 
         <div class="hud-row">
@@ -181,12 +183,12 @@
             <span class="hud-label hud-label--score">Technical score</span>
             <span class="hud-value hud-value--sm"><span id="hud-score">—</span> <span class="hud-tag-inline" id="hud-score-label">not in this snapshot</span></span>
           </div>
-          <div class="gauge" id="hud-gauge" role="img" aria-label="No technical score in this snapshot: the score is computed by the server on a live quote, and this page is showing a saved one.">
+          <div class="gauge" id="hud-gauge" data-state="empty" role="img" aria-label="No technical score in this snapshot: the score is computed by the server on a live quote, and this page is showing a saved one.">
             <span class="gauge__zone gauge__zone--sell"></span>
             <span class="gauge__zone gauge__zone--neutral"></span>
             <span class="gauge__zone gauge__zone--buy"></span>
             <span class="gauge__fill" id="hud-gauge-fill"></span>
-            <span class="gauge__needle" id="hud-needle" style="left:48.7%"></span>
+            <span class="gauge__needle" id="hud-needle" style="left:50%"></span>
           </div>
           <div class="gauge__scale"><span>−100 SELL</span><span>NEUTRAL</span><span>+100 BUY</span></div>
         </div>
@@ -194,10 +196,10 @@
         <div class="hud-row hud-row--bars">
           <div class="hud-readout hud-readout--bar">
             <span class="hud-label">52-week range</span>
-            <div class="range" id="hud-range" role="img" aria-label="Price 1,202.00 sits 10.8 percent up a 52-week range from 1,152.20 to 1,611.80.">
-              <span class="range__marker" id="hud-range-marker" style="left:10.8%"></span>
+            <div class="range" id="hud-range" role="img" aria-label="52-week range. The price is filled in when the live quote arrives.">
+              <span class="range__marker" id="hud-range-marker" style="left:0%"></span>
             </div>
-            <span class="hud-note"><b id="hud-range-price">1,202.00</b> · low <span id="hud-range-low">1,152.20</span> · high <span id="hud-range-high">1,611.80</span></span>
+            <span class="hud-note"><b id="hud-range-price">—</b> · low <span id="hud-range-low">—</span> · high <span id="hud-range-high">—</span></span>
           </div>
           <div class="hud-readout hud-readout--bar">
             <span class="hud-label" id="hud-rsi-label">RSI 14 · 46.58</span>
@@ -318,7 +320,7 @@
         <span class="caption">THE SCREENER</span>
         <h2 id="screener-title">Filter 50 real NIFTY constituents</h2>
         <p>Every row was pulled by <code>trademcp_screen_stocks</code> and
-        <code>trademcp_compare_stocks</code> — the same tools your agent calls. The filters below
+        <code>trademcp_compare_stocks</code>, the same tools your agent calls. The filters below
         apply the same predicates the server applies, and the panel prints the exact call.</p>
       </header>
 
@@ -372,7 +374,7 @@
         <div class="panel screener__results">
           <span class="shrine-corner" aria-hidden="true" style="position:absolute"></span>
           <div class="sc-bar">
-            <span class="sc-count"><b id="sc-count">—</b> matching</span>
+            <span class="sc-count" role="status" aria-live="polite" aria-atomic="true"><b id="sc-count">—</b> matching</span>
             <span class="sc-note" id="sc-note"></span>
           </div>
           <div class="sc-table-wrap">
@@ -609,6 +611,118 @@
       <noscript><p class="noscript">The full indicator and ratio lists live in the tool reference in <code>showcase/SPEC.md</code>.</p></noscript>
     </section>
 
+    <!-- ================= THE CALL ================= -->
+    <section class="section section--call" id="call" aria-labelledby="call-title">
+      <header class="section__head">
+        <span class="caption">THE CALL</span>
+        <span class="call__state" id="call-state" data-state="idle">Standing by</span>
+        <h2 id="call-title">An agent asks. The market answers.</h2>
+        <p>Everything else on this page is what the server returns. This is the part before
+        that: the JSON-RPC handshake your agent performs to get it. The request that goes out,
+        the response that comes back, and how long the round trip actually took.</p>
+      </header>
+
+      <div class="call__board" id="call-board" data-phase="idle">
+
+        <!-- the 3D diagram: two stations and the wire between them -->
+        <div class="call__scene" id="call-scene" aria-hidden="true">
+          <span class="call__ground"></span>
+          <span class="call__wire">
+            <span class="call__packet" id="call-packet"><span class="call__packet-tag">REQ</span></span>
+          </span>
+
+          <span class="call__station call__station--agent" data-node="agent">
+            <span class="call__face">
+              <span class="call__node-kicker">Caller</span>
+              <span class="call__node-name">AGENT</span>
+              <span class="call__node-value" id="call-agent-value">mcp client</span>
+            </span>
+            <span class="call__node-side call__node-side--left"></span>
+            <span class="call__node-top"></span>
+            <span class="call__aura"></span>
+          </span>
+          <span class="call__shadow call__shadow--agent"></span>
+
+          <span class="call__station call__station--market" data-node="market">
+            <span class="call__face">
+              <span class="call__node-kicker">Server</span>
+              <span class="call__node-name">MARKET</span>
+              <span class="call__node-value" id="call-market-value">trademcp</span>
+            </span>
+            <span class="call__node-side call__node-side--right"></span>
+            <span class="call__node-top"></span>
+            <span class="call__aura"></span>
+            <span class="call__reading">reading</span>
+          </span>
+          <span class="call__shadow call__shadow--market"></span>
+        </div>
+
+        <!-- what the call actually returned -->
+        <div class="call__answer" id="call-answer" data-tone="flat" aria-live="polite">
+          <span class="call__answer-sym" id="call-answer-sym">—</span>
+          <span class="call__answer-price" id="call-answer-price">—</span>
+          <span class="call__answer-chg" id="call-answer-chg">—</span>
+          <span class="call__answer-time" id="call-answer-time">—</span>
+        </div>
+
+        <!-- the two halves of the handshake, verbatim -->
+        <div class="call__io">
+          <section class="call__pane">
+            <header class="call__pane-head">
+              <span class="call__pane-tag">Request</span>
+              <span class="call__pane-meta" id="call-req-meta">jsonrpc 2.0 · tools/call</span>
+            </header>
+            <pre class="call__code" id="call-request" role="group" tabindex="0"
+              aria-label="The JSON-RPC request sent to the server"></pre>
+          </section>
+
+          <section class="call__pane">
+            <header class="call__pane-head">
+              <span class="call__pane-tag">Response</span>
+              <span class="call__pane-meta" id="call-res-meta">result.content[0].text</span>
+            </header>
+            <pre class="call__code" id="call-response" role="group" tabindex="0"
+              aria-label="The JSON the server returned"></pre>
+          </section>
+        </div>
+
+        <!-- what it cost, and where it came from -->
+        <dl class="call__meta">
+          <dt>Tool</dt><dd>trademcp_get_quote</dd>
+          <dt>Method</dt><dd>tools/call</dd>
+          <dt>Latency</dt><dd id="call-latency">—</dd>
+          <dt>Source</dt><dd id="call-source">—</dd>
+          <dt>Payload</dt><dd id="call-payload">—</dd>
+        </dl>
+
+        <div class="call__controls">
+          <div class="call__charge" id="call-charge" aria-hidden="true">
+            <i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i>
+            <i style="--i:4"></i><i style="--i:5"></i><i style="--i:6"></i><i style="--i:7"></i>
+            <i style="--i:8"></i><i style="--i:9"></i><i style="--i:10"></i><i style="--i:11"></i>
+            <span class="call__charge-cap"></span>
+          </div>
+
+          <div class="call__row">
+            <div class="call__syms" role="group" aria-label="Symbol to call">
+              <button class="call__sym" type="button" data-symbol="RELIANCE" aria-pressed="true">RELIANCE</button>
+              <button class="call__sym" type="button" data-symbol="TCS" aria-pressed="false">TCS</button>
+              <button class="call__sym" type="button" data-symbol="INFY" aria-pressed="false">INFY</button>
+              <button class="call__sym" type="button" data-symbol="HDFCBANK" aria-pressed="false">HDFCBANK</button>
+            </div>
+            <button class="btn btn--ghost call__go" type="button" id="call-go">Call again</button>
+          </div>
+
+          <p class="call__foot">The page calls <code>/api/quote</code> over HTTP; the showcase server
+          turns that into one MCP <code>tools/call</code> over stdio against the real server.
+          No API key, no relay, no hard-coded price.</p>
+        </div>
+
+      </div>
+      <noscript><p class="noscript">The live handshake needs JavaScript. The rest of the page —
+      quotes, indicators, the screener — works without it, from the bundled snapshot.</p></noscript>
+    </section>
+
     <!-- ================= HOW IT WORKS ================= -->
     <section class="section" id="how" aria-labelledby="how-title">
       <header class="section__head">
@@ -723,8 +837,9 @@ cd TradeMCP
 python -m venv .venv
 .venv/Scripts/activate          # macOS / Linux: source .venv/bin/activate
 pip install -e .</pre>
-          <p class="install__note">Three dependencies, one of them optional. The server then runs
-          as <code>python -m trademcp</code> or as the <code>trademcp</code> command.</p>
+          <p class="install__note">Two dependencies, <code>mcp</code> and <code>httpx</code>, and
+          nothing else. The server then runs as <code>python -m trademcp</code> or as the
+          <code>trademcp</code> command.</p>
 
           <div class="install__bar install__bar--second">
             <span>npx</span>
@@ -888,5 +1003,7 @@ python -m pytest tests -q</pre>
 <script src="app.js?v=39"></script>
 <script src="live.js?v=39"></script>
 <script src="screener.js?v=39"></script>
+<script src="cursor.js?v=38"></script>
+<script src="call.js?v=38"></script>
 </body>
 </html>

@@ -210,10 +210,38 @@ function wireCopyButtons() {
 
 const domainState = { base: "paper", active: null };
 
+/* One switch, in the hero rail. A second copy in the header put two
+   switches on the same phone, which is the one thing the site's own rule
+   forbids, and it stole the width the phone nav needs. */
 const domainButtons = {
-  void: [document.getElementById("domain-btn"), document.getElementById("domain-void")],
-  shrine: [document.getElementById("tech-shrine"), document.getElementById("domain-shrine")],
+  void: [document.getElementById("domain-btn")],
+  shrine: [document.getElementById("tech-shrine")],
 };
+
+/* What each domain stamps across the hero when it is cast. */
+const domainStamps = {
+  void: "MURYŌKŪSHO",
+  shrine: "FŪGA",
+  release: "KAIJŌ",
+};
+
+/* The nameplate. Casting a domain stamps its name across the hero and lets
+   it go. The palette says the mood; the nameplate says which domain is
+   open, in the site's own language. */
+function stampDomain(key) {
+  const plate = document.getElementById("cast-plate");
+  if (!plate) return;
+  const name = plate.querySelector(".cast-plate__name");
+  if (name) name.textContent = domainStamps[key] || "";
+  plate.classList.remove("is-stamped");
+  // Re-adding the class on the next frame restarts the stamp.
+  void plate.offsetWidth;
+  plate.classList.add("is-stamped");
+  clearTimeout(stampDomain._timer);
+  stampDomain._timer = setTimeout(function () {
+    plate.classList.remove("is-stamped");
+  }, 1850);
+}
 
 const domainLabels = {
   void: "Infinite Void",
@@ -282,9 +310,11 @@ function castDomain(key) {
     domainState.active = null;
     paintTheme(domainState.base);
     slash();
+    stampDomain("release");
   } else {
     domainState.active = key;
     paintTheme(key);
+    stampDomain(key);
   }
   paintDomain();
 }
@@ -469,6 +499,32 @@ function wireDolly() {
   update();
 }
 
+/* ---------- anchors: land below the sticky masthead ------------------------- */
+
+/* The masthead is sticky, so an anchor jump that scrolls a section's top to
+   the top of the viewport leaves its heading underneath the header. The
+   masthead is taller on a phone, where the nav wraps onto a second row, so
+   its height is measured rather than guessed. styles.css reads the result
+   through --masthead-h. */
+function wireAnchorOffset() {
+  const root = document.documentElement;
+  const masthead = document.querySelector(".masthead");
+  if (!masthead) return;
+
+  const update = () => {
+    const h = Math.round(masthead.getBoundingClientRect().height);
+    if (h > 0) root.style.setProperty("--masthead-h", `${h}px`);
+  };
+
+  update();
+  window.addEventListener("resize", update, { passive: true });
+  /* The webfonts land after the first paint and change the masthead's
+     height, so the measurement is taken again once they are in. */
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(update).catch(() => {});
+  }
+}
+
 renderChips();
 wireCopyButtons();
 wireNpxDownload();
@@ -479,6 +535,7 @@ wireDismantle();
 wireToolCards();
 wireTilt();
 wireDolly();
+wireAnchorOffset();
 
 // ?flat=1 flattens the 3D planes for still capture. Composited layers do not
 // paint reliably in headless screenshots, so the stills ask for a flat page.

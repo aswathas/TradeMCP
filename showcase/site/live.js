@@ -271,6 +271,192 @@ function toCandles(payload) {
   };
 }
 
+/* ---------- the chart's ignition --------------------------------------------
+
+   One authored moment, one direction.
+
+   The price line is not a static drawing. A front runs along it, and the ink
+   behind the front is drawn while ahead of the front there is nothing. Time
+   runs one way, so the front runs one way: it starts at the oldest close on
+   the left and arrives at the current price on the right. A falling market is
+   written exactly like a rising one.
+
+     enter   the chart is being born. The reader scrolls down to the board and
+             watches the series being written.
+     ignite  the reader asked for this series again - another stock, or the
+             refresh button - and the series is written again the same way.
+
+   A background poll is not an ignition. The board checks the server every
+   ninety seconds; that updates the numbers where they stand and says nothing
+   about the chart, so it never re-runs the front.
+
+   The front itself is an SVG dash and lives in styles.css. The script says
+   when to start it, and it starts the asteroid that rides it.
+   ------------------------------------------------------------------------ */
+
+const chartMotion = {
+  host: null,
+  pending: "none",   /* the motion waiting for the chart to come into view */
+  running: "none",   /* the motion currently running on screen */
+  requested: "none", /* an explicit refresh, which outranks the birth */
+  quiet: false,      /* a background poll: redraw the numbers, keep the chart */
+  observer: null,
+  watched: false,    /* are the scroll listeners bound yet */
+  polling: false,    /* is the safety poll alive */
+  token: 0,          /* the newest front owns the chart */
+  born: false,       /* has the reader actually seen the chart drawn yet */
+};
+
+const prefersStill = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* The chart counts as in view as soon as any of it is on screen. The blank
+   "pending" state is therefore only ever used while the chart is completely
+   off the page: a chart the reader can see is never a half-drawn chart. */
+function chartInView() {
+  const host = chartMotion.host;
+  if (!host) return true;
+  const r = host.getBoundingClientRect();
+  return r.top < window.innerHeight && r.bottom > 0;
+}
+
+/* How long the front takes, read from the stylesheet so the script and the
+   animation can never disagree about it. */
+function chartDuration() {
+  const host = chartMotion.host;
+  if (!host) return 8000;
+  const n = parseFloat(window.getComputedStyle(host).getPropertyValue("--chart-dur"));
+  return Number.isFinite(n) && n > 0 ? n : 8000;
+}
+
+/* How far behind the price the averages trail it, as a fraction of the run.
+   They start late, so the chart is not finished until the front has run and
+   they have caught up. */
+function chartTrail() {
+  const host = chartMotion.host;
+  if (!host) return 0.18;
+  const n = parseFloat(window.getComputedStyle(host).getPropertyValue("--chart-trail"));
+  return Number.isFinite(n) && n > 0 ? n : 0.18;
+}
+
+/* SMIL is how the asteroid travels: an <animateMotion> moves a group along
+   the price path and banks it along the tangent. It is not everywhere, so
+   the rock is only drawn where it can actually move. */
+const SMIL_OK = (function () {
+  try {
+    const probe = document.createElementNS("http://www.w3.org/2000/svg", "animateMotion");
+    return typeof probe.beginElement === "function";
+  } catch (err) {
+    return false;
+  }
+})();
+
+/* Start the rock where the front is about to be. The animation is held at
+   begin="indefinite", because a chart drawn off screen must not run its
+   journey unseen and arrive before the reader arrives. */
+function startRock(host) {
+  if (!SMIL_OK) return;
+  const motion = host.querySelector("#chartRockMotion");
+  if (!motion || typeof motion.beginElement !== "function") return;
+  try {
+    motion.beginElement();
+  } catch (err) {
+    /* no SMIL here: the ember still rides the front */
+  }
+}
+
+function igniteChart(mode) {
+  const host = chartMotion.host;
+  if (!host || mode === "none") return;
+  chartMotion.pending = "none";
+  chartMotion.running = mode;
+  chartMotion.born = true;
+  host.dataset.motion = mode;
+  host.dataset.draw = "playing";
+  /* The asteroid rides the same line on the same clock. It starts here, not
+     when the chart is drawn, because the front must not move while the chart
+     is off screen waiting for the reader. */
+  startRock(host);
+  /* The animations are one-shot. When they are done the chart is simply
+     whole, so the state can fall back to "idle" and nothing moves on screen.
+     The token makes sure a late timer cannot cut a newer front short. */
+  const token = (chartMotion.token += 1);
+  window.setTimeout(function () {
+    if (chartMotion.token !== token) return;
+    chartMotion.running = "none";
+    if (host.dataset.draw === "playing") host.dataset.draw = "idle";
+  }, chartDuration() * (1 + chartTrail()) + 560);
+}
+
+/* The chart is born once, left to right, the first time it comes into view.
+   Every render after that is an update: the newest close ignites and the
+   heat runs back through the series.
+
+   A render that lands while the front is still running does not change its
+   mind. The front the reader is already watching is the front that finishes,
+   so live data arriving mid-birth cannot flip the chart into an ignition. */
+function chartMode() {
+  if (prefersStill) return "none";
+  /* A still capture wants a settled frame, not a chart caught mid-write. */
+  if (document.documentElement.classList.contains("is-flat")) return "none";
+  /* An explicit refresh outranks everything: the chart must ignite from the
+     current price even if the reader has not watched it being born. */
+  if (chartMotion.requested !== "none") return chartMotion.requested;
+  if (chartMotion.quiet) return "none";
+  if (chartMotion.running !== "none") return chartMotion.running;
+  if (chartMotion.pending !== "none") return chartMotion.pending;
+  return chartMotion.born ? "ignite" : "enter";
+}
+
+/* The check that always works. A scroll or a resize is when the reader
+   actually arrives at the board, and a passive listener that returns
+   immediately costs nothing. */
+function chartCheck() {
+  if (chartMotion.pending === "none") return;
+  if (!chartInView()) return;
+  igniteChart(chartMotion.pending);
+}
+
+function watchChart() {
+  const host = chartMotion.host;
+  if (!host) return;
+
+  if (!chartMotion.watched) {
+    chartMotion.watched = true;
+    window.addEventListener("scroll", chartCheck, { passive: true });
+    window.addEventListener("resize", chartCheck, { passive: true });
+
+    /* The observer is the cheap path: it also fires when the board arrives
+       without a scroll, for instance when the live data resizes the page
+       above it. */
+    if ("IntersectionObserver" in window) {
+      chartMotion.observer = new IntersectionObserver(
+        function (entries) {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            chartCheck();
+          }
+        },
+        { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
+      );
+      chartMotion.observer.observe(host);
+    }
+  }
+
+  /* A slow safety net. The chart can become visible because the live data
+     resized the page above it rather than because the reader scrolled, and
+     a chart that stays pending would sit there blank. This timer stops the
+     moment the chart has ignited, and starts again if a later render puts
+     it back to waiting. */
+  if (chartMotion.polling) return;
+  chartMotion.polling = true;
+  const poll = function () {
+    if (chartMotion.pending === "none") { chartMotion.polling = false; return; }
+    chartCheck();
+    if (chartMotion.polling) window.setTimeout(poll, 250);
+  };
+  window.setTimeout(poll, 250);
+}
+
 /* ---------- chart -------------------------------------------------------- */
 
 const CH = { w: 900, h: 380, priceTop: 8, priceBottom: 226, volTop: 238, volBottom: 292, rsiTop: 304, rsiBottom: 372 };
@@ -295,7 +481,13 @@ function linePath(values, xOf, yOf) {
 function renderChart(candles) {
   const host = document.getElementById("chart");
   if (!host) return;
+  chartMotion.host = host;
   host.textContent = "";
+  const mode = chartMode();
+  chartMotion.requested = "none";
+  chartMotion.quiet = false;
+  host.dataset.motion = mode;
+  host.dataset.draw = "idle";
   if (!candles.length) {
     host.innerHTML = '<p class="chart__empty">No candles returned.</p>';
     return;
@@ -327,20 +519,43 @@ function renderChart(candles) {
     class: "chart__svg",
   });
 
+  /* The price line, as one path. It is drawn three times over: once as the
+     ink line, once as the ember that rides the front, and once as the mask
+     that reveals the area underneath. pathLength="1" turns every one of them
+     into a unit, so the front can be moved with stroke-dashoffset without
+     measuring a pixel. */
+  let priceD = "";
+  closes.forEach((v, i) => {
+    priceD += `${priceD ? "L" : "M"}${xOf(i).toFixed(1)},${yOf(v).toFixed(1)}`;
+  });
+
   // the glowing area under the price line, coloured by the active domain
   const defs = svgEl("defs");
   const fill = svgEl("linearGradient", { id: "priceFill", x1: "0", y1: "0", x2: "0", y2: "1" });
   fill.appendChild(svgEl("stop", { offset: "0%", class: "chart__area-stop" }));
   fill.appendChild(svgEl("stop", { offset: "100%", class: "chart__area-stop chart__area-stop--low" }));
   defs.appendChild(fill);
+
+  /* The wipe. A band as wide as the chart, stroked along the price line and
+     revealed by the same dash as the line itself, so the area and the line
+     are uncovered together and the edge of the reveal follows the line
+     rather than cutting a straight vertical. */
+  const mask = svgEl("mask", { id: "chartWipe", maskUnits: "userSpaceOnUse" });
+  mask.appendChild(svgEl("path", {
+    d: priceD,
+    pathLength: "1",
+    fill: "none",
+    stroke: "#fff",
+    "stroke-width": 2600,
+    "stroke-linecap": "butt",
+    class: "chart__wipe-mask",
+  }));
+  defs.appendChild(mask);
   svg.appendChild(defs);
 
-  let areaD = "";
-  closes.forEach((v, i) => {
-    areaD += `${areaD ? "L" : "M"}${xOf(i).toFixed(1)},${yOf(v).toFixed(1)}`;
-  });
+  let areaD = priceD;
   areaD += `L${xOf(closes.length - 1).toFixed(1)},${CH.priceBottom}L${xOf(0).toFixed(1)},${CH.priceBottom}Z`;
-  svg.appendChild(svgEl("path", { d: areaD, class: "chart__area" }));
+  svg.appendChild(svgEl("path", { d: areaD, class: "chart__area", mask: "url(#chartWipe)" }));
 
   // grid + price axis labels
   for (let g = 0; g <= 4; g += 1) {
@@ -362,17 +577,26 @@ function renderChart(candles) {
     if (bands.lower[i] === null) continue;
     bandD += `L${xOf(i).toFixed(1)},${yOf(bands.lower[i]).toFixed(1)}`;
   }
-  svg.appendChild(svgEl("path", { d: `${bandD}Z`, class: "chart__band" }));
+  svg.appendChild(svgEl("path", { d: `${bandD}Z`, class: "chart__band", mask: "url(#chartWipe)" }));
 
   // volume bars
+  const last = Math.max(candles.length - 1, 1);
   candles.forEach((c, i) => {
     const h = (c.volume / maxVol) * (CH.volBottom - CH.volTop);
     const x = xOf(i);
     const w = Math.max((CH.w / candles.length) * 0.6, 1);
-    svg.appendChild(svgEl("rect", {
+    const bar = svgEl("rect", {
       x: x - w / 2, y: CH.volBottom - h, width: w, height: h,
-      class: c.close >= c.open ? "chart__vol-up" : "chart__vol-down",
-    }));
+      class: `chart__vol ${c.close >= c.open ? "chart__vol-up" : "chart__vol-down"}`,
+    });
+    /* --t is where the front reaches this bar. The bars grow in the same
+       order the front runs - oldest first - and the origin is the bar's own
+       baseline, so it grows out of the floor rather than out of the top-left
+       corner of the view box. */
+    const t = i / last;
+    bar.style.setProperty("--t", t.toFixed(4));
+    bar.style.transformOrigin = `${x.toFixed(1)}px ${CH.volBottom}px`;
+    svg.appendChild(bar);
   });
 
   // rsi panel
@@ -380,12 +604,47 @@ function renderChart(candles) {
     const y = CH.rsiBottom - (level / 100) * (CH.rsiBottom - CH.rsiTop);
     svg.appendChild(svgEl("line", { x1: 0, y1: y, x2: CH.w, y2: y, class: "chart__rsi-line" }));
   });
-  svg.appendChild(svgEl("path", { d: linePath(rsiSeries, xOf, (v) => CH.rsiBottom - (v / 100) * (CH.rsiBottom - CH.rsiTop)), class: "chart__rsi" }));
+  svg.appendChild(svgEl("path", { d: linePath(rsiSeries, xOf, (v) => CH.rsiBottom - (v / 100) * (CH.rsiBottom - CH.rsiTop)), pathLength: "1", class: "chart__rsi" }));
 
   // overlays
-  svg.appendChild(svgEl("path", { d: linePath(mid50, xOf, yOf), class: "chart__sma50" }));
-  svg.appendChild(svgEl("path", { d: linePath(mid20, xOf, yOf), class: "chart__sma20" }));
-  svg.appendChild(svgEl("path", { d: linePath(closes, xOf, yOf), class: "chart__price" }));
+  svg.appendChild(svgEl("path", { d: linePath(mid50, xOf, yOf), pathLength: "1", class: "chart__sma50" }));
+  svg.appendChild(svgEl("path", { d: linePath(mid20, xOf, yOf), pathLength: "1", class: "chart__sma20" }));
+  svg.appendChild(svgEl("path", { d: priceD, pathLength: "1", id: "chartPricePath", class: "chart__price" }));
+
+  /* The ember: the same path, stroked as a short dash, so the hot head rides
+     the front for free. Behind it rides a longer, dimmer dash - the stretch
+     of the line the head has just crossed. In the shrine domain this is the
+     furnace catching; in the plain theme it is the accent bead running the
+     line. */
+  svg.appendChild(svgEl("path", { d: priceD, pathLength: "1", class: "chart__ember-tail" }));
+  svg.appendChild(svgEl("path", { d: priceD, pathLength: "1", class: "chart__ember" }));
+
+  /* The asteroid. A burning rock that rides the front from the oldest close
+     to the current price. The motion path is the price path itself, so the
+     rock can never leave the line, and the easing is the one the front
+     uses, so it never drifts away from it either. */
+  if (SMIL_OK) {
+    const rock = svgEl("g", { class: "chart__rock" });
+    rock.appendChild(svgEl("circle", { r: 34, class: "chart__rock-glow" }));
+    rock.appendChild(svgEl("path", { d: "M-14 -6 L-4 -14 L8 -11 L15 1 L7 13 L-5 12 L-15 2 Z", class: "chart__rock-body" }));
+    rock.appendChild(svgEl("path", { d: "M-4 -14 L-1 -2 L-7 7 M-1 -2 L15 1", class: "chart__rock-facet" }));
+    rock.appendChild(svgEl("circle", { cx: 1, cy: -2, r: 5.5, class: "chart__rock-core" }));
+    const motion = svgEl("animateMotion", {
+      id: "chartRockMotion",
+      dur: `${(chartDuration() / 1000).toFixed(3)}s`,
+      begin: "indefinite",
+      fill: "freeze",
+      calcMode: "spline",
+      keyTimes: "0;1",
+      keySplines: "0.16 0.84 0.44 1",
+      rotate: "auto",
+    });
+    const mpath = svgEl("mpath", { href: "#chartPricePath" });
+    mpath.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "#chartPricePath");
+    motion.appendChild(mpath);
+    rock.appendChild(motion);
+    svg.appendChild(rock);
+  }
 
   // last price marker
   const lastY = yOf(closes[closes.length - 1]);
@@ -412,6 +671,21 @@ function renderChart(candles) {
   }
 
   host.appendChild(svg);
+
+  /* Start the front.
+     If the board is already on screen the chart draws itself now. If it is
+     completely off the page the motion waits until the reader scrolls down to
+     it, and the chart sits blank in the meantime - so the reader watches the
+     series being written, rather than watching it re-write itself. */
+  if (mode !== "none") {
+    if (chartInView()) {
+      igniteChart(mode);
+    } else {
+      chartMotion.pending = mode;
+      host.dataset.draw = "pending";
+      watchChart();
+    }
+  }
 
   // The finger tracker: one seal per session over the last 20 days, filled
   // when the day closed up. The six eyes read the same series by week.
@@ -1060,28 +1334,41 @@ function wireBoard() {
   let snapshot = null;
   let timer = null;
 
-  const run = async () => {
+  const run = async (options = {}) => {
     const symbol = (input.value || "RELIANCE").trim().toUpperCase();
     if (!SYMBOL_LIST.includes(symbol)) {
       // An unknown symbol used to leave the old price and the old company
       // name on screen with no word about it.
       setBoardError(`"${symbol}" is not on this board's NSE list. Try RELIANCE, TCS, INFY, HDFCBANK or SBIN.`);
       setBoardName(symbol);
+      chartMotion.requested = "none";
+      chartMotion.quiet = false;
       return;
     }
     state.symbol = symbol;
     setBoardError("");
+    /* A deliberate request - another stock, or the refresh button - writes
+       the series again in front of the reader. A background poll updates the
+       numbers where they stand and leaves the chart alone. */
+    chartMotion.requested = options.animate ? "ignite" : "none";
+    chartMotion.quiet = options.quiet === true;
     await refreshBoard(symbol, snapshot);
     refreshHud(snapshot);
   };
 
-  input.addEventListener("change", run);
+  input.addEventListener("change", function () { run({ animate: true }); });
   input.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") { event.preventDefault(); run(); }
+    if (event.key === "Enter") { event.preventDefault(); run({ animate: true }); }
   });
 
   const refresh = document.getElementById("board-refresh");
-  if (refresh) refresh.addEventListener("click", run);
+  /* An explicit refresh is an order, not an update: the chart writes itself
+     again, from the oldest close to the current price. */
+  if (refresh) {
+    refresh.addEventListener("click", function () {
+      run({ animate: true });
+    });
+  }
 
   loadSnapshot()
     .then((data) => {
@@ -1106,9 +1393,10 @@ function wireBoard() {
   // hold up the headline numbers.
   run();
 
-  timer = setInterval(run, 90000);
+  const poll = function () { run({ quiet: true }); };
+  timer = setInterval(poll, 90000);
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden) { clearInterval(timer); } else { run(); timer = setInterval(run, 90000); }
+    if (document.hidden) { clearInterval(timer); } else { poll(); timer = setInterval(poll, 90000); }
   });
 }
 

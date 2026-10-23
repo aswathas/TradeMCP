@@ -8,6 +8,11 @@ Headless Chrome will not paint a scrolled page (only the fixed overlays come
 out), so the script captures one tall page per theme and crops the frames it
 needs with a second Chrome pass over the PNG.
 
+The one exception is THE CALL frame. It is captured by section name in a real
+viewport that is scrolled to the section, because everything above that
+section is live and resizes once the data lands: a hard-coded crop offset
+drifts by a hundred pixels from run to run.
+
     python scripts/capture_screenshots.py --port 8099 --out showcase/screenshots
 """
 
@@ -31,13 +36,26 @@ CHROME_CANDIDATES = [
 WIDTH = 1440
 FRAME = 900
 
+SITE = Path(__file__).resolve().parent.parent / "showcase" / "site"
+
 # theme -> (tall frame height, [(shot name, crop offset), ...])
 # The tall frame must be at least offset + FRAME for every crop it feeds.
+# The offsets below are measured with scripts/measure_sections.py; re-measure
+# them if a section above one of these changes height.
 PLAN = {
     "paper": (FRAME, [("01-paper", 0)]),
-    "void": (3400, [("02-infinite-void", 0), ("05-live-board-void", 1205)]),
-    "shrine": (3800, [("03-malevolent-shrine", 0), ("04-live-board-shrine", 1465), ("06-screener", 2566, 1100)]),
+    "void": (3400, [("02-infinite-void", 0), ("05-live-board-void", 1311)]),
+    "shrine": (3800, [("03-malevolent-shrine", 0), ("04-live-board-shrine", 1245), ("06-screener", 2509, 1100)]),
 }
+
+# THE CALL sits below the fold of every other capture, and it is the one frame
+# that shows a live handshake rather than a painted result. It is captured by
+# name instead of by offset, because everything above it is live: the tape, the
+# hero gauge and the metrics chips all resize once the data lands, so a
+# hard-coded crop offset drifts by a hundred pixels from run to run. The frame
+# is 1170px tall, which fits the sticky masthead, the whole section and a
+# little of the next one.
+CALL = ("07-call", "call", 1170, "theme=paper")
 
 
 def find_chrome() -> str:
@@ -85,6 +103,59 @@ def crop(chrome: str, src: Path, out: Path, offset: int, profile: Path, height: 
     page.unlink(missing_ok=True)
 
 
+# A section frame, captured by name instead of by offset. The page above a
+# section is live, so it resizes once the data lands and a hard-coded crop
+# offset drifts. A real viewport that is scrolled to the section cannot drift:
+# the frame is the section, wherever the page has put it.
+SECTION_WRAPPER = """<!doctype html>
+<meta charset="utf-8">
+<title>frame</title>
+<style>
+  html, body {{ margin: 0; padding: 0; background: #000; overflow: hidden; }}
+  iframe {{ display: block; border: 0; width: {w}px; height: {h}px; }}
+</style>
+<iframe src="{url}"></iframe>
+<script>
+const frame = document.querySelector("iframe");
+const seat = () => {{
+  try {{
+    const d = frame.contentDocument;
+    const el = d.getElementById("{anchor}");
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + d.documentElement.scrollTop;
+    /* the masthead is sticky, so the section starts below it, not under it */
+    const mast = d.querySelector(".masthead");
+    const head = mast ? mast.getBoundingClientRect().height + 12 : 8;
+    d.documentElement.scrollTop = top - head;
+    frame.contentWindow.scrollTo(0, top - head);
+  }} catch (e) {{ /* the page is still loading */ }}
+}};
+/* Seat it now, and again once the live data has resized the page above. */
+[0, 400, 1200, 3000, 6000].forEach((t) => setTimeout(seat, t));
+</script>
+"""
+
+
+def capture_section(
+    chrome: str, page_url: str, wrapper_url: str, out: Path, anchor: str, height: int, profile: Path
+) -> None:
+    """Capture one section, framed by its own id.
+
+    The wrapper has to be served from the same origin as the page it frames:
+    a wrapper opened from file:// cannot reach into an http:// iframe, so the
+    scroll would silently never happen.
+    """
+    page = SITE / "_section.html"
+    page.write_text(
+        SECTION_WRAPPER.format(w=WIDTH, h=height, url=page_url, anchor=anchor),
+        encoding="utf-8",
+    )
+    try:
+        run_chrome(chrome, wrapper_url, out, height, profile)
+    finally:
+        page.unlink(missing_ok=True)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--port", type=int, default=8099)
@@ -99,9 +170,11 @@ def main() -> None:
 
     with tempfile.TemporaryDirectory() as tmp:
         profile = Path(tmp) / "chrome-profile"
-        for theme, (height, frames) in PLAN.items():
+        jobs = [(theme, height, frames, f"theme={theme}") for theme, (height, frames) in PLAN.items()]
+
+        for theme, height, frames, extra in jobs:
             tall = out_dir / f"_tall-{theme}.png"
-            url = f"{base}?flat=1&theme={theme}"
+            url = f"{base}?flat=1&{extra}"
             print(f"capture {tall.name} <- {url}")
             run_chrome(chrome, url, tall, height, profile)
             for frame in frames:
@@ -114,6 +187,14 @@ def main() -> None:
                 else:
                     crop(chrome, tall, target, offset, profile, frame_height)
             tall.unlink(missing_ok=True)
+
+        name, anchor, height, extra = CALL
+        target = out_dir / f"{name}.png"
+        page_url = f"{base}?flat=1&{extra}"
+        wrapper_url = f"{base}_section.html"
+        print(f"capture {target.name} <- {page_url}#{anchor}")
+        capture_section(chrome, page_url, wrapper_url, target, anchor, height, profile)
+
     print(f"\nScreenshots written to {out_dir}")
 
 

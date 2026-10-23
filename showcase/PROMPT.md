@@ -129,7 +129,7 @@ Run these, do not just claim them.
 
 <delivery>
 out/master_16x9.mp4, out/cut_9x16.mp4, captions.srt, contact.png, scenes/ (Argon), source, and a README that lists only what was tested.
-For the web build the same contract reads: `showcase/site/` is a static folder with no build step and no dependencies. `scripts/serve_showcase.py` adds the live `/api/*` layer for local runs. `showcase/PROMPT.md` is this file. `showcase/SPEC.md` and `showcase/DEMO.md` are the written brief and the transcript of fourteen live tool calls.
+For the web build the same contract reads: `showcase/site/` is a static folder with no build step and no package dependencies. `scripts/serve_showcase.py` adds the live `/api/*` layer for local runs. `showcase/PROMPT.md` is this file. `showcase/SPEC.md` and `showcase/DEMO.md` are the written brief and the transcript of fourteen live tool calls.
 </delivery>
 
 <caution>
@@ -143,7 +143,7 @@ For TradeMCP the irreversible actions are: publishing the page to a public URL, 
 
 ## What this prompt produced
 
-A single static page at `showcase/site/` — `index.html`, `styles.css`, `app.js`, `live.js`, `screener.js`, nine assets, two JSON snapshots.
+A single static page at `showcase/site/` — `index.html`, `styles.css`, `app.js`, `live.js`, `screener.js`, `cursor.js`, `call.js`, nine assets, two JSON snapshots.
 
 **Live, not mocked.** `scripts/serve_showcase.py` exposes `/api/quote`, `/api/history`, `/api/fundamentals`, `/api/indicators` and `/api/tape`, each backed by `mcp.call_tool` against the TradeMCP server on a background asyncio loop. The page falls back to `data/snapshot.json` when those endpoints are absent, so it still works on a static host and offline. That fallback exists because Yahoo sends no `Access-Control-Allow-Origin` header — a browser cannot call it directly, and every public CORS relay tried returned 401, 520 or 522.
 
@@ -154,6 +154,12 @@ A single static page at `showcase/site/` — `index.html`, `styles.css`, `app.js
 **Three original manga figures** — developer, trader, analyst — generated as original art and cut out over the page. No licensed character from any existing series appears anywhere.
 
 **Fonts** load from Google Fonts; the page falls back to system stacks without them. The plate textures are deterministic PNGs, not gradients, so the manga look survives a screenshot.
+
+**The call.** A section between the metrics and the mechanism shows one MCP handshake as it happens. The agent stands on the left, the market on the right, and a single packet crosses the wire, waits, and comes back with the answer — a diagram in CSS 3D, with no library and nothing fetched from a CDN. Beside it are the two halves of the handshake verbatim: the JSON-RPC request (`tools/call` → `trademcp_get_quote`) and the JSON the server returned, plus the measured round trip and where the answer came from. The answer is real: the panel calls `/api/quote`, which the showcase server turns into one MCP `tools/call` over stdio against the real server. With no server to ask, the panel falls back to the bundled snapshot and says so in the source line instead of pretending the number is live. The flight is theatre on a fixed beat; the clock under it is `performance.now()` around the fetch.
+
+**The touch.** The cursor is a fountain-pen nib drawn in `cursor.js` and handed the pointer. It transfigures what it touches — a panel it passes over softens into an organic seam, lifts a hair off the page and takes a cyan outline. That part is pure CSS `:hover`, so it still works where pointer events never reach the page; the script only adds the nib and the angle. The native arrow is handed over on the first real pointer move and given back the moment the pointer leaves the window, so a page where the script never runs still has a working cursor. `?cursor=system` brings the native cursor back on demand, and touch devices, reduced motion and still capture never lose it.
+
+**The chart ignites.** The price line on the live board is not a static drawing. A front runs along it, and the ink behind the front is drawn while ahead of the front there is nothing. Which way the front runs depends on what happened. The first time the board comes into view the chart is born: the front starts at the oldest close and runs right, so the series is written in reading order, with a cyan ember and a short tail riding the head. A refresh is the opposite. The newest close, the current price, ignites first and the heat runs back through the history, so the chart never re-writes itself from the left edge. The front is an SVG dash, and every path that carries it declares `pathLength="1"`, so the dash travels from one to zero or from minus one to zero without measuring a pixel; the area fill and the Bollinger band are revealed by a mask stroked along the same path, so the edge of the reveal follows the line instead of cutting a vertical. The chart is never half drawn in plain sight: the blank state is only used while the board is completely off the page, the base CSS is the whole chart, and reduced motion keeps the data arriving without the travel.
 
 ## Measured tokens
 
@@ -174,3 +180,5 @@ Three fixes came out of the build that are worth keeping in any version of this 
 - The page is **not published**. A static host would lose the `/api/*` layer and fall back to the snapshot.
 - The MCP server is **not registered** in any client config.
 - The 3D tilt, scroll dolly and aura rings were verified in-browser with zero console errors; they have not been checked in Safari or Firefox, and `prefers-reduced-motion` collapses them to near-zero duration but does not remove the transforms.
+- The call's CSS 3D diagram has been verified in headless Chrome — the slab planes, the wire and the packet are real — but not in Safari or Firefox, and the packet flight has not been watched at 60fps on real hardware.
+- The custom cursor has been verified in Chrome only. It hides the native arrow by design, so it is worth a look on a trackpad and on a touch laptop before the page is published.

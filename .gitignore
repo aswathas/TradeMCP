@@ -16,6 +16,8 @@ dist/
 # Local scratch scripts, not part of the project
 probe_*.py
 scripts/_*.py
+scripts/_*.js
+scripts/_*.txt
 
 # Agent design scratch space (139 MB of comps and decision pages, not source)
 .impeccable/
