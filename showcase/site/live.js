@@ -388,8 +388,9 @@ function igniteChart(mode) {
 }
 
 /* The chart is born once, left to right, the first time it comes into view.
-   Every render after that is an update: the newest close ignites and the
-   heat runs back through the series.
+   Every render after that is an update, and it runs the same way: from the
+   oldest close to the current price, left to right. The ignite mode is
+   hotter, not reversed.
 
    A render that lands while the front is still running does not change its
    mind. The front the reader is already watching is the front that finishes,
@@ -500,6 +501,13 @@ function renderChart(candles) {
   const mid50 = sma(closes, 50);
   const rsiSeries = rsi(closes, 14);
 
+  /* The price labels are sized in the plot's own units, and the plot is
+     stretched into the panel, so the type grows as the panel narrows. The
+     scale needs room for that type above it, so the head of the price scale
+     moves down as the type grows. */
+  const axisPx = parseFloat(getComputedStyle(host).getPropertyValue("--chart-axis")) || 11;
+  CH.priceTop = Math.max(8, axisPx * 1.6);
+
   const visible = candles.map((c) => c.close);
   const allValues = visible.concat(bands.upper.filter((v) => v !== null), bands.lower.filter((v) => v !== null));
   let lo = Math.min(...allValues);
@@ -562,8 +570,11 @@ function renderChart(candles) {
     const v = lo + ((hi - lo) * g) / 4;
     const y = yOf(v);
     svg.appendChild(svgEl("line", { x1: 0, y1: y, x2: CH.w, y2: y, class: "chart__grid" }));
-    const label = svgEl("text", { x: 4, y: y - 4, class: "chart__axis" });
+    const label = svgEl("text", { x: 4, class: "chart__axis" });
     label.textContent = nf(v, 0);
+    /* The label sits just above its own gridline, and never above the top of
+       the plot - a number sliced in half is worse than one nudged down. */
+    label.setAttribute("y", Math.max(y - axisPx * 0.35, axisPx * 1.15));
     svg.appendChild(label);
   }
 

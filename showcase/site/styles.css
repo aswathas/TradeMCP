@@ -157,9 +157,16 @@ html:not(.has-cursor) [role="tab"] { cursor: pointer; }
 }
 .skip:focus { left: 8px; top: 8px; }
 
+/* The ring has to survive a control that is painted with the page's own ink:
+   the live board's input sits on an inverted bar, the screener's chips are
+   white on a dark panel, and in the shrine the active chip is the same
+   crimson as the accent - so a ring in the accent colour lands on the same
+   colour as the button it is marking. The ring is therefore drawn inside the
+   control, in the control's own text colour, which is chosen against that
+   control's fill everywhere on the page. */
 :focus-visible {
-  outline: 3px solid var(--cyan);
-  outline-offset: 3px;
+  outline: 3px solid currentColor;
+  outline-offset: -3px;
 }
 
 /* The parts of the page that were not drawn still have to belong to it.
@@ -1243,13 +1250,13 @@ code {
   font-size: 16px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  width: 11ch;
+  width: 14ch;
   padding: 5px 9px;
   border: 2px solid var(--paper);
   background: transparent;
   color: var(--paper);
 }
-.board__symbol input:focus { outline: 2px solid var(--cyan); outline-offset: 1px; }
+.board__symbol input:focus { outline: 2px solid currentColor; outline-offset: -2px; }
 
 .board__name {
   font-family: var(--font-ui);
@@ -1312,15 +1319,33 @@ code {
 
 /* The chart holds its space even before the series arrives, so the panel
    never jumps when the SVG is written into it. */
-.chart { padding: 6px 10px 0; aspect-ratio: 900 / 380; }
+.chart {
+  padding: 6px 10px 0;
+  aspect-ratio: 900 / 380;
+  /* The plot is drawn in a fixed 900-unit space and stretched into the panel,
+     so on a phone it is scaled to about a third. The price labels live inside
+     that space, so they are sized in the same units - and the type has to
+     grow as the plot shrinks, or the reader gets four-pixel numbers. */
+  --chart-axis: 11px;
+}
+@media (max-width: 720px) { .chart { --chart-axis: 16px; } }
+@media (max-width: 560px) { .chart { --chart-axis: 22px; } }
+@media (max-width: 430px) { .chart { --chart-axis: 28px; } }
+@media (max-width: 360px) { .chart { --chart-axis: 34px; } }
 .chart__svg { width: 100%; height: 100%; display: block; }
 .chart__empty { padding: 40px 10px; color: var(--ink-3); font-size: 14px; }
 
 .chart__grid { stroke: var(--tone); stroke-width: 1; vector-effect: non-scaling-stroke; opacity: 0.5; }
 .chart__axis {
   font-family: var(--font-data);
-  font-size: 11px;
+  font-size: var(--chart-axis, 11px);
   fill: var(--ink-3);
+  /* The price labels sit on top of the price line, so they are knocked out
+     of it the way a caption is knocked out of a panel in a comic. */
+  paint-order: stroke fill;
+  stroke: var(--paper);
+  stroke-width: calc(var(--chart-axis, 11px) * 0.26);
+  stroke-linejoin: round;
 }
 .chart__band { fill: var(--cyan); opacity: 0.1; }
 .chart__price { fill: none; stroke: var(--ink); stroke-width: 2.2; vector-effect: non-scaling-stroke; }
@@ -1339,20 +1364,22 @@ code {
    THE CHART IGNITES
    ==========================================================================
    The price line is not a static drawing. A front runs along it, and the ink
-   behind the front is drawn while ahead of the front there is nothing. Which
-   way the front runs depends on what happened:
+   behind the front is drawn while ahead of the front there is nothing. The
+   front always runs one way - from the oldest close to the current price,
+   left to right - so the series is written in reading order, and it does so
+   on a falling market exactly as on a rising one. What changes between the
+   two modes is the character of the run, not its direction:
 
      enter   the chart is being born. The front starts at the oldest close
-             and runs right, so the series is written in reading order.
-     ignite  the data changed. The newest close - the current price -
-             ignites first and the heat runs back through the history. A
-             refresh never leaves a line running from the left edge of the
-             chart to the current price.
+             and runs right, at the page's own pace.
+     ignite  the data changed. The same run again, oldest close to current
+             price, but hotter - a longer streak of ember in front of it.
 
    The front is an SVG dash. Every wipe path carries pathLength="1", so
-   stroke-dashoffset travels 1 -> 0 (left to right) or -1 -> 0 (right to
-   left) without measuring a single pixel. The ember is a short dash of the
-   same path, so it rides the front for free.
+   stroke-dashoffset travels 1 -> 0 (left to right) without measuring a
+   single pixel. The ember is a short dash of the same path, so it rides the
+   front for free. The asteroid rides it as well: an <animateMotion> along
+   the price path, so it comes to rest exactly on the current price.
 
    The chart's own state is on the host: data-motion says which way the front
    runs, data-draw says whether it is running. Without those attributes the
@@ -1858,7 +1885,7 @@ html.is-flat .panel--hud { transform: none; }
 
 /* the LIVE badge throws a ring when it goes live */
 .board__badge--live {
-  animation: badge-lock 420ms cubic-bezier(0.2, 1.5, 0.4, 1);
+  animation: badge-lock 420ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 @keyframes badge-lock {
   0% { transform: scale(0.7); box-shadow: 0 0 0 0 var(--green); }
@@ -1967,6 +1994,9 @@ html.is-flat .panel--hud { transform: none; }
   height: 26px;
   background: transparent;
   border: 0;
+  /* the browser's own field colour, so the focus ring that is drawn in the
+     control's text colour comes out in the theme's ink and not in black */
+  color: var(--ink);
   cursor: pointer;
 }
 .filter input[type="range"]::-webkit-slider-runnable-track {
@@ -2089,7 +2119,7 @@ html.is-flat .panel--hud { transform: none; }
     margin-left: 0;
     flex-wrap: nowrap;
     justify-content: flex-start;
-    gap: 14px;
+    gap: 9px;
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scrollbar-width: none;
@@ -2097,9 +2127,16 @@ html.is-flat .panel--hud { transform: none; }
     -webkit-overflow-scrolling: touch;
   }
   .nav::-webkit-scrollbar { display: none; }
+  /* If the row still has to scroll - a wider fallback face, a longer label -
+     it says so: the right edge fades out, so the cut reads as more rather
+     than as a missing link. */
+  .nav--more {
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent 100%);
+    mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent 100%);
+  }
   .nav a {
-    font-size: 12px;
-    letter-spacing: 0.09em;
+    font-size: 11px;
+    letter-spacing: 0.06em;
     white-space: nowrap;
     padding: 2px 0;
   }
@@ -2777,7 +2814,7 @@ html.is-cast .panel--hero { animation: cast-flash 800ms ease-out; }
   transition: background 150ms ease, color 150ms ease, transform 150ms ease;
 }
 .tech:hover { transform: translate(-1px, -1px); }
-.tech:focus-visible { outline: 2px solid var(--tech-c); outline-offset: 2px; }
+.tech:focus-visible { outline: 2px solid var(--tech-c); outline-offset: -2px; }
 /* On the light page the technique colours have to be dark enough to read;
    inside a domain they can be the bright, glowing version. */
 .tech--void { --tech-c: #0a6478; }
@@ -3593,7 +3630,7 @@ html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
   transition: background 140ms ease, color 140ms ease;
 }
 .terminal__copy:hover { background: var(--cyan); color: var(--paper); }
-.terminal__copy:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+.terminal__copy:focus-visible { outline: 2px solid currentColor; outline-offset: -2px; }
 
 /* The source install. The npx command above it is the product's front door,
    but it does not resolve until the package is published, so the command that
@@ -3615,7 +3652,11 @@ html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
   font-size: 13px;
   line-height: 1.4;
   color: var(--ink);
-  overflow-wrap: anywhere;
+  /* The URL is one long token, and breaking it anywhere split "aswathas" into
+     "aswat" and "has" - a command nobody can retype. It breaks at the path
+     separators instead, which the markup marks with <wbr>. */
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 .terminal__src .terminal__copy { width: auto; flex: none; font-size: 11px; padding: 6px 10px; }
 [data-theme="shrine"] .terminal__src { background: #120a0c; border-color: rgba(229, 9, 20, 0.55); }
@@ -3662,6 +3703,17 @@ html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
   74% { opacity: 1; transform: translate(-50%, -50%) rotate(-4deg) scale(1); }
   100% { opacity: 0; transform: translate(-50%, -50%) rotate(-4deg) scale(0.94); }
 }
+/* Reduced motion kills the animation, and an animation with fill-mode "both"
+   resolves straight to its last keyframe - which is invisible. So the plate is
+   given a still state of its own: the name is simply there, for as long as
+   the stamp is held. */
+@media (prefers-reduced-motion: reduce) {
+  .cast-plate.is-stamped {
+    animation: none;
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(-4deg) scale(1);
+  }
+}
 
 /* ---------- the technique panel ------------------------------------------
    The rail is a bordered plate with the cut between the two techniques, the
@@ -3678,11 +3730,13 @@ html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
 [data-theme="shrine"] .tech__txt i { color: #8d8386; }
 
 /* On a phone the command needs the whole row and the copy button gets its
-   own line under it, instead of the command breaking in half. */
+   own line under it, instead of the command breaking in half. The command
+   stays the same size as the source command under it: the flagged line must
+   never be the smallest thing in the hero. */
 @media (max-width: 560px) {
   .terminal { flex-wrap: wrap; }
   .terminal__prompt { align-self: flex-start; }
-  .terminal__cmd { font-size: 11.5px; }
+  .terminal__cmd { font-size: 13px; }
   .terminal__copy { width: 100%; text-align: center; }
 }
 
@@ -3972,13 +4026,13 @@ html.has-cursor input[type="range"]::-moz-range-thumb { cursor: grab; }
     linear-gradient(var(--ink), var(--ink)) 100% 50% / 8px 1.5px no-repeat;
   opacity: 0;
   transform: scale(0.55);
-  transition: opacity 140ms ease, transform 140ms cubic-bezier(0.2, 1.4, 0.4, 1);
+  transition: opacity 140ms ease, transform 140ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .cursor.is-target .cursor__ring { opacity: 1; transform: scale(1); }
 
 /* the press: the nib squashes into the paper */
 .cursor.is-press .cursor__nib { transform: translate(-11px, -20px) scale(0.86); }
-.cursor__nib { transition: transform 140ms cubic-bezier(0.2, 1.4, 0.4, 1); }
+.cursor__nib { transition: transform 140ms cubic-bezier(0.16, 1, 0.3, 1); }
 
 /* the control that was clicked gets a cyan flash */
 .is-hit { outline: 2px solid var(--cyan); outline-offset: 3px; }
@@ -4313,6 +4367,10 @@ html.is-flat .call__aura { display: none; }
 }
 [data-theme="shrine"] .call__packet-tag,
 [data-theme="shrine"] .call__node-value { color: #ff8a6b; }
+[data-theme="shrine"] .call__state[data-state="live"] {
+  color: #ff8a6b;
+  border-color: #ff8a6b;
+}
 
 .call__board[data-phase="ask"] .call__packet {
   animation: call-out 760ms cubic-bezier(0.42, 0, 0.2, 1) forwards;
@@ -4454,7 +4512,7 @@ html.is-flat .call__aura { display: none; }
   white-space: pre;
   tab-size: 2;
 }
-.call__code:focus-visible { outline: 2px solid var(--cyan); outline-offset: -2px; }
+.call__code:focus-visible { outline: 2px solid currentColor; outline-offset: -2px; }
 
 /* ---------- what it cost ---------------------------------------------------- */
 

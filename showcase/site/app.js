@@ -238,9 +238,13 @@ function stampDomain(key) {
   void plate.offsetWidth;
   plate.classList.add("is-stamped");
   clearTimeout(stampDomain._timer);
+  /* With the motion off the plate is a still label instead of a stamp, and
+     there is no fade to carry the eye - so it is held a little longer. */
+  const still = window.matchMedia
+    && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   stampDomain._timer = setTimeout(function () {
     plate.classList.remove("is-stamped");
-  }, 1850);
+  }, still ? 2600 : 1850);
 }
 
 const domainLabels = {
@@ -499,6 +503,15 @@ function wireDolly() {
   update();
 }
 
+/* The phone nav is one scrolling row. If it has to scroll - a wider fallback
+   face, a longer label - it says so with a faded edge, so a link cut off at
+   the right reads as more rather than as a missing destination. */
+function markNavOverflow() {
+  const nav = document.querySelector(".nav");
+  if (!nav) return;
+  nav.classList.toggle("nav--more", nav.scrollWidth > nav.clientWidth + 2);
+}
+
 /* ---------- anchors: land below the sticky masthead ------------------------- */
 
 /* The masthead is sticky, so an anchor jump that scrolls a section's top to
@@ -513,7 +526,8 @@ function wireAnchorOffset() {
 
   const update = () => {
     const h = Math.round(masthead.getBoundingClientRect().height);
-    if (h > 0) root.style.setProperty("--masthead-h", `${h}px`);
+    if (h > 0) root.style.setProperty("--masthead-h", `${h}px}`);
+    markNavOverflow();
   };
 
   update();
