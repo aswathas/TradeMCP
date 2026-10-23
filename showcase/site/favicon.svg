@@ -1,5 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="TradeMCP">
-  <rect width="64" height="64" fill="#050405"/>
-  <path d="M13 51 L47 17" stroke="#e50914" stroke-width="10" stroke-linecap="round"/>
-  <path d="M38 12 L53 27" stroke="#ff5500" stroke-width="5" stroke-linecap="round"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" aria-label="TradeMCP" role="img" viewBox="0 0 64 64"><rect width="64" height="64" fill="#050405"/><path stroke="#e50914" stroke-linecap="round" stroke-width="10" d="M13 51 L47 17"/><path stroke="#f50" stroke-linecap="round" stroke-width="5" d="M38 12 L53 27"/></svg>
