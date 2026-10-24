@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="paper">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TradeMCP — free Model Context Protocol server for Indian equities</title>
+<meta name="description" content="A free MCP server for NSE and BSE. Live quotes, 57 technical indicators, 54 fundamental ratios and a stock screener for your AI agent. No API key, no account, no paid tier.">
+<meta property="og:title" content="TradeMCP — live Indian market data for your AI agent">
+<meta property="og:description" content="14 tools. 57 technical indicators. 54 fundamental ratios. 3 free data sources. 0 API keys.">
+<meta property="og:type" content="website">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css?v=41">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="sheet">
+
+  <header class="masthead" id="top">
+    <a class="wordmark" href="#top" aria-label="TradeMCP home">TradeMCP</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="#live">Board</a>
+      <a href="#screener">Screener</a>
+      <a href="#tools">Tools</a>
+      <a href="#metrics">Metrics</a>
+      <a href="#call">Call</a>
+      <a href="#install">Install</a>
+      <a href="#sources">Sources</a>
+    </nav>
+    <button class="theme-toggle" type="button" id="theme-toggle" aria-pressed="false">
+      <span class="theme-toggle__glyph" aria-hidden="true">◐</span>
+      <span class="theme-toggle__text">Night</span>
+    </button>
+  </header>
+
+  <div class="tape" role="group" aria-label="Saved quotes for NSE stocks">
+    <div class="tape__row" id="tape-row-a"></div>
+    <div class="tape__row tape__row--reverse" id="tape-row-b"></div>
+    <span class="tape__stamp" id="tape-stamp"></span>
+    <button class="tape__pause" type="button" id="tape-pause" aria-pressed="false">Pause</button>
+  </div>
+
+  <main id="main">
+
+    <!-- ================= SPLASH ================= -->
+    <section class="splash" aria-labelledby="hero-title">
+
+      <div class="panel panel--hero">
+        <span class="void-core" aria-hidden="true">
+          <span class="void-core__disk"></span>
+        </span>
+        <span class="void-space" aria-hidden="true">
+          <span class="void-space__grid"></span>
+          <span class="void-space__rays"></span>
+          <span class="void-space__pulse"></span>
+        </span>
+        <svg class="shrine-gate" viewBox="0 0 400 300" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="4">
+          <g stroke-width="5">
+            <path d="M20 44 Q200 28 380 44" />
+            <path d="M26 62 H374" />
+            <path d="M96 62 L84 264" />
+            <path d="M304 62 L316 264" />
+            <path d="M56 110 H344" />
+          </g>
+        </svg>
+        <span class="shrine-scrim" aria-hidden="true"></span>
+        <span class="shrine-brackets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span class="cast-plate" id="cast-plate" aria-hidden="true"><span class="cast-plate__name"></span></span>
+        <span class="caption caption--badge">● FREE · NO API KEY · NO ACCOUNT</span>
+        <h1 class="hero-title" id="hero-title">
+          LIVE MARKET DATA<br>FOR YOUR AI AGENT
+        </h1>
+        <p class="hero-lede">
+          A Model Context Protocol server for Indian equities. Live NSE and BSE quotes,
+          57 technical indicators, 54 fundamental ratios and a stock screener, over plain
+          MCP stdio, from three free public sources.
+        </p>
+
+        <div class="terminal">
+          <span class="terminal__prompt" aria-hidden="true">&gt;</span>
+          <code class="terminal__cmd" id="hero-npx-command">npx -y @aswathas/trademcp</code>
+          <button class="terminal__copy" type="button" data-copy-target="hero-npx-command" aria-label="Copy the npx install command">Copy install command</button>
+        </div>
+        <p class="terminal__note">
+          <span class="terminal__flag">npm: waiting on publish</span>
+          The package is written and tested, but it is not on the registry yet, so that
+          command will not resolve yet. The one below works today: same server, same
+          tools, no key. <a href="#install">Full install</a>.
+        </p>
+        <div class="terminal__src">
+          <code id="hero-source-command">git clone https://github.com/<wbr>aswathas/<wbr>TradeMCP &amp;&amp; pip install -e .</code>
+          <button class="terminal__copy" type="button" data-copy-target="hero-source-command" aria-label="Copy the source install command">Copy</button>
+        </div>
+
+        <div class="techs" role="group" aria-label="Cursed technique">
+          <span class="techs__cap">Cursed technique</span>
+          <button class="tech tech--void" type="button" id="domain-btn" aria-pressed="false">
+            <span class="tech__sig" aria-hidden="true"></span>
+            <span class="tech__txt"><b>CLEAVE</b><i class="tech__sub">Infinite Void</i></span>
+          </button>
+          <img class="techs__slash" src="assets/shrine/slash-divider.webp" alt="" aria-hidden="true" loading="lazy" draggable="false">
+          <button class="tech tech--shrine" type="button" id="tech-shrine" aria-pressed="false">
+            <span class="tech__sig" aria-hidden="true"></span>
+            <span class="tech__txt"><b>FŪGA</b><i class="tech__sub">Malevolent Shrine</i></span>
+          </button>
+          <span class="techs__tick" id="tech-tendency" data-tone="flat">
+            <span id="tick-text">Tick ▸ —</span>
+          </span>
+        </div>
+
+        <div class="hero-actions">
+          <button class="btn btn--fuga" type="button" id="fuga-btn">
+            <img class="btn__flame" src="assets/shrine/panel-frame.webp" alt="" aria-hidden="true" draggable="false">
+            <span class="btn__label" id="fuga-label">Fūga / Open Furnace</span>
+          </button>
+          <button class="btn btn--dismantle" type="button" id="dismantle-btn">Dismantle</button>
+        </div>
+      </div>
+
+      <div class="panel panel--hud" aria-labelledby="hud-title">
+        <span class="shrine-brackets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span class="watermark watermark--shrine" aria-hidden="true">Fukuma Mizushi</span>
+        <span class="watermark watermark--void" aria-hidden="true">Muryōkūsho</span>
+        <svg class="eaves" viewBox="0 0 420 100" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round">
+          <path d="M8 74 C 40 70 62 46 96 22 C 130 46 150 58 210 58 C 270 58 290 46 324 22 C 358 46 380 70 412 74" />
+          <path d="M96 22 L210 58 L324 22" />
+          <path d="M140 46 V84" />
+          <path d="M280 46 V84" />
+          <path d="M20 84 H400" />
+        </svg>
+        <div class="hud-head">
+          <h2 class="hud-title" id="hud-title">Analysis panel</h2>
+          <span class="hud-tag hud-tag--snapshot" id="hud-tag"><span class="hud-dot" aria-hidden="true"></span><span id="hud-tag-text">SNAPSHOT · RELIANCE INDUSTRIES · NSE</span></span>
+        </div>
+
+        <div class="hud-readout hud-readout--hero">
+          <span class="shrine-fangs" aria-hidden="true"></span>
+          <span class="hud-label">Last price</span>
+          <span class="hud-value hud-value--xl"><span id="hud-price">—</span><span class="hud-unit">INR</span></span>
+        </div>
+
+        <div class="hud-row">
+          <div class="hud-readout">
+            <span class="hud-label">Change</span>
+            <span class="hud-value hud-value--down" id="hud-change"><span id="hud-change-value">−0.76</span><span class="hud-unit">%</span> <span class="hud-arrow" id="hud-arrow" aria-hidden="true">▼</span></span>
+            <span class="hud-note" id="hud-volume">on 1.56 Cr volume</span>
+          </div>
+          <div class="hud-readout">
+            <span class="hud-label">P/E</span>
+            <span class="hud-value" id="hud-pe">22.46</span>
+            <span class="hud-note">from statement EPS</span>
+          </div>
+          <div class="hud-readout">
+            <span class="hud-label">ROE</span>
+            <span class="hud-value"><span id="hud-roe">8.93</span><span class="hud-unit">%</span></span>
+            <span class="hud-note">net income ÷ equity</span>
+          </div>
+        </div>
+
+        <div class="hud-row">
+          <div class="hud-readout">
+            <span class="hud-label">ROCE</span>
+            <span class="hud-value"><span id="hud-roce">11.52</span><span class="hud-unit">%</span></span>
+            <span class="hud-note">EBIT ÷ invested capital</span>
+          </div>
+          <div class="hud-readout">
+            <span class="hud-label">Debt / equity</span>
+            <span class="hud-value" id="hud-de">0.44</span>
+            <span class="hud-note" id="hud-netdebt">net debt ₹260,673 Cr</span>
+          </div>
+          <div class="hud-readout">
+            <span class="hud-label">Dividend yield</span>
+            <span class="hud-value"><span id="hud-dy">0.50</span><span class="hud-unit">%</span></span>
+            <span class="hud-note" id="hud-cr">current ratio 1.10</span>
+          </div>
+        </div>
+
+        <div class="hud-gauge">
+          <div class="hud-gauge__head">
+            <span class="hud-label hud-label--score">Technical score</span>
+            <span class="hud-value hud-value--sm"><span id="hud-score">—</span> <span class="hud-tag-inline" id="hud-score-label">not in this snapshot</span></span>
+          </div>
+          <div class="gauge" id="hud-gauge" data-state="empty" role="img" aria-label="No technical score in this snapshot: the score is computed by the server on a live quote, and this page is showing a saved one.">
+            <span class="gauge__zone gauge__zone--sell"></span>
+            <span class="gauge__zone gauge__zone--neutral"></span>
+            <span class="gauge__zone gauge__zone--buy"></span>
+            <span class="gauge__fill" id="hud-gauge-fill"></span>
+            <span class="gauge__needle" id="hud-needle" style="left:50%"></span>
+          </div>
+          <div class="gauge__scale"><span>−100 SELL</span><span>NEUTRAL</span><span>+100 BUY</span></div>
+        </div>
+
+        <div class="hud-row hud-row--bars">
+          <div class="hud-readout hud-readout--bar">
+            <span class="hud-label">52-week range</span>
+            <div class="range" id="hud-range" role="img" aria-label="52-week range. The price is filled in when the quote arrives.">
+              <span class="range__marker" id="hud-range-marker" style="left:0%"></span>
+            </div>
+            <span class="hud-note"><b id="hud-range-price">—</b> · low <span id="hud-range-low">—</span> · high <span id="hud-range-high">—</span></span>
+          </div>
+          <div class="hud-readout hud-readout--bar">
+            <span class="hud-label" id="hud-rsi-label">RSI 14 · 46.58</span>
+            <div class="range range--rsi" id="hud-rsi" role="img" aria-label="RSI 46.58, between the oversold 30 and overbought 70 bands.">
+              <span class="range__redline" style="left:70%;width:30%"></span>
+              <span class="range__band" style="left:30%;width:40%"></span>
+              <span class="range__marker" id="hud-rsi-marker" style="left:46.58%"></span>
+            </div>
+            <span class="hud-note">oversold 30 · overbought 70</span>
+          </div>
+          <div class="hud-readout hud-readout--bar">
+            <span class="hud-label" id="hud-health-label">Health score · 62.10</span>
+            <div class="range" id="hud-health" role="img" aria-label="Health score 62.10 out of 100.">
+              <span class="range__fill" id="hud-health-fill" style="width:62.1%"></span>
+            </div>
+            <span class="hud-note">0–100 across 54 ratios</span>
+          </div>
+        </div>
+
+        <p class="hud-foot" id="hud-foot">Snapshot captured 21 Oct 2026, 03:20 IST from Yahoo Finance, NSE archives and Screener.in.</p>
+      </div>
+
+      <div class="balloons">
+        <p class="balloon balloon--dev">
+          <span class="balloon__who">Developer</span>
+          Paste one config block. The agent gets the tools.
+        </p>
+        <p class="balloon balloon--trader">
+          <span class="balloon__who">Trader</span>
+          Every ratio is computed from raw statement lines, not scraped off a screen.
+        </p>
+      </div>
+    </section>
+
+<div class="slash" aria-hidden="true"><svg viewBox="0 0 1200 30" preserveAspectRatio="none"><path d="M0,30 L1200,0 L1200,10 L0,30 Z"/></svg></div>
+
+    <!-- ================= STAT STRIP ================= -->
+    <section class="strip" aria-label="What is inside">
+      <ol class="strip__list">
+        <li><b>14</b><span>tools</span></li>
+        <li><b>57</b><span>technical indicators</span></li>
+        <li><b>54</b><span>fundamental ratios</span></li>
+        <li><b>3</b><span>free data sources</span></li>
+        <li><b>0</b><span>API keys</span></li>
+      </ol>
+    </section>
+
+    <!-- ================= LIVE BOARD ================= -->
+    <section class="section" id="live" aria-labelledby="live-title">
+      <header class="section__head">
+        <span class="caption">MARKET BOARD</span>
+        <h2 id="live-title">The same numbers, from the last server run</h2>
+        <p class="section__note">
+          <span class="theme-note theme-note--shrine">Cursed chart &amp; screener filter</span>
+          <span class="theme-note theme-note--void">Infinite convergence chart</span>
+          <span class="theme-note theme-note--plain">Chart &amp; screener filter</span>
+        </p>
+        <p id="live-note">These candles are a saved run of the TradeMCP server, and the indicators below are recomputed in your browser from that same raw series. Type any NSE symbol and press Enter.</p>
+      </header>
+
+      <div class="board">
+        <div class="panel board__chart">
+          <div class="board__bar">
+            <label class="board__symbol">
+              <span class="sr-only">NSE symbol</span>
+              <input id="symbol-input" list="symbol-list" value="RELIANCE" autocomplete="off" spellcheck="false" size="10">
+            </label>
+            <datalist id="symbol-list"></datalist>
+            <span class="board__name" id="board-name">Reliance Industries Limited</span>
+            <span class="board__badge" id="board-badge">…</span>
+            <button class="btn btn--tiny" type="button" id="board-refresh">Refresh</button>
+          </div>
+          <p class="board__error" id="board-error" role="alert" hidden></p>
+
+          <div class="board__price">
+            <span class="board__last" id="board-last">—</span>
+            <span class="board__change" id="board-change"></span>
+            <span class="board__feed"><span class="energy"></span> <span id="board-feed-label">snapshot feed</span></span>
+          </div>
+
+          <div class="chart" id="chart"></div>
+          <p class="sr-only" id="chart-summary"></p>
+          <div class="chart__legend" id="chart-legend"></div>
+          <div class="board__range" id="board-range"></div>
+
+          <div class="tracker">
+            <div class="tracker__head">
+              <span class="tracker__label tracker__label--seals">Ritual · finger synchronisation</span>
+              <span class="tracker__count tracker__count--seals" id="tracker-count">— / 20 seals converged</span>
+              <span class="tracker__label tracker__label--lenses">Limitless · six eyes</span>
+              <span class="tracker__count tracker__count--lenses" id="lenses-count">— / 6 lenses charged</span>
+            </div>
+            <div class="tracker__row tracker__row--seals" id="tracker-seals" aria-hidden="true"></div>
+            <div class="tracker__row tracker__row--lenses" id="tracker-lenses" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <div class="panel board__side">
+          <span class="caption">INDICATORS · COMPUTED HERE</span>
+          <div class="readouts" id="indicator-list"></div>
+          <p class="board__note" id="board-stamp"></p>
+        </div>
+      </div>
+
+      <div class="panel board__fundamentals">
+        <span class="caption">FUNDAMENTALS · TRAILING</span>
+        <div class="readouts" id="fundamental-list"></div>
+      </div>
+    </section>
+
+<div class="slash" aria-hidden="true"><svg viewBox="0 0 1200 30" preserveAspectRatio="none"><path d="M0,30 L1200,0 L1200,10 L0,30 Z"/></svg></div>
+
+    <!-- ================= SCREENER ================= -->
+    <section class="section section--screener" id="screener" aria-labelledby="screener-title">
+      <header class="section__head section__head--fx">
+        <span class="caption">THE SCREENER</span>
+        <h2 id="screener-title">Filter 50 real NIFTY constituents</h2>
+        <p>Every row was pulled by <code>trademcp_screen_stocks</code> and
+        <code>trademcp_compare_stocks</code>, the same tools your agent calls. The filters below
+        apply the same predicates the server applies, and the panel prints the exact call.</p>
+      </header>
+
+      <div class="screener">
+        <div class="panel screener__controls">
+          <div class="presets" role="group" aria-label="Screener presets">
+            <button type="button" class="preset is-active" data-preset="all" aria-pressed="true">All 50</button>
+            <button type="button" class="preset" data-preset="quality" aria-pressed="false">Quality</button>
+            <button type="button" class="preset" data-preset="value" aria-pressed="false">Value</button>
+            <button type="button" class="preset" data-preset="dividend" aria-pressed="false">Dividend</button>
+            <button type="button" class="preset" data-preset="growth" aria-pressed="false">Growth</button>
+            <button type="button" class="preset" data-preset="momentum" aria-pressed="false">Momentum</button>
+          </div>
+
+          <label class="field">
+            <span class="field__label">Search symbol, company or industry</span>
+            <input id="sc-search" type="search" placeholder="tata, bank, IT…" autocomplete="off">
+          </label>
+
+          <div class="filters">
+            <label class="filter"><span>Max P/E <b id="sc-maxpe-out" data-default="800">800</b></span>
+              <input id="sc-maxpe" type="range" min="0" max="800" step="1" value="800"></label>
+            <label class="filter"><span>Min ROE % <b id="sc-minroe-out" data-default="-50">-50</b></span>
+              <input id="sc-minroe" type="range" min="-50" max="60" step="1" value="-50"></label>
+            <label class="filter"><span>Min ROCE % <b id="sc-minroce-out" data-default="-50">-50</b></span>
+              <input id="sc-minroce" type="range" min="-50" max="60" step="1" value="-50"></label>
+            <label class="filter"><span>Min div yield % <b id="sc-mindiv-out" data-default="0">0</b></span>
+              <input id="sc-mindiv" type="range" min="0" max="12" step="0.5" value="0"></label>
+            <label class="filter"><span>Max D/E <b id="sc-maxde-out" data-default="20">20</b></span>
+              <input id="sc-maxde" type="range" min="0" max="20" step="0.1" value="20"></label>
+            <label class="filter"><span>Max RSI <b id="sc-maxrsi-out" data-default="100">100</b></span>
+              <input id="sc-maxrsi" type="range" min="0" max="100" step="1" value="100"></label>
+            <label class="filter"><span>Min RSI <b id="sc-minrsi-out" data-default="0">0</b></span>
+              <input id="sc-minrsi" type="range" min="0" max="100" step="1" value="0"></label>
+            <label class="filter"><span>Min rev CAGR % <b id="sc-mincagr-out" data-default="-100">-100</b></span>
+              <input id="sc-mincagr" type="range" min="-100" max="60" step="1" value="-100"></label>
+            <label class="filter"><span>Min health <b id="sc-minhealth-out" data-default="-500">-500</b></span>
+              <input id="sc-minhealth" type="range" min="-500" max="100" step="1" value="-500"></label>
+            <label class="filter"><span>Min mkt cap ₹Cr <b id="sc-minmcap-out" data-default="0">0</b></span>
+              <input id="sc-minmcap" type="range" min="0" max="900000" step="1000" value="0"></label>
+          </div>
+
+          <button class="btn btn--ghost" type="button" id="sc-reset">Reset filters</button>
+
+          <div class="sc-call">
+            <span class="caption">SEND THIS TO YOUR AGENT</span>
+            <pre class="code code--sm" id="sc-json"></pre>
+          </div>
+        </div>
+
+        <div class="panel screener__results">
+          <span class="shrine-corner" aria-hidden="true" style="position:absolute"></span>
+          <div class="sc-bar">
+            <span class="sc-count" role="status" aria-live="polite" aria-atomic="true"><b id="sc-count">—</b> matching</span>
+            <span class="sc-note" id="sc-note"></span>
+          </div>
+          <div class="sc-table-wrap">
+            <table class="table sc-table">
+              <thead><tr id="sc-head-row"></tr></thead>
+              <tbody id="sc-body"></tbody>
+            </table>
+          </div>
+          <p class="sc-hint">Click any row to load that symbol into the board above.</p>
+        </div>
+      </div>
+    </section>
+
+<div class="slash" aria-hidden="true"><svg viewBox="0 0 1200 30" preserveAspectRatio="none"><path d="M0,30 L1200,0 L1200,10 L0,30 Z"/></svg></div>
+
+    <!-- ================= TOOL CATALOGUE ================= -->
+    <section class="section" id="tools" aria-labelledby="tools-title">
+      <header class="section__head">
+        <span class="caption">THE CATALOGUE</span>
+        <h2 id="tools-title">14 tools, 64 parameters</h2>
+        <p>Every tool runs over plain MCP stdio. Open a card to read its parameters — the front
+        stays scannable, the detail lives on the back.</p>
+      </header>
+
+      <div class="tool-grid">
+        <details class="tool" open>
+          <summary><span class="tool__no">01</span><span class="tool__name">trademcp_get_quote</span><span class="tool__meta">3 params</span></summary>
+          <p class="tool__desc">Latest price quote and key statistics for an Indian stock.</p>
+          <dl class="params">
+            <dt>symbol <em>required</em></dt><dd>string — NSE symbol or company name, e.g. <code>RELIANCE</code> or <code>tata motors</code></dd>
+            <dt>exchange</dt><dd>string — <code>NSE</code> or <code>BSE</code></dd>
+            <dt>response_format</dt><dd><code>markdown</code> or <code>json</code></dd>
+          </dl>
+        </details>
+
+        <details class="tool">
+          <summary><span class="tool__no">02</span><span class="tool__name">trademcp_get_fundamentals</span><span class="tool__meta">3 params</span></summary>
+          <p class="tool__desc">A full fundamental picture: valuation, profitability, leverage, liquidity, growth and DuPont.</p>
+          <dl class="params">
+            <dt>symbol <em>required</em></dt><dd>string — NSE symbol or company name, e.g. <code>HDFCBANK</code></dd>
+            <dt>include_india_metrics</dt><dd>boolean — add India-specific ratios from Screener.in</dd>
+            <dt>response_format</dt><dd><code>markdown</code> or <code>json</code></dd>
+          </dl>
+        </details>
+
+        <details class="tool">
+          <summary><span class="tool__no">03</span><span class="tool__name">trademcp_get_valuation</span><span class="tool__meta">3 params</span></summary>
+          <p class="tool__desc">A focused valuation sheet, optionally against a peer set from the same NSE industry.</p>
+          <dl class="params">
+            <dt>symbol <em>required</em></dt><dd>string — e.g. <code>BAJFINANCE</code></dd>
+            <dt>peers</dt><dd>boolean — also fetch a small peer set for comparison</dd>
+            <dt>response_format</dt><dd><code>markdown</code> or <code>json</code></dd>
+          </dl>
+        </details>
+
+        <details class="tool">
+          <summary><span class="tool__no">04</span><span class="tool__name">trademcp_get_financial_statements</span><span class="tool__meta">4 params</span></summary>
+          <p class="tool__desc">Income statement, balance sheet and cash flow line items.</p>
+          <dl class="params">
+            <dt>symbol <em>required</em></dt><dd>string — e.g. <code>SBIN</code></dd>
+            <dt>period</dt><dd>string — <code>annual</code> or <code>quarterly</code></dd>
+            <dt>years</dt><dd>integer — how many periods to include (1–10)</dd>
+            <dt>response_format</dt><dd><code>markdown</code> or <code>json</code></dd>
+          </dl>
+        </details>
+
+        <details class="tool">
+          <summary><span class="tool__no">05</span><span class="tool__name">trademcp_get_price_history</span><span class="tool__meta">6 params</span></summary>
+          <p class="tool__desc">Historical OHLCV candles for an Indian stock.</p>
+          <dl class="params">
+            <dt>symbol <em>required</em></dt><dd>string — e.g. <code>INFY</code></dd>
+            <dt>range</dt><dd>string — <code>1mo</code>, <code>3mo</code>, <code>6mo</code>, <code>1y</code>, <code>2y</code>, <code>5y</code>, <code>10y</code>, <code>ytd</code>, <code>max</code></dd>
+            <dt>interval</dt><dd>string — <code>1d</code>, <code>1wk</code>, <code>1mo</code>, <code>1h</code>, <code>30m</code>, <code>15m</code>, <code>5m</code></dd>
+            <dt>limit</dt><dd>integer — maximum candles (1–500)</dd>
+            <dt>exchange</dt><dd>string — <code>NSE</code> or <code>BSE</code></dd>
+            <dt>response_format</dt><dd><code>markdown</code> or <code>json</code></dd>
+          </dl>
+        </details>
+
+        <details class="tool">
+          <summary><span class="tool__no">06</span><span class="tool__name">trademcp_get_technical_indicators</span><span class="tool__meta">6 params</span></summary>
+          <p class="tool__desc">Compute any of the 57 technical indicators, computed in pure Python.</p>
+          <dl class="params">
+            <dt>symbol <em>required</em></dt><dd>string — e.g. <code>RELIANCE</code></dd>
+            <dt>indicators</dt><dd>array — e.g. <code>['rsi_14','macd','atr_14']</code>; omit for all</dd>
+            <dt>range</dt><dd>string — <code>3mo</code>, <code>6mo</code>, <code>1y</code>, <code>2y</code>, <code>5y</code></dd>
+            <dt>interval</dt><dd>string — <code>1d</code>, <code>1wk</code>, <code>1h</code>, <code>30m</code></dd>
+            <dt>limit</dt><dd>integer — recent points kept per indicator (1–100)</dd>
+            <dt>response_format</dt><dd><code>markdown</code> or <code>json</code></dd>
+          </dl>
+        </details>
+
+        <details class="tool">
+          <summary><span class="tool__no">07</span><span class="tool__name">trademcp_get_technical_analysis</span><span class="tool__meta">4 params</span></summary>
+          <p class="tool__desc">Full technical analysis with a directional read, risk statistics and recent candlestick patterns.</p>
+          <dl class="params">
+            <dt>symbol <em>required</em></dt><dd>string — e.g. <code>INFY</code></dd>
+            <dt>range</dt><dd>string — <code>6mo</code>, <code>1y</code>, <code>2y</code>, <code>5y</code></dd>
+            <dt>benchmark</dt><dd>string — <code>NIFTY 50</code> or <code>SENSEX</code> for beta and relative strength</dd>
+            <dt>response_format</dt><dd><code>markdown</code> or <code>json</code></dd>
+          </dl>
+        </details>
+
+        <details class="tool">
+          <summary><span class="tool__no">08</span><span class="tool__name">trademcp_get_support_resistance</span><span class="tool__meta">3 params</span></summary>
+          <p class="tool__desc">Support and resistance levels computed from swing structure.</p>
+          <dl class="params">
+            <dt>symbol <em>required</em></dt><dd>string — e.g. <code>TCS</code></dd>
+            <dt>range</dt><dd>string — <code>6mo</code>, <code>1y</code>, <code>2y</code>, <code>5y</code></dd>
+            <dt>response_format</dt><dd><code>markdown</code> or <code>json</code></dd>
+          </dl>
+        </details>
+
+        <details class="tool">
+          <summary><span class="tool__no">09</span><span class="tool__name">trademcp_screen_stocks</span><span class="tool__meta">19 params</span></summary>
+          <p class="tool__desc">Screen Indian stocks by fundamental and technical criteria. NIFTY 50 in 8.8 s cold, 3.6 s warm.</p>
+          <dl class="params">
+            <dt>universe</dt><dd>string — <code>NIFTY 50</code>, <code>NIFTY 100</code>, <code>NIFTY 500</code> or <code>NSE</code></dd>
+            <dt>min_pe / max_pe</dt><dd>number — P/E bounds</dd>
+            <dt>min_roe</dt><dd>number — return on equity (%)</dd>
+            <dt>min_roce</dt><dd>number — return on capital employed (%)</dd>
+            <dt>min_net_margin</dt><dd>number — net profit margin (%)</dd>
+            <dt>max_debt_to_equity</dt><dd>number — leverage ceiling</dd>
+            <dt>min_market_cap</dt><dd>number — in rupees</dd>
+            <dt>min_dividend_yield</dt><dd>number — (%)</dd>
+            <dt>min_current_ratio</dt><dd>number — liquidity floor</dd>
+            <dt>min_revenue_cagr</dt><dd>number — 3-year revenue CAGR (%)</dd>
+            <dt>rsi_below / rsi_above</dt><dd>number — oversold and overbought screens</dd>
+            <dt>above_sma50 / above_sma200</dt><dd>boolean — trend filters</dd>
+            <dt>limit</dt><dd>integer — maximum stocks returned (1–100)</dd>
+            <dt>sort_by</dt><dd>string — <code>market_cap</code>, <code>pe_ratio</code>, <code>roe_pct</code>, <code>health_score</code> and more</dd>
+            <dt>sort_order</dt><dd>string — <code>desc</code> or <code>asc</code></dd>
+            <dt>response_format</dt><dd><code>markdown</code> or <code>json</code></dd>
+          </dl>
+        </details>
+
+        <details class="tool">
+          <summary><span class="tool__no">10</span><span class="tool__name">trademcp_compare_stocks</span><span class="tool__meta">2 params</span></summary>
+          <p class="tool__desc">Compare two to five Indian stocks across price, valuation, quality and momentum.</p>
+          <dl class="params">
+            <dt>symbols <em>required</em></dt><dd>array — two to five NSE symbols or company names</dd>
+            <dt>response_format</dt><dd><code>markdown</code> or <code>json</code></dd>
+          </dl>
+        </details>
+
+        <details class="tool">
+          <summary><span class="tool__no">11</span><span class="tool__name">trademcp_analyze_portfolio</span><span class="tool__meta">3 params</span></summary>
+          <p class="tool__desc">Analyse an Indian equity portfolio: weights, P&amp;L, concentration risk and per-position technicals.</p>
+          <dl class="params">
+            <dt>holdings <em>required</em></dt><dd>array — e.g. <code>[{'symbol':'RELIANCE','quantity':10,'cost_price':1200}]</code></dd>
+            <dt>benchmark</dt><dd>string — <code>NIFTY 50</code> or <code>SENSEX</code></dd>
+            <dt>response_format</dt><dd><code>markdown</code> or <code>json</code></dd>
+          </dl>
+        </details>
+
+        <details class="tool">
+          <summary><span class="tool__no">12</span><span class="tool__name">trademcp_get_index_snapshot</span><span class="tool__meta">2 params</span></summary>
+          <p class="tool__desc">Live quotes for 15 major Indian indices.</p>
+          <dl class="params">
+            <dt>indices</dt><dd>array — e.g. <code>['NIFTY 50','SENSEX','NIFTY BANK']</code>; omit for the default set</dd>
+            <dt>response_format</dt><dd><code>markdown</code> or <code>json</code></dd>
+          </dl>
+        </details>
+
+        <details class="tool">
+          <summary><span class="tool__no">13</span><span class="tool__name">trademcp_get_market_breadth</span><span class="tool__meta">3 params</span></summary>
+          <p class="tool__desc">Measure market breadth for an Indian index across its constituents.</p>
+          <dl class="params">
+            <dt>index</dt><dd>string — <code>NIFTY 50</code> or <code>NIFTY 100</code></dd>
+            <dt>include_trend</dt><dd>boolean — also count constituents above their 200-day average (slower)</dd>
+            <dt>response_format</dt><dd><code>markdown</code> or <code>json</code></dd>
+          </dl>
+        </details>
+
+        <details class="tool">
+          <summary><span class="tool__no">14</span><span class="tool__name">trademcp_search_symbol</span><span class="tool__meta">3 params</span></summary>
+          <p class="tool__desc">Search NSE-listed companies by ticker symbol or company name.</p>
+          <dl class="params">
+            <dt>query <em>required</em></dt><dd>string — e.g. <code>RELIANCE</code>, <code>tata</code>, <code>bank of baroda</code></dd>
+            <dt>limit</dt><dd>integer — maximum results (1–50)</dd>
+            <dt>response_format</dt><dd><code>markdown</code> or <code>json</code></dd>
+          </dl>
+        </details>
+      </div>
+    </section>
+
+    <!-- ================= METRICS ================= -->
+    <section class="section" id="metrics" aria-labelledby="metrics-title">
+      <header class="section__head">
+        <span class="caption">THE METRICS</span>
+        <h2 id="metrics-title">57 indicators. 54 ratios. 18 candlestick patterns.</h2>
+        <p>No pandas, no numpy, no yfinance. Every indicator is computed in pure Python, and
+        every ratio is derived locally from raw statement lines.</p>
+        <p class="metrics__note">Those names are a catalogue, not a manual. Every formula, its
+        parameters and a worked example are in the
+        <a href="https://github.com/aswathas/TradeMCP#the-tools">tool reference</a>, and the live
+        board above shows the ones that matter for the stock you are looking at.</p>
+      </header>
+
+      <div class="metric-grid">
+        <div class="panel metric-panel">
+          <span class="caption">TECHNICAL · 57</span>
+          <h3>Indicators</h3>
+          <div class="chips" data-chips="trend"></div>
+          <div class="chips" data-chips="momentum"></div>
+          <div class="chips" data-chips="volatility"></div>
+          <div class="chips" data-chips="volume"></div>
+        </div>
+
+        <div class="panel metric-panel">
+          <span class="caption">FUNDAMENTAL · 54</span>
+          <h3>Ratios</h3>
+          <div class="chips" data-chips="valuation"></div>
+          <div class="chips" data-chips="profitability"></div>
+          <div class="chips" data-chips="leverage"></div>
+          <div class="chips" data-chips="liquidity"></div>
+          <div class="chips" data-chips="growth"></div>
+          <div class="chips" data-chips="dupont"></div>
+        </div>
+
+        <div class="panel metric-panel metric-panel--extra">
+          <span class="caption">ALSO INCLUDED</span>
+          <h3>And more</h3>
+          <ul class="tick-list">
+            <li>18 candlestick patterns, 5 pivot point styles</li>
+            <li>DuPont identity, reconciled end to end</li>
+            <li>0–100 health score with a per-metric breakdown</li>
+            <li>Sharpe, Sortino, max drawdown, beta, alpha</li>
+            <li>ROCE, promoter / FII / DII holding, debtor days</li>
+            <li>15 indices, from NIFTY 50 to INDIA VIX</li>
+          </ul>
+        </div>
+      </div>
+      <noscript><p class="noscript">The full indicator and ratio lists live in the tool reference in <code>showcase/SPEC.md</code>.</p></noscript>
+    </section>
+
+    <!-- ================= THE CALL ================= -->
+    <section class="section section--call" id="call" aria-labelledby="call-title">
+      <header class="section__head">
+        <span class="caption">THE CALL</span>
+        <span class="call__state" id="call-state" data-state="idle" role="status" aria-live="polite">Standing by</span>
+        <h2 id="call-title">An agent asks. The market answers.</h2>
+        <p>Everything else on this page is what the server returns. This is the part before
+        that: the JSON-RPC handshake your agent performs to get it. The request that goes out,
+        the response that comes back, and how long the round trip actually took.</p>
+      </header>
+
+      <div class="call__board" id="call-board" data-phase="idle">
+
+        <!-- the 3D diagram: two stations and the wire between them -->
+        <div class="call__scene" id="call-scene" aria-hidden="true">
+          <span class="call__ground"></span>
+          <span class="call__wire">
+            <span class="call__packet" id="call-packet"><span class="call__packet-tag">REQ</span></span>
+          </span>
+
+          <span class="call__station call__station--agent" data-node="agent">
+            <span class="call__face">
+              <span class="call__node-kicker">Caller</span>
+              <span class="call__node-name">AGENT</span>
+              <span class="call__node-value" id="call-agent-value">mcp client</span>
+            </span>
+            <span class="call__node-side call__node-side--left"></span>
+            <span class="call__node-top"></span>
+            <span class="call__aura"></span>
+          </span>
+          <span class="call__shadow call__shadow--agent"></span>
+
+          <span class="call__station call__station--market" data-node="market">
+            <span class="call__face">
+              <span class="call__node-kicker">Server</span>
+              <span class="call__node-name">MARKET</span>
+              <span class="call__node-value" id="call-market-value">trademcp</span>
+            </span>
+            <span class="call__node-side call__node-side--right"></span>
+            <span class="call__node-top"></span>
+            <span class="call__aura"></span>
+            <span class="call__reading">reading</span>
+          </span>
+          <span class="call__shadow call__shadow--market"></span>
+        </div>
+
+        <!-- what the call actually returned -->
+        <div class="call__answer" id="call-answer" data-tone="flat" aria-live="polite">
+          <span class="call__answer-sym" id="call-answer-sym">—</span>
+          <span class="call__answer-price" id="call-answer-price">—</span>
+          <span class="call__answer-chg" id="call-answer-chg">—</span>
+          <span class="call__answer-time" id="call-answer-time">—</span>
+        </div>
+
+        <!-- the two halves of the handshake, verbatim -->
+        <div class="call__io">
+          <section class="call__pane">
+            <header class="call__pane-head">
+              <span class="call__pane-tag">Request</span>
+              <span class="call__pane-meta" id="call-req-meta">jsonrpc 2.0 · tools/call</span>
+            </header>
+            <pre class="call__code" id="call-request" role="group" tabindex="0"
+              aria-label="The JSON-RPC request sent to the server"></pre>
+          </section>
+
+          <section class="call__pane">
+            <header class="call__pane-head">
+              <span class="call__pane-tag">Response</span>
+              <span class="call__pane-meta" id="call-res-meta">result.content[0].text</span>
+            </header>
+            <pre class="call__code" id="call-response" role="group" tabindex="0"
+              aria-label="The JSON the server returned"></pre>
+          </section>
+        </div>
+
+        <!-- what it cost, and where it came from -->
+        <dl class="call__meta">
+          <dt>Tool</dt><dd>trademcp_get_quote</dd>
+          <dt>Method</dt><dd>tools/call</dd>
+          <dt>Latency</dt><dd id="call-latency">—</dd>
+          <dt>Source</dt><dd id="call-source">—</dd>
+          <dt>Payload</dt><dd id="call-payload">—</dd>
+        </dl>
+
+        <div class="call__controls">
+          <div class="call__charge" id="call-charge" aria-hidden="true">
+            <i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i>
+            <i style="--i:4"></i><i style="--i:5"></i><i style="--i:6"></i><i style="--i:7"></i>
+            <i style="--i:8"></i><i style="--i:9"></i><i style="--i:10"></i><i style="--i:11"></i>
+            <span class="call__charge-cap"></span>
+          </div>
+
+          <div class="call__row">
+            <div class="call__syms" role="group" aria-label="Symbol to call">
+              <button class="call__sym" type="button" data-symbol="RELIANCE" aria-pressed="true">RELIANCE</button>
+              <button class="call__sym" type="button" data-symbol="TCS" aria-pressed="false">TCS</button>
+              <button class="call__sym" type="button" data-symbol="INFY" aria-pressed="false">INFY</button>
+              <button class="call__sym" type="button" data-symbol="HDFCBANK" aria-pressed="false">HDFCBANK</button>
+            </div>
+            <button class="btn btn--ghost call__go" type="button" id="call-go">Call again</button>
+          </div>
+
+          <p class="call__foot" id="call-foot">The page calls <code>/api/quote</code> over HTTP; the showcase server
+          turns that into one MCP <code>tools/call</code> over stdio against the real server.
+          No API key, no relay, no hard-coded price.</p>
+        </div>
+
+      </div>
+      <noscript><p class="noscript">The live handshake needs JavaScript. The rest of the page —
+      quotes, indicators, the screener — works without it, from the bundled snapshot.</p></noscript>
+    </section>
+
+    <!-- ================= HOW IT WORKS ================= -->
+    <section class="section" id="how" aria-labelledby="how-title">
+      <header class="section__head">
+        <span class="caption">HOW IT WORKS</span>
+        <h2 id="how-title">Five steps, then it caches</h2>
+      </header>
+
+      <ol class="steps">
+        <li class="step">
+          <span class="step__no">1</span>
+          <span class="shrine-seal" aria-hidden="true" style="position:absolute"></span>
+          <h3>Resolve</h3>
+          <p><code>RELIANCE</code>, <code>tata motors</code>, <code>NSE:TCS</code>, <code>RELIANCE.NS</code>,
+          <code>INE002A01018</code> and <code>nifty</code> all resolve to the same instrument.</p>
+        </li>
+        <li class="step">
+          <span class="step__no">2</span>
+          <span class="shrine-seal" aria-hidden="true" style="position:absolute"></span>
+          <h3>Fetch</h3>
+          <p>Prices from Yahoo's chart endpoint, statements from its timeseries endpoint, symbol
+          identity from NSE's static CSV listings.</p>
+        </li>
+        <li class="step">
+          <span class="step__no">3</span>
+          <span class="shrine-seal" aria-hidden="true" style="position:absolute"></span>
+          <h3>Compute</h3>
+          <p>Each ratio is derived from raw statement lines, so valuation, profitability and
+          leverage reconcile with each other and with DuPont.</p>
+        </li>
+        <li class="step">
+          <span class="step__no">4</span>
+          <span class="shrine-seal" aria-hidden="true" style="position:absolute"></span>
+          <h3>Score</h3>
+          <p>Indicators become signals, signals become a composite score from Strong Buy to
+          Strong Sell, explained in plain language.</p>
+        </li>
+        <li class="step">
+          <span class="step__no">5</span>
+          <span class="shrine-seal" aria-hidden="true" style="position:absolute"></span>
+          <h3>Cache</h3>
+          <p>Responses are cached on disk with per-type TTLs, so repeated screens stay off the
+          free endpoints and stay fast.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ================= SOURCES ================= -->
+    <section class="section" id="sources" aria-labelledby="sources-title">
+      <header class="section__head">
+        <span class="caption">SOURCES</span>
+        <h2 id="sources-title">Three sources. All free. All keyless.</h2>
+        <p>If a source changes its markup, that one section degrades. The rest keeps working.</p>
+      </header>
+
+      <div class="source-grid">
+        <div class="panel source">
+          <span class="source__mark" aria-hidden="true">YF</span>
+          <h3>Yahoo Finance</h3>
+          <p>Chart, quote and fundamentals-timeseries. Public JSON endpoints; the quote
+          endpoint needs a free cookie and crumb handshake, which the server does itself.</p>
+          <ul class="tick-list">
+            <li>OHLCV candles, 52-week range</li>
+            <li>Price, market cap, multiples, dividend yield</li>
+            <li>Annual, quarterly and trailing statement lines</li>
+          </ul>
+        </div>
+        <div class="panel source">
+          <span class="source__mark" aria-hidden="true">NSE</span>
+          <h3>NSE static archives</h3>
+          <p>Symbol universe, company names, ISIN, industry and index membership, from static
+          CSV listings that need no session.</p>
+          <ul class="tick-list">
+            <li>NIFTY 50 / 100 / 500 listings</li>
+            <li>Full listed-company equity universe</li>
+            <li>Not behind the bot protection on the live JSON API</li>
+          </ul>
+        </div>
+        <div class="panel source">
+          <span class="source__mark" aria-hidden="true">SC</span>
+          <h3>Screener.in</h3>
+          <p>India-specific ratios and ownership, parsed defensively and treated as optional.</p>
+          <ul class="tick-list">
+            <li>ROCE and book value, on Screener's own definition</li>
+            <li>Promoter, FII, DII and public holding</li>
+            <li>Debtor days, inventory days, cash conversion cycle</li>
+          </ul>
+        </div>
+      </div>
+      <p class="caveat">TradeMCP reports ROCE as EBIT ÷ invested capital. Screener.in reports its
+      own ROCE on a different capital base. Both are shown; they are never merged.</p>
+    </section>
+
+    <!-- ================= INSTALL ================= -->
+    <section class="section section--install" id="install" aria-labelledby="install-title">
+      <header class="section__head">
+        <span class="caption">INSTALL</span>
+        <h2 id="install-title">Install it, then restart your client</h2>
+        <p>The npm package is waiting on a publish, so the source path below is what works
+        today. Same server, same fourteen tools, no key, no signup, no dashboard.</p>
+      </header>
+
+      <div class="install">
+        <div class="panel install__code">
+          <div class="install__bar">
+            <span>From source — works today</span>
+            <span class="install__bar-actions">
+              <button class="btn btn--tiny" type="button" data-copy-target="source-install" aria-label="Copy the from-source install commands">Copy</button>
+            </span>
+          </div>
+<pre class="code" id="source-install">git clone https://github.com/aswathas/TradeMCP.git
+cd TradeMCP
+python -m venv .venv
+.venv/Scripts/activate          # macOS / Linux: source .venv/bin/activate
+pip install -e .</pre>
+          <p class="install__note">Two dependencies, <code>mcp</code> and <code>httpx</code>, and
+          nothing else. The server then runs as <code>python -m trademcp</code> or as the
+          <code>trademcp</code> command.</p>
+
+          <div class="install__bar install__bar--second">
+            <span>npx</span>
+            <span class="install__flag">waiting on publish</span>
+            <span class="install__bar-actions">
+              <button class="btn btn--tiny" type="button" data-copy-target="npx-command" aria-label="Copy the npx install command">Copy</button>
+              <button class="btn btn--tiny" type="button" id="npx-cta">Download</button>
+            </span>
+          </div>
+<pre class="code" id="npx-command">npx -y @aswathas/trademcp</pre>
+          <p class="install__note">That is the whole install. The package carries the Python
+          server and builds its own environment on first run, so all you need is Node 18+ and
+          Python 3.11+. No clone, no venv, no pip. The first run spends about half a minute
+          building that environment; every run after that is about a second.</p>
+
+          <div class="install__bar install__bar--second">
+            <span>Global install</span>
+            <button class="btn btn--tiny" type="button" data-copy-target="global-install" aria-label="Copy the npm global install command">Copy</button>
+          </div>
+<pre class="code" id="global-install">npm i -g @aswathas/trademcp</pre>
+          <p class="install__note">If your MCP client has a short start-up timeout, install the
+          package once like this and point the client at the <code>trademcp</code> command
+          instead of <code>npx</code>. The environment is built at install time, so the server
+          starts in about a second.</p>
+
+          <div class="install__bar install__bar--second">
+            <span>claude_desktop_config.json</span>
+            <button class="btn btn--tiny" type="button" data-copy-target="mcp-config" aria-label="Copy the MCP client config for npx">Copy</button>
+          </div>
+<pre class="code" id="mcp-config">{
+  "mcpServers": {
+    "trademcp": {
+      "command": "npx",
+      "args": ["-y", "@aswathas/trademcp"]
+    }
+  }
+}</pre>
+          <p class="install__note">For Claude Desktop, Cursor, Windsurf and VS Code. In Claude Code
+          it is a single line: <code>claude mcp add trademcp -- npx -y @aswathas/trademcp</code>.</p>
+
+          <div class="install__bar install__bar--second">
+            <span>Manual setup</span>
+            <button class="btn btn--tiny" type="button" data-copy-target="mcp-config-manual" aria-label="Copy the MCP client config for a manual Python install">Copy</button>
+          </div>
+<pre class="code" id="mcp-config-manual">{
+  "mcpServers": {
+    "trademcp": {
+      "command": "python",
+      "args": ["-m", "trademcp"]
+    }
+  }
+}</pre>
+          <p class="install__note">If you installed from source and want to point at your own
+          interpreter, use this instead: <code>git clone</code>, <code>python -m venv .venv</code>,
+          <code>pip install -e .</code>, then <code>python -m trademcp</code>.
+          <code>python</code> must be the interpreter that has TradeMCP installed —
+          <code>scripts/install.ps1</code> prints the exact path to paste. Installed globally
+          instead? Use <code>"command": "trademcp"</code> with no args.</p>
+        </div>
+
+        <ol class="install__steps">
+          <li>
+            <span class="step__no">1</span>
+            <span class="shrine-seal" aria-hidden="true" style="position:absolute"></span>
+            <div>
+              <h3>Install</h3>
+<pre class="code code--sm">npx -y @aswathas/trademcp</pre>
+              <p class="install__note">Or from source: clone, <code>python -m venv .venv</code>,
+              <code>pip install -e .</code>, then <code>python -m trademcp</code>.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step__no">2</span>
+            <span class="shrine-seal" aria-hidden="true" style="position:absolute"></span>
+            <div>
+              <h3>Verify it works</h3>
+<pre class="code code--sm">python scripts/verify_all_tools.py
+python -m pytest tests -q</pre>
+              <p class="install__note">109 offline unit tests, plus a live call against every one
+              of the 14 tools.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step__no">3</span>
+            <span class="shrine-seal" aria-hidden="true" style="position:absolute"></span>
+            <div>
+              <h3>Ask your agent</h3>
+              <p class="install__note">“What is the technical score on TCS over one year, and
+              is it above its 200-day average?”</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ================= CONFIG ================= -->
+    <section class="section" id="config" aria-labelledby="config-title">
+      <header class="section__head">
+        <span class="caption">CONFIGURATION</span>
+        <h2 id="config-title">Every setting has a default</h2>
+      </header>
+      <div class="panel">
+        <div class="table-wrap">
+        <table class="table">
+          <caption class="sr-only">Environment variables and their defaults</caption>
+          <thead><tr><th scope="col">Variable</th><th scope="col">Default</th><th scope="col">Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><code>TRADEMCP_TIMEOUT</code></td><td>30</td><td>Request timeout in seconds</td></tr>
+            <tr><td><code>TRADEMCP_CACHE_DIR</code></td><td>~/.cache/trademcp</td><td>Disk cache location</td></tr>
+            <tr><td><code>TRADEMCP_QUOTE_TTL</code></td><td>300</td><td>Quote cache lifetime</td></tr>
+            <tr><td><code>TRADEMCP_PRICE_TTL</code></td><td>900</td><td>Price history cache lifetime</td></tr>
+            <tr><td><code>TRADEMCP_FUNDAMENTALS_TTL</code></td><td>21600</td><td>Fundamentals cache lifetime</td></tr>
+            <tr><td><code>TRADEMCP_UNIVERSE_TTL</code></td><td>43200</td><td>Symbol universe cache lifetime</td></tr>
+            <tr><td><code>TRADEMCP_MAX_CONCURRENCY</code></td><td>8</td><td>Parallel outbound requests</td></tr>
+            <tr><td><code>TRADEMCP_ENABLE_SCREENER_IN</code></td><td>1</td><td>Set to 0 to skip Screener.in</td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="panel footer__panel">
+      <p class="footer__mark">TradeMCP</p>
+      <p>MIT licensed. Free forever. Two dependencies: <code>mcp</code> and <code>httpx</code>.</p>
+      <p class="footer__links">
+        <a href="https://github.com/aswathas/TradeMCP">Source on GitHub</a>
+        <a href="https://github.com/aswathas/TradeMCP/issues">Report an issue</a>
+        <a href="https://github.com/aswathas/TradeMCP#the-tools">Tool reference</a>
+      </p>
+      <p class="footer__fine">Market data is provided by Yahoo Finance, NSE and Screener.in and is
+      for information only. It is not investment advice.</p>
+    </div>
+    <p class="footer__end" aria-hidden="true">FIN.</p>
+  </footer>
+
+</div>
+
+<div class="domain" id="domain" aria-hidden="true">
+  <span class="domain__stars"></span>
+  <span class="domain__swirl"></span>
+  <span class="domain__floor"></span>
+  <span class="void-space void-space--page">
+    <span class="void-space__grid"></span>
+  </span>
+</div>
+
+<div class="shrine" id="shrine" aria-hidden="true">
+  <span class="shrine__sky"></span>
+  <span class="shrine__horizon"></span>
+  <span class="shrine__pool"></span>
+  <span class="shrine__embers"></span>
+</div>
+
+<div class="cut" id="cut" aria-hidden="true"></div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="app.js?v=41"></script>
+<script src="live.js?v=41"></script>
+<script src="screener.js?v=41"></script>
+<script src="cursor.js?v=41"></script>
+<script src="call.js?v=41"></script>
+</body>
+</html>

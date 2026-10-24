@@ -1,0 +1,4815 @@
+/* ---------- the page's own faces
+   The five families this page uses, served from the repository. The
+   googleapis stylesheet they used to come from was render-blocking:
+   when it stalled, the first paint stalled with it. The unicode-range
+   on each face is the one Google publishes, so the browser still asks
+   for only the subsets the page actually uses. */
+
+@font-face {
+  font-family: 'Kaushan Script';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/fonts/kaushan-script-400-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Kaushan Script';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/fonts/kaushan-script-400-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Martian Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/fonts/martian-mono-400-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Martian Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/fonts/martian-mono-400-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Martian Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('assets/fonts/martian-mono-600-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Martian Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('assets/fonts/martian-mono-600-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Permanent Marker';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/fonts/permanent-marker-400-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Saira';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/fonts/saira-400-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Saira';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/fonts/saira-400-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Saira';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('assets/fonts/saira-500-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Saira';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('assets/fonts/saira-500-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Saira';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('assets/fonts/saira-700-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Saira';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('assets/fonts/saira-700-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Saira Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('assets/fonts/saira-condensed-600-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Saira Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('assets/fonts/saira-condensed-600-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Saira Condensed';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('assets/fonts/saira-condensed-700-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Saira Condensed';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('assets/fonts/saira-condensed-700-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Saira Condensed';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('assets/fonts/saira-condensed-800-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Saira Condensed';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('assets/fonts/saira-condensed-800-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* ==========================================================================
+   TradeMCP showcase — seinen manga + mecha HUD
+   Palette taken from the approved comp: paper #f4f5f5, ink #100f10,
+   tone #b7b8ba, HUD cyan #c1f1f2. One vermilion and one green carry state,
+   and both are always paired with a sign or an arrow so nothing depends on
+   colour alone.
+   ========================================================================== */
+
+:root {
+  --paper: #f4f5f5;
+  --paper-2: #e9eaea;
+  --ink: #100f10;
+  --ink-2: #4c4b4d;
+  --ink-3: #636366;
+  --tone: #b7b8ba;
+  --rule: #100f10;
+
+  --cyan: #0a6b7e;
+  --cyan-bright: #c1f1f2;
+  --cyan-deep: #06323c;
+  --verm: #b8361d;
+  --green: #14724a;
+
+  /* the inverted band. The tape and the screener's result strip turn the
+     page's ink into a surface, so whatever sits on them needs its own
+     colours - on a light band the accent has to be dark or the count
+     vanishes. These are the only four places that invert the page. */
+  --band-bg: #100f10;
+  --band-fg: #f4f5f5;
+  --band-accent: #6ff0ff;
+  --band-dim: #9b9a9e;
+  --band-up: #46d68a;
+  --band-down: #ff8a6b;
+
+  /* the install bar is the inverted strip, so its warning tag has to be
+     legible on it: light on the paper theme's black bar */
+  --flag-ink: #ff7a5c;
+
+  --gutter: 14px;
+  --edge: 3px;
+  --panel-pad: clamp(18px, 2.4vw, 30px);
+
+  /* the sticky masthead's height, measured by app.js. It is a guess here so
+     that an anchor still lands in a sane place if the script never runs. */
+  --masthead-h: 64px;
+
+  --font-script: "Kaushan Script", "Segoe Script", cursive;
+  --font-shout: "Permanent Marker", "Comic Sans MS", cursive;
+  --font-ui: "Saira Condensed", "Arial Narrow", sans-serif;
+  --font-body: "Saira", "Segoe UI", system-ui, sans-serif;
+  --font-data: "Martian Mono", "Consolas", ui-monospace, monospace;
+  --font-display: "Saira Condensed", "Arial Narrow", sans-serif;
+
+  --plate-tone: url("assets/plates/tone-mid.png");
+  --plate-tone-light: url("assets/plates/tone-light.png");
+  --plate-tone-dark: url("assets/plates/tone-dark.png");
+}
+[data-theme="night"] {
+  --paper: #15161a;
+  --paper-2: #1e2025;
+  --ink: #f1f2f3;
+  --ink-2: #b6b5b9;
+  --ink-3: #8b8a8f;
+  --tone: #3d3e45;
+  --rule: #f1f2f3;
+
+  --cyan: #63d6e8;
+  --cyan-bright: #10333b;
+  --cyan-deep: #b9f0f6;
+  --verm: #ff7a5c;
+  --green: #3fce8f;
+
+  /* the night theme inverts the page, so its band inverts too: a light strip
+     with dark ink on it. The accent has to follow, or "50 / 50" is a ghost. */
+  --band-bg: #f1f2f3;
+  --band-fg: #15161a;
+  --band-accent: #0a5f70;
+  --band-dim: #55555a;
+  --band-up: #0f7a4c;
+  --band-down: #a8381c;
+
+  /* the night theme's install bar is light, so its tag is a dark red */
+  --flag-ink: #a8381c;
+
+  --plate-tone: url("assets/plates/tone-night-mid.png");
+  --plate-tone-light: url("assets/plates/tone-night-light.png");
+  --plate-tone-dark: url("assets/plates/tone-night-dark.png");
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: auto;
+  overflow-anchor: none;
+  overflow-x: clip;
+  background-color: var(--paper);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  /* The cursor is drawn by cursor.js: a fountain-pen nib that transfigures
+     whatever it touches. The native arrow is only hidden once that script
+     has proved it can take over, so a failure leaves the visitor a working
+     pointer. ?cursor=system brings the native cursor back on demand. */
+}
+
+input,
+textarea,
+select { cursor: text; }
+
+/* A control must look like a control. The nib belongs to the page, but drawn
+   over a button it hides the very thing you are trying to tap — so anything
+   clickable keeps the ordinary pointer until the custom cursor is live. */
+html:not(.has-cursor) button,
+html:not(.has-cursor) a,
+html:not(.has-cursor) summary,
+html:not(.has-cursor) label[for],
+html:not(.has-cursor) [role="button"],
+html:not(.has-cursor) [role="tab"] { cursor: pointer; }
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 10px 18px;
+  font-family: var(--font-ui);
+  font-weight: 700;
+}
+.skip:focus { left: 8px; top: 8px; }
+
+/* The ring has to survive a control that is painted with the page's own ink:
+   the live board's input sits on an inverted bar, the screener's chips are
+   white on a dark panel, and in the shrine the active chip is the same
+   crimson as the accent - so a ring in the accent colour lands on the same
+   colour as the button it is marking. The ring is therefore drawn inside the
+   control, in the control's own text colour, which is chosen against that
+   control's fill everywhere on the page. */
+:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: -3px;
+}
+
+/* The parts of the page that were not drawn still have to belong to it.
+   Selection, the caret, the scrollbars and the underline of a link ship as
+   the browser's defaults, and on a printed-manga page they are the first
+   thing that looks borrowed. */
+::selection {
+  background: var(--ink);
+  color: var(--paper);
+}
+html {
+  caret-color: var(--ink);
+  scrollbar-color: var(--rule) var(--paper-2);
+  scrollbar-width: thin;
+}
+a { text-underline-offset: 3px; }
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: var(--paper-2); }
+::-webkit-scrollbar-thumb {
+  background: var(--rule);
+  border: 3px solid var(--paper-2);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--ink); }
+
+/* The readouts are numbers, and a number that changes width when it
+   changes value makes the whole row twitch. */
+.hud-value,
+.hud-value--xl,
+.hud-value--sm,
+.board__change,
+.readouts,
+.sc-table {
+  font-variant-numeric: tabular-nums;
+}
+
+.sheet {
+  position: relative;
+  z-index: 1;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 clamp(12px, 3vw, 40px) 0;
+}
+
+/* ---------- panels: the manga grid -------------------------------------- */
+
+.panel {
+  position: relative;
+  background: var(--paper);
+  border: var(--edge) solid var(--rule);
+  padding: var(--panel-pad);
+}
+
+.caption {
+  display: inline-block;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 2px solid var(--rule);
+  background: var(--paper-2);
+}
+
+/* the free badge is a burnt chip: orange on black, never orange on paper.
+   This has to come after .caption - same specificity, so the later rule
+   wins, and .caption would otherwise paint the light background over it. */
+.caption--badge {
+  background: #1a080c;
+  border-color: rgba(255, 85, 0, 0.6);
+  color: #ff5500;
+}
+
+/* ---------- masthead ----------------------------------------------------- */
+
+.masthead {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 3vw, 34px);
+  padding: 12px 0;
+  background: var(--paper);
+  border-bottom: var(--edge) solid var(--rule);
+}
+
+.wordmark {
+  font-family: var(--font-script);
+  font-size: clamp(28px, 3.4vw, 40px);
+  line-height: 1;
+  color: var(--ink);
+  text-decoration: none;
+  transform: rotate(-1.5deg);
+}
+
+.nav {
+  display: flex;
+  gap: clamp(10px, 2vw, 26px);
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+
+.nav a {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  padding: 4px 2px;
+  border-bottom: 3px solid transparent;
+}
+.nav a:hover { border-bottom-color: var(--rule); }
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--paper);
+  border: 2px solid var(--rule);
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.theme-toggle:hover { background: var(--paper-2); }
+
+/* The domain switch lives once, in the hero rail, where the reader is
+   already standing. A second copy in the header put two switches on the
+   same phone, which is the one thing the site's own rule forbids. */
+
+/* ---------- splash ------------------------------------------------------- */
+
+.splash {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+  gap: var(--gutter);
+  padding: var(--gutter) 0;
+}
+
+.panel--hero {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+/* Two lines, one face, no badge. The line break is set in the markup so the
+   measure never drifts between the themes. */
+.hero-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(34px, 5.2vw, 74px);
+  line-height: 0.95;
+  letter-spacing: 0.004em;
+  text-transform: uppercase;
+  margin: 0;
+  position: relative;
+}
+
+.sfx {
+  font-family: var(--font-shout);
+  display: inline-block;
+  transform: rotate(-7deg);
+  color: var(--cyan);
+  text-shadow: 3px 3px 0 var(--rule);
+  -webkit-text-stroke: 1px var(--rule);
+  letter-spacing: 0.02em;
+}
+.sfx--up { font-size: 0.52em; vertical-align: 0.55em; margin-right: 6px; }
+
+.hero-lede {
+  font-size: clamp(15px, 1.15vw, 16.5px);
+  line-height: 1.5;
+  color: var(--ink-2);
+  max-width: 54ch;
+  margin: 0;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Dismantle is the other half of the pair: it tears the domain back down.
+   Red, because it is the destructive one. */
+.btn--dismantle {
+  background: var(--paper);
+  color: var(--verm);
+  border-color: var(--verm);
+}
+.btn--dismantle:hover { background: var(--verm); color: var(--paper); }
+
+.btn {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 13px 24px;
+  border: var(--edge) solid var(--rule);
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: 6px 6px 0 var(--rule);
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+.btn:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 var(--rule); }
+.btn:active { transform: translate(4px, 4px); box-shadow: 2px 2px 0 var(--rule); }
+
+.btn--primary {
+  background: var(--cyan-bright);
+  color: var(--cyan-deep);
+}
+[data-theme="night"] .btn--primary { color: #eafcff; }
+
+.btn--ghost { box-shadow: none; }
+.btn--ghost:hover { box-shadow: 4px 4px 0 var(--rule); }
+
+.btn--tiny {
+  font-size: 12px;
+  padding: 5px 12px;
+  box-shadow: 3px 3px 0 var(--rule);
+}
+
+/* speech balloons */
+
+.balloons {
+  display: grid;
+  gap: 12px;
+  margin-top: 4px;
+  width: 100%;
+  justify-items: start;
+}
+/* under the splash they are a full-width row, not the left box's tail */
+.splash > .balloons {
+  grid-column: 1 / -1;
+  margin-top: 0;
+}
+
+.balloon {
+  position: relative;
+  /* the cut-out figures sit above the page but the balloon must stay readable */
+  z-index: 3;
+  margin: 0;
+  max-width: 46ch;
+  border: var(--edge) solid var(--rule);
+  background: var(--paper-2);
+  padding: 14px 16px;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--ink);
+  border-radius: 18px;
+}
+.balloon::after {
+  content: "";
+  position: absolute;
+  width: 16px; height: 16px;
+  background: var(--paper-2);
+  border-left: var(--edge) solid var(--rule);
+  border-top: var(--edge) solid var(--rule);
+  bottom: -9px; left: 34px;
+  transform: rotate(45deg);
+}
+.balloon__who {
+  display: block;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 3px;
+}
+.balloon--trader::after { left: auto; right: 34px; }
+
+/* ---------- HUD panel ---------------------------------------------------- */
+
+/* The analysis panel is a column in every theme: the rows stack with a real
+   gap instead of butting together, and space-between spreads them so the
+   column fills the panel the grid gives it. */
+.panel--hud {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: space-between;
+}
+[data-theme="night"] .panel--hud {
+  background-image: var(--plate-tone-light);
+  background-size: 8px 8px;
+}
+
+.hud-tag {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-data);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 11px;
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* A snapshot tag must not pulse like a live feed. */
+.hud-tag--snapshot .hud-dot { background: var(--ink-3); animation: none; }
+
+.hud-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #35d07f;
+  animation: pulse 1.9s ease-in-out infinite;
+}
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+
+/* the card header: one row, the title on the left and the feed state on
+   the right, the way the reference draws it */
+.hud-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-bottom: 9px;
+  border-bottom: 1px solid var(--rule);
+}
+.hud-head .hud-tag { align-self: center; }
+.hud-head .hud-title { min-width: 0; }
+
+.hud-title {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: clamp(20px, 2.2vw, 28px);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0;
+  color: var(--ink);
+}
+
+.hud-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(140px, 100%), 1fr));
+  gap: 10px;
+}
+.hud-row--bars { grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr)); }
+
+.hud-readout {
+  position: relative;
+  background: var(--paper);
+  border: 2px solid var(--rule);
+  padding: 12px 13px 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+/* corner brackets, drawn in code */
+.hud-readout::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--rule), var(--rule)) 0 0 / 12px 2px no-repeat,
+    linear-gradient(var(--rule), var(--rule)) 0 0 / 2px 12px no-repeat,
+    linear-gradient(var(--rule), var(--rule)) 100% 0 / 12px 2px no-repeat,
+    linear-gradient(var(--rule), var(--rule)) 100% 0 / 2px 12px no-repeat,
+    linear-gradient(var(--rule), var(--rule)) 0 100% / 12px 2px no-repeat,
+    linear-gradient(var(--rule), var(--rule)) 0 100% / 2px 12px no-repeat,
+    linear-gradient(var(--rule), var(--rule)) 100% 100% / 12px 2px no-repeat,
+    linear-gradient(var(--rule), var(--rule)) 100% 100% / 2px 12px no-repeat;
+}
+
+.hud-readout--hero { padding: 16px 16px 18px; }
+
+.hud-label {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.hud-value {
+  font-family: var(--font-data);
+  font-weight: 600;
+  font-size: clamp(19px, 1.9vw, 26px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.hud-value--xl { font-size: clamp(30px, 3.6vw, 48px); }
+.hud-value--sm { font-size: 15px; }
+.hud-value--down { color: var(--verm); }
+.hud-value--up { color: var(--green); }
+.hud-unit {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  margin-left: 6px;
+  color: var(--ink-3);
+}
+.hud-arrow { font-size: 0.7em; }
+
+.hud-note {
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--ink-3);
+}
+.hud-note b { color: var(--ink-2); font-family: var(--font-data); font-weight: 600; }
+
+.hud-tag-inline {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border: 2px solid var(--rule);
+  background: var(--paper-2);
+  vertical-align: 2px;
+}
+
+/* gauge */
+
+.hud-gauge { display: flex; flex-direction: column; gap: 6px; }
+.hud-gauge__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.gauge {
+  position: relative;
+  height: 20px;
+  border: 2px solid var(--rule);
+  background: var(--paper);
+  display: flex;
+  overflow: hidden;
+}
+.gauge__zone { display: block; height: 100%; }
+.gauge__zone--sell { width: 27.5%; background: repeating-linear-gradient(45deg, var(--verm) 0 5px, transparent 5px 10px); opacity: 0.35; }
+.gauge__zone--neutral { width: 30%; background: var(--paper-2); }
+.gauge__zone--buy { flex: 1; background: repeating-linear-gradient(45deg, var(--green) 0 5px, transparent 5px 10px); opacity: 0.35; }
+
+.gauge__needle {
+  position: absolute;
+  top: -3px; bottom: -3px;
+  width: 4px;
+  background: var(--rule);
+  transform: translateX(-2px);
+}
+.gauge[data-state="empty"] .gauge__needle { opacity: 0; }
+
+.gauge__scale {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--ink-3);
+}
+
+/* range bars */
+
+.hud-readout--bar { justify-content: space-between; }
+
+.range {
+  position: relative;
+  height: 14px;
+  border: 2px solid var(--rule);
+  background: var(--paper-2);
+  overflow: hidden;
+}
+.range__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--cyan);
+  opacity: 0.55;
+}
+.range__marker {
+  position: absolute;
+  top: -3px; bottom: -3px;
+  width: 3px;
+  background: var(--rule);
+  transform: translateX(-1px);
+}
+.range__band {
+  position: absolute;
+  top: 0; bottom: 0;
+  background: var(--tone);
+  opacity: 0.55;
+}
+.range__redline {
+  position: absolute;
+  top: 0; bottom: 0;
+  background: repeating-linear-gradient(45deg, var(--verm) 0 4px, transparent 4px 8px);
+  opacity: 0.45;
+}
+
+.board__feed {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.board__feed .energy { width: 72px; height: 7px; }
+
+[data-theme="night"] .hud-foot {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--ink-3);
+  margin: 0;
+  border-top: 1px solid var(--tone);
+  padding-top: 10px;
+}
+
+/* ---------- stat strip --------------------------------------------------- */
+
+.strip {
+  border: var(--edge) solid var(--rule);
+  background: var(--paper-2);
+  background-image: var(--plate-tone-light);
+  background-size: 8px 8px;
+  margin: 0 0 var(--gutter);
+}
+.strip__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
+}
+.strip__list li {
+  padding: 16px 18px;
+  border-right: var(--edge) solid var(--rule);
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+}
+.strip__list li:last-child { border-right: 0; }
+.strip__list b {
+  font-family: var(--font-data);
+  font-weight: 600;
+  font-size: clamp(22px, 2.6vw, 34px);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.strip__list span {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+/* ---------- sections ----------------------------------------------------- */
+
+.section { padding: clamp(34px, 5vw, 64px) 0; }
+
+/* The masthead is sticky, so an anchor jump that puts the top of a section at
+   the top of the viewport hides its heading underneath the header. Every
+   anchored section keeps the masthead's height clear. */
+.section[id] {
+  scroll-margin-top: calc(var(--masthead-h) + 12px);
+}
+
+.section__head { max-width: 68ch; margin-bottom: clamp(18px, 2.4vw, 30px); }
+.section__head h2 {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: clamp(26px, 3.6vw, 46px);
+  line-height: 1.02;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  margin: 12px 0 10px;
+}
+.section__head p { margin: 0; color: var(--ink-2); font-size: 16px; }
+
+/* ---------- tool catalogue ------------------------------------------------ */
+
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(290px, 100%), 1fr));
+  gap: var(--gutter);
+}
+
+.tool {
+  border: var(--edge) solid var(--rule);
+  background: var(--paper);
+  padding: 0;
+}
+.tool[open] { background: var(--paper-2); }
+
+.tool summary {
+  list-style: none;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 10px;
+  padding: 13px 15px;
+  border-bottom: var(--edge) solid var(--rule);
+}
+.tool summary::-webkit-details-marker { display: none; }
+
+.tool__no {
+  font-family: var(--font-data);
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--paper);
+  background: var(--ink);
+  padding: 3px 6px;
+}
+.tool__name {
+  font-family: var(--font-data);
+  font-weight: 600;
+  font-size: 13.5px;
+  letter-spacing: -0.01em;
+  word-break: break-word;
+}
+.tool__meta {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
+.tool__desc {
+  margin: 0;
+  padding: 13px 15px 0;
+  font-size: 14.5px;
+  color: var(--ink-2);
+}
+
+.params {
+  margin: 0;
+  padding: 12px 15px 16px;
+  display: grid;
+  gap: 9px;
+}
+.params dt {
+  font-family: var(--font-data);
+  font-weight: 600;
+  font-size: 12.5px;
+}
+.params dt em {
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--verm);
+  border: 1px solid currentColor;
+  padding: 1px 5px;
+  margin-left: 7px;
+}
+.params dd {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+
+code {
+  font-family: var(--font-data);
+  font-size: 0.92em;
+  background: var(--paper);
+  border: 1px solid var(--tone);
+  padding: 1px 5px;
+  /* a long token (a JSON example, a tool name) must break rather than widen
+     the card it sits in — otherwise the whole page overflows on a phone */
+  overflow-wrap: anywhere;
+}
+
+/* ---------- metrics ------------------------------------------------------ */
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: var(--gutter);
+}
+.metric-panel h3 {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 24px;
+  text-transform: uppercase;
+  margin: 12px 0 14px;
+}
+.metric-panel--extra { background-image: var(--plate-tone-light); background-size: 8px 8px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 11px; }
+.chip {
+  font-family: var(--font-data);
+  font-size: 12px;
+  padding: 3px 7px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  line-height: 1.4;
+}
+.chip__group {
+  width: 100%;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin: 4px 0 1px;
+}
+
+.tick-list { margin: 0; padding-left: 18px; font-size: 14.5px; color: var(--ink-2); }
+.tick-list li { margin-bottom: 7px; }
+.tick-list li::marker { color: var(--cyan); }
+
+.noscript { font-size: 14px; color: var(--ink-2); }
+
+/* ---------- steps -------------------------------------------------------- */
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(176px, 100%), 1fr));
+  gap: var(--gutter);
+  counter-reset: step;
+}
+.step {
+  position: relative;
+  border: var(--edge) solid var(--rule);
+  background: var(--paper);
+  padding: 26px 18px 18px;
+}
+.step__no {
+  position: absolute;
+  top: -16px;
+  left: 14px;
+  font-family: var(--font-data);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--paper);
+  background: var(--ink);
+  border: var(--edge) solid var(--rule);
+  padding: 4px 9px;
+}
+.step h3 {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 21px;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+.step p { margin: 0; font-size: 14px; color: var(--ink-2); line-height: 1.55; }
+.step code { font-size: 11.5px; }
+
+/* ---------- sources ------------------------------------------------------ */
+
+.source-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(270px, 100%), 1fr));
+  gap: var(--gutter);
+}
+.source__mark {
+  display: inline-block;
+  font-family: var(--font-data);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  border: var(--edge) solid var(--rule);
+  background: var(--cyan-bright);
+  color: var(--cyan-deep);
+  padding: 5px 11px;
+}
+[data-theme="night"] .source__mark { color: #eafcff; }
+.source h3 {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 23px;
+  text-transform: uppercase;
+  margin: 13px 0 8px;
+}
+.source p { margin: 0 0 12px; font-size: 14.5px; color: var(--ink-2); }
+
+.caveat {
+  margin: var(--gutter) 0 0;
+  font-size: 13.5px;
+  color: var(--ink-3);
+  border-left: var(--edge) solid var(--rule);
+  padding: 10px 16px;
+  background: var(--paper-2);
+  max-width: 90ch;
+}
+
+/* ---------- install ------------------------------------------------------ */
+
+.install {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--gutter);
+  align-items: start;
+}
+
+.install__code { padding: 0; overflow: hidden; }
+/* The install command is a long line. Cutting it off mid-word made it
+   impossible to read, so it wraps instead of being clipped. */
+.install__code pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+.install__bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 12.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.install__bar--second { border-top: 2px solid var(--rule); }
+.install__bar-actions { display: inline-flex; gap: 8px; }
+.install__bar .btn {
+  background: var(--paper);
+  color: var(--ink);
+  border-color: var(--paper);
+  box-shadow: none;
+  padding: 5px 12px;
+  font-size: 12px;
+}
+.install__bar .btn:hover { background: var(--cyan-bright); color: var(--cyan-deep); }
+
+.code {
+  margin: 0;
+  padding: 18px;
+  background: var(--paper);
+  font-family: var(--font-data);
+  font-size: 12.5px;
+  line-height: 1.65;
+  overflow-x: auto;
+  white-space: pre;
+}
+.code--sm { font-size: 11.5px; padding: 12px 14px; border: 2px solid var(--rule); }
+
+.install__note { margin: 0; padding: 12px 14px; font-size: 13px; color: var(--ink-2); }
+.install__note code { white-space: normal; overflow-wrap: anywhere; }
+
+.install__steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--gutter);
+}
+.install__steps li {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+.install__steps .step__no { position: static; }
+.install__steps h3 {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 19px;
+  text-transform: uppercase;
+  margin: 2px 0 8px;
+}
+.install__steps p { margin: 0; font-size: 14px; color: var(--ink-2); }
+
+/* ---------- table -------------------------------------------------------- */
+
+/* a wide table scrolls inside its panel instead of stretching the page */
+.table-wrap { overflow-x: auto; }
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14.5px;
+}
+.table th,
+.table td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--tone);
+}
+.table th {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  border-bottom: var(--edge) solid var(--rule);
+}
+.table td:first-child { width: 30%; }
+.table td:nth-child(2) { width: 22%; font-family: var(--font-data); font-size: 13px; }
+.table tr:last-child td { border-bottom: 0; }
+
+/* ---------- footer ------------------------------------------------------- */
+
+.footer { padding: var(--gutter) 0 clamp(40px, 6vw, 80px); }
+.footer__panel { text-align: center; }
+.footer__mark {
+  font-family: var(--font-script);
+  font-size: 34px;
+  margin: 0 0 10px;
+}
+.footer__panel p { margin: 0 0 8px; font-size: 14px; color: var(--ink-2); }
+.footer__fine { font-size: 12.5px !important; color: var(--ink-3) !important; max-width: 70ch; margin-inline: auto; }
+.footer__end {
+  font-family: var(--font-shout);
+  font-size: 20px;
+  text-align: center;
+  margin: 18px 0 0;
+  color: var(--ink-3);
+}
+
+/* ---------- toast -------------------------------------------------------- */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 26px;
+  transform: translate(-50%, 160%);
+  z-index: 60;
+  background: var(--ink);
+  color: var(--paper);
+  border: var(--edge) solid var(--rule);
+  box-shadow: 6px 6px 0 var(--verm);
+  padding: 12px 20px;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.toast.is-on { transform: translate(-50%, 0); }
+
+/* ---------- ticker tape ---------------------------------------------------- */
+
+.tape {
+  position: relative;
+  margin: 0 0 var(--gutter);
+  border-bottom: var(--edge) solid var(--rule);
+  background: var(--band-bg);
+  color: var(--band-fg);
+  overflow: hidden;
+  padding: 7px 0;
+}
+
+.tape__row {
+  display: flex;
+  gap: 30px;
+  width: max-content;
+  animation: tape-scroll 68s linear infinite;
+}
+.tape__row--reverse { animation-direction: reverse; }
+.tape:hover .tape__row { animation-play-state: paused; }
+
+@keyframes tape-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tape__row { animation: none; }
+}
+
+.tape__item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--font-data);
+  font-size: 12px;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+.tape__item b { font-weight: 600; letter-spacing: 0.06em; }
+.tape__price { color: var(--band-fg); }
+.tape__change { color: var(--band-up); }
+.tape__item--down .tape__change { color: var(--band-down); }
+
+.tape__stamp {
+  position: absolute;
+  right: 62px;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  background: var(--band-bg);
+  border-left: 2px solid var(--band-fg);
+  font-family: var(--font-data);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--band-dim);
+}
+
+/* A marquee that starts on its own has to be stoppable by anyone, not
+   only by a mouse hovering over it. */
+.tape__pause {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--band-fg);
+  background: var(--band-bg);
+  border: 0;
+  border-left: 2px solid var(--band-fg);
+  cursor: pointer;
+}
+.tape__pause:hover { color: var(--band-bg); background: var(--band-fg); }
+.tape__pause[aria-pressed="true"] { color: var(--band-bg); background: var(--band-fg); }
+.tape.is-paused .tape__row { animation-play-state: paused; }
+.tape:focus-within .tape__row { animation-play-state: paused; }
+
+/* ---------- live board ---------------------------------------------------- */
+
+.board {
+  display: grid;
+  grid-template-columns: minmax(0, 1.62fr) minmax(0, 1fr);
+  gap: var(--gutter);
+  align-items: start;
+}
+
+.board__chart { padding: 0; overflow: hidden; }
+
+.board__bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 11px 14px;
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.board__symbol input {
+  font-family: var(--font-data);
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  width: 14ch;
+  padding: 5px 9px;
+  border: 2px solid var(--paper);
+  background: transparent;
+  color: var(--paper);
+}
+.board__symbol input:focus { outline: 2px solid currentColor; outline-offset: -2px; }
+
+.board__name {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tone);
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.board__badge {
+  font-family: var(--font-data);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  padding: 4px 9px;
+  border: 2px solid var(--tone);
+  color: var(--tone);
+}
+.board__badge--live {
+  color: #0d1013;
+  background: #46d68a;
+  border-color: #46d68a;
+}
+
+.board__bar .btn {
+  background: var(--paper);
+  color: var(--ink);
+  border-color: var(--paper);
+  box-shadow: none;
+}
+.board__bar .btn:hover { background: var(--cyan-bright); color: var(--cyan-deep); }
+
+.board__price {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 16px 16px 4px;
+}
+.board__last {
+  font-family: var(--font-data);
+  font-weight: 600;
+  font-size: clamp(28px, 3.4vw, 42px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.board__change {
+  font-family: var(--font-data);
+  font-weight: 600;
+  font-size: 17px;
+}
+.board__change.is-up { color: var(--green); }
+.board__change.is-down { color: var(--verm); }
+
+/* The chart holds its space even before the series arrives, so the panel
+   never jumps when the SVG is written into it. */
+.chart {
+  padding: 6px 10px 0;
+  aspect-ratio: 900 / 380;
+  /* The plot is drawn in a fixed 900-unit space and stretched into the panel,
+     so on a phone it is scaled to about a third. The price labels live inside
+     that space, so they are sized in the same units - and the type has to
+     grow as the plot shrinks, or the reader gets four-pixel numbers. */
+  --chart-axis: 11px;
+}
+@media (max-width: 720px) { .chart { --chart-axis: 16px; } }
+@media (max-width: 560px) { .chart { --chart-axis: 22px; } }
+@media (max-width: 430px) { .chart { --chart-axis: 28px; } }
+@media (max-width: 360px) { .chart { --chart-axis: 34px; } }
+.chart__svg { width: 100%; height: 100%; display: block; }
+.chart__empty { padding: 40px 10px; color: var(--ink-3); font-size: 14px; }
+
+.chart__grid { stroke: var(--tone); stroke-width: 1; vector-effect: non-scaling-stroke; opacity: 0.5; }
+.chart__axis {
+  font-family: var(--font-data);
+  font-size: var(--chart-axis, 11px);
+  fill: var(--ink-3);
+  /* The price labels sit on top of the price line, so they are knocked out
+     of it the way a caption is knocked out of a panel in a comic. */
+  paint-order: stroke fill;
+  stroke: var(--paper);
+  stroke-width: calc(var(--chart-axis, 11px) * 0.26);
+  stroke-linejoin: round;
+}
+.chart__band { fill: var(--cyan); opacity: 0.1; }
+.chart__price { fill: none; stroke: var(--ink); stroke-width: 2.2; vector-effect: non-scaling-stroke; }
+.chart__sma20 { fill: none; stroke: var(--cyan); stroke-width: 1.4; vector-effect: non-scaling-stroke; }
+.chart__sma50 { fill: none; stroke: var(--verm); stroke-width: 1.4; vector-effect: non-scaling-stroke; }
+.chart__rsi { fill: none; stroke: var(--cyan-deep); stroke-width: 1.4; vector-effect: non-scaling-stroke; }
+.chart__rsi-line { stroke: var(--tone); stroke-width: 1; stroke-dasharray: 4 4; vector-effect: non-scaling-stroke; }
+.chart__last-line { stroke: var(--verm); stroke-width: 1; stroke-dasharray: 2 3; vector-effect: non-scaling-stroke; }
+.chart__vol-up { fill: var(--ink-3); opacity: 0.55; }
+.chart__vol-down { fill: var(--verm); opacity: 0.5; }
+/* the volume bars grow out of their own baseline, so the origin is set in
+   view-box units per bar by the script */
+.chart__vol { transform-box: view-box; }
+
+/* ==========================================================================
+   THE CHART IGNITES
+   ==========================================================================
+   The price line is not a static drawing. A front runs along it, and the ink
+   behind the front is drawn while ahead of the front there is nothing. The
+   front always runs one way - from the oldest close to the current price,
+   left to right - so the series is written in reading order, and it does so
+   on a falling market exactly as on a rising one. What changes between the
+   two modes is the character of the run, not its direction:
+
+     enter   the chart is being born. The front starts at the oldest close
+             and runs right, at the page's own pace.
+     ignite  the data changed. The same run again, oldest close to current
+             price, but hotter - a longer streak of ember in front of it.
+
+   The front is an SVG dash. Every wipe path carries pathLength="1", so
+   stroke-dashoffset travels 1 -> 0 (left to right) without measuring a
+   single pixel. The ember is a short dash of the same path, so it rides the
+   front for free. The asteroid rides it as well: an <animateMotion> along
+   the price path, so it comes to rest exactly on the current price.
+
+   The chart's own state is on the host: data-motion says which way the front
+   runs, data-draw says whether it is running. Without those attributes the
+   chart is simply whole, which is the safe default and the reduced-motion
+   path: if the script never runs, nothing is hidden.
+   -------------------------------------------------------------------------- */
+
+.chart {
+  --chart-from: 1;          /* where the front starts, in path lengths */
+  --chart-ember-from: 0;    /* where the ember starts */
+  --chart-ember-to: -1;     /* where the ember ends up */
+  --chart-ember-tail-from: 0.16;   /* the tail sits just behind the head */
+  --chart-ember-tail-to: -0.84;
+  --chart-dur: 8000ms;
+  --chart-ease: cubic-bezier(0.16, 0.84, 0.44, 1);
+  --chart-trail: 0.18;      /* the averages follow the price by this much */
+  transform-origin: 50% 100%;
+}
+
+/* the ember: a hot bead riding the front. Cyan is the page's one accent,
+   and in the shrine domain it is the furnace. */
+.chart__ember {
+  fill: none;
+  stroke: var(--cyan);
+  stroke-width: 7;
+  stroke-linecap: round;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* the tail: the stretch of the line the head has just crossed, held at half
+   strength. It is what turns a bead into a spark. */
+.chart__ember-tail {
+  fill: none;
+  stroke: var(--cyan);
+  stroke-width: 3.5;
+  stroke-linecap: butt;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* The asteroid. A burning rock that rides the line from the oldest close to
+   the current price, banking along the tangent as it travels. It is drawn
+   around the origin, because that is the point the motion path puts it on,
+   and it is moved by SMIL rather than by CSS, so the transform belongs to
+   the path and nothing else may claim it. */
+.chart__rock { opacity: 0; pointer-events: none; }
+.chart__rock-glow { fill: url(#rockGlow); }
+.chart__rock-glow-stop { stop-color: var(--cyan); stop-opacity: 0.5; }
+.chart__rock-glow-stop--out { stop-color: var(--cyan); stop-opacity: 0; }
+.chart__rock-body {
+  fill: #14100f;
+  stroke: var(--cyan);
+  stroke-width: 2.2;
+  stroke-linejoin: round;
+}
+.chart__rock-facet {
+  fill: none;
+  stroke: var(--cyan);
+  stroke-width: 1.2;
+  opacity: 0.75;
+}
+.chart__rock-core { fill: #ffffff; }
+
+/* Time runs one way, so the front runs one way. It always starts at the
+   oldest close on the left and arrives at the current price on the right: a
+   falling market is written exactly like a rising one, and choosing another
+   stock writes the series again in reading order instead of sweeping back
+   through it. The modes differ in character, not in direction - enter is the
+   chart being born, ignite is the reader asking for that series again. */
+.chart[data-motion="enter"] {
+  --chart-from: 1;
+  --chart-ember-from: 0;
+  --chart-ember-to: -1;
+  --chart-ember-tail-from: 0.16;
+  --chart-ember-tail-to: -0.84;
+  --chart-dur: 8000ms;
+}
+.chart[data-motion="ignite"] {
+  --chart-from: 1;
+  --chart-ember-from: 0;
+  --chart-ember-to: -1;
+  --chart-ember-tail-from: 0.10;
+  --chart-ember-tail-to: -0.90;
+  --chart-dur: 8000ms;
+}
+
+/* pending: the chart is present but not yet written. It is off-screen when
+   this state is set, so nothing is hidden in plain sight. */
+.chart[data-draw="pending"] .chart__price,
+.chart[data-draw="pending"] .chart__sma20,
+.chart[data-draw="pending"] .chart__sma50,
+.chart[data-draw="pending"] .chart__rsi,
+.chart[data-draw="pending"] .chart__wipe-mask {
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: var(--chart-from);
+}
+.chart[data-draw="pending"] .chart__vol { transform: scaleY(0); }
+
+/* playing: the front runs. */
+.chart[data-draw="playing"] .chart__price,
+.chart[data-draw="playing"] .chart__sma20,
+.chart[data-draw="playing"] .chart__sma50,
+.chart[data-draw="playing"] .chart__rsi,
+.chart[data-draw="playing"] .chart__wipe-mask {
+  animation: chart-wipe var(--chart-dur) var(--chart-ease) both;
+}
+.chart[data-draw="playing"] .chart__sma20,
+.chart[data-draw="playing"] .chart__sma50,
+.chart[data-draw="playing"] .chart__rsi {
+  animation-delay: calc(var(--chart-dur) * var(--chart-trail));
+}
+.chart[data-draw="playing"] .chart__ember {
+  animation: chart-ember var(--chart-dur) var(--chart-ease) both;
+}
+.chart[data-draw="playing"] .chart__ember-tail {
+  animation: chart-ember-tail var(--chart-dur) var(--chart-ease) both;
+}
+.chart[data-draw="playing"] .chart__rock {
+  animation: rock-burn var(--chart-dur) var(--chart-ease) both;
+}
+.chart[data-draw="playing"] .chart__vol {
+  animation: chart-vol 420ms cubic-bezier(0.2, 0.9, 0.3, 1) both;
+  animation-delay: calc(var(--t) * var(--chart-dur));
+}
+/* The grid and the axis labels only fade in when the chart is born. A
+   re-draw of a chart that is already on screen leaves them standing. */
+.chart[data-motion="enter"][data-draw="playing"] .chart__grid {
+  animation: chart-grid 700ms ease-out both;
+  animation-delay: 120ms;
+}
+.chart[data-motion="enter"][data-draw="playing"] .chart__axis {
+  animation: chart-fade 700ms ease-out both;
+  animation-delay: 120ms;
+}
+/* the last-price guide draws on when the front reaches the current price:
+   at the end of a birth, at the start of an ignition. */
+.chart[data-draw="playing"] .chart__last-line {
+  animation: chart-fade 480ms ease-out both;
+  animation-delay: var(--chart-last-delay, 0ms);
+}
+.chart[data-motion="enter"] { --chart-last-delay: calc(var(--chart-dur) * 0.92); }
+.chart[data-motion="ignite"] { --chart-last-delay: calc(var(--chart-dur) * 0.86); }
+
+/* the plane: the chart tips back off the page as it catches and settles.
+   The light comes from the top left, so the top edge is the one that lifts. */
+.chart[data-draw="playing"] {
+  animation: chart-plane var(--chart-dur) var(--chart-ease);
+}
+
+@keyframes chart-wipe {
+  0% { stroke-dasharray: 1 1; stroke-dashoffset: var(--chart-from); }
+  100% { stroke-dasharray: 1 1; stroke-dashoffset: 0; }
+}
+@keyframes chart-ember {
+  0% { stroke-dasharray: 0.035 1; stroke-dashoffset: var(--chart-ember-from); opacity: 1; }
+  92% { opacity: 1; }
+  100% { stroke-dasharray: 0.035 1; stroke-dashoffset: var(--chart-ember-to); opacity: 0; }
+}
+@keyframes chart-ember-tail {
+  0% { stroke-dasharray: 0.16 1; stroke-dashoffset: var(--chart-ember-tail-from); opacity: 0.5; }
+  92% { opacity: 0.5; }
+  100% { stroke-dasharray: 0.16 1; stroke-dashoffset: var(--chart-ember-tail-to); opacity: 0; }
+}
+@keyframes rock-burn {
+  0% { opacity: 0; }
+  5% { opacity: 1; }
+  86% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes chart-vol {
+  0% { transform: scaleY(0); }
+  100% { transform: scaleY(1); }
+}
+@keyframes chart-grid {
+  0% { opacity: 0; }
+  100% { opacity: 0.5; }
+}
+@keyframes chart-fade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes chart-plane {
+  0% { transform: perspective(1200px) rotateX(0deg); }
+  22% { transform: perspective(1200px) rotateX(4.5deg); }
+  100% { transform: perspective(1200px) rotateX(0deg); }
+}
+
+/* Reduced motion: the chart is whole and still. The data still arrives and
+   the price still changes, so the feedback survives; only the travel does
+   not. */
+@media (prefers-reduced-motion: reduce) {
+  .chart[data-draw] .chart__price,
+  .chart[data-draw] .chart__sma20,
+  .chart[data-draw] .chart__sma50,
+  .chart[data-draw] .chart__rsi,
+  .chart[data-draw] .chart__wipe-mask,
+  .chart[data-draw] .chart__ember,
+  .chart[data-draw] .chart__ember-tail,
+  .chart[data-draw] .chart__rock,
+  .chart[data-draw] .chart__vol,
+  .chart[data-draw] .chart__band,
+  .chart[data-draw] .chart__grid,
+  .chart[data-draw] .chart__axis,
+  .chart[data-draw] .chart__last-line,
+  .chart[data-draw] { animation: none; }
+  .chart[data-draw="pending"] .chart__price,
+  .chart[data-draw="pending"] .chart__sma20,
+  .chart[data-draw="pending"] .chart__sma50,
+  .chart[data-draw="pending"] .chart__rsi,
+  .chart[data-draw="pending"] .chart__wipe-mask { stroke-dasharray: none; stroke-dashoffset: 0; }
+  .chart[data-draw="pending"] .chart__vol { transform: none; }
+}
+
+.chart__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 8px 16px 0;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.legend { display: inline-flex; align-items: center; gap: 6px; }
+.legend--right { margin-left: auto; }
+.legend__key { width: 14px; height: 3px; display: inline-block; background: var(--ink); }
+.legend__key--price { background: var(--ink); height: 3px; }
+.legend__key--sma20 { background: var(--cyan); }
+.legend__key--sma50 { background: var(--verm); }
+.legend__key--band { background: var(--cyan); opacity: 0.35; height: 9px; }
+.legend__key--rsi { background: var(--cyan-deep); }
+
+.board__range {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px 16px;
+}
+.board__range-label,
+.board__range-nums {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.board__range-nums { font-family: var(--font-data); letter-spacing: 0.02em; }
+.board__range-track {
+  position: relative;
+  height: 10px;
+  border: 2px solid var(--rule);
+  background: var(--paper-2);
+}
+.board__range-track i {
+  position: absolute;
+  top: -3px; bottom: -3px;
+  width: 3px;
+  background: var(--verm);
+  transform: translateX(-1px);
+}
+
+.board__side { display: flex; flex-direction: column; gap: 10px; }
+.board__fundamentals { margin-top: var(--gutter); }
+.board__fundamentals .readouts {
+  grid-template-columns: repeat(auto-fit, minmax(min(190px, 100%), 1fr));
+}
+.caption--spaced { margin-top: 10px; }
+
+.readouts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
+  gap: 8px;
+}
+
+.readout {
+  border: 2px solid var(--rule);
+  background: var(--paper);
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.readout__label {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.readout__value {
+  font-family: var(--font-data);
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.25;
+  font-variant-numeric: tabular-nums;
+}
+.readout__value--up { color: var(--green); }
+.readout__value--down { color: var(--verm); }
+.readout__hint {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.board__note {
+  margin: 6px 0 0;
+  font-family: var(--font-data);
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+/* ---------- anime layer -----------------------------------------------------
+   Focus lines, ink slashes, energy bars and aura rings. The vocabulary is
+   manga and modern anime craft, drawn in code — no licensed characters.
+   -------------------------------------------------------------------------- */
+
+:root {
+  --aura: #6ff0ff;
+  --flame: #f2762e;
+  --indigo: #2b3a8f;
+}
+
+/* focus lines: radial speed lines converging on a headline */
+.section__head--fx {
+  position: relative;
+  isolation: isolate;
+}
+.section__head--fx::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  /* the speed lines bleed into the gutter, but never past the page edge: a
+     fixed -60px pushed the right-hand 48px off-screen, where the domain
+     switch lives and could not be tapped */
+  inset: -40px calc(-1 * min(3vw, 40px)) -30px calc(-1 * min(3vw, 40px));
+  background: repeating-conic-gradient(
+    from 0deg at 22% 40%,
+    var(--ink) 0deg 0.45deg,
+    transparent 0.45deg 2.6deg
+  );
+  opacity: 0.09;
+  mask-image: radial-gradient(ellipse 60% 70% at 22% 40%, #000 25%, transparent 72%);
+  -webkit-mask-image: radial-gradient(ellipse 60% 70% at 22% 40%, #000 25%, transparent 72%);
+  pointer-events: none;
+}
+
+/* ink slash divider */
+.slash {
+  position: relative;
+  height: 34px;
+  margin: 0;
+  overflow: hidden;
+}
+.slash svg { width: 100%; height: 100%; display: block; }
+.slash path { fill: var(--ink); }
+
+/* aura ring behind the hero title */
+.hero-title { position: relative; }
+.hero-title::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: -6%;
+  top: -18%;
+  width: 62%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(111, 240, 255, 0.42) 0%, rgba(111, 240, 255, 0.08) 46%, transparent 68%);
+  animation: aura-breathe 4.2s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes aura-breathe {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.09); opacity: 1; }
+}
+
+/* cursed-energy charge bar */
+.energy {
+  position: relative;
+  height: 8px;
+  border: 2px solid var(--rule);
+  background: var(--paper-2);
+  overflow: hidden;
+}
+.energy::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 38%;
+  background: linear-gradient(90deg, transparent, var(--aura), transparent);
+  animation: energy-charge 1.5s ease-in-out infinite;
+}
+@keyframes energy-charge {
+  from { transform: translateX(-120%); }
+  to { transform: translateX(320%); }
+}
+
+/* low / high gauge with a redline danger zone */
+.gauge--danger {
+  position: relative;
+}
+.gauge--danger .gauge__redline {
+  position: absolute;
+  top: 0; bottom: 0; right: 0;
+  width: 18%;
+  background: repeating-linear-gradient(45deg, var(--verm) 0 4px, transparent 4px 8px);
+  opacity: 0.4;
+}
+
+/* ---------- 3D and motion --------------------------------------------------
+   A camera, not a template: the page has depth, planes and a dolly. Every
+   transform is driven by pointer or scroll, and every one collapses under
+   prefers-reduced-motion.
+   -------------------------------------------------------------------------- */
+
+.sheet { perspective: 1400px; perspective-origin: 50% 30%; }
+
+.panel,
+.tool,
+.step,
+.source,
+.metric-panel,
+.preset {
+  transition: transform 220ms cubic-bezier(0.22, 0.9, 0.3, 1), box-shadow 220ms ease,
+    border-radius 180ms cubic-bezier(0.22, 0.9, 0.3, 1);
+}
+
+/* tilt toward the pointer, set per-card by app.js */
+.panel.tilt,
+.tool.tilt,
+.step.tilt,
+.source.tilt,
+.metric-panel.tilt {
+  transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateZ(14px)
+    scale(var(--touch-scale, 1));
+  box-shadow: 10px 12px 0 rgba(16, 15, 16, 0.16);
+}
+
+/* The tilt is a pointer gesture, so the browser must not wait to see if it
+   is a scroll. Without this, a touch drag on a card fights the page. */
+.panel--metrics,
+.metric-panel,
+.tool,
+.step,
+.source {
+  touch-action: manipulation;
+}
+[data-theme="night"] .panel.tilt,
+[data-theme="night"] .tool.tilt,
+[data-theme="night"] .step.tilt,
+[data-theme="night"] .source.tilt,
+[data-theme="night"] .metric-panel.tilt {
+  box-shadow: 10px 12px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* the hero is a stack of planes on a dolly */
+.splash { transform-style: flat; }
+
+/* still capture asks for a flat page */
+html.is-flat .sheet { perspective: none; }
+html.is-flat .splash { transform-style: flat; }
+html.is-flat .panel--hero,
+html.is-flat .panel--hud { transform: none; }
+
+/* The hero and the board are the page's two planes. They used to ride the
+   dolly in Z, and a panel with a Z translation can fail to paint its own
+   content - the hero went blank while the page was still standing there,
+   which is the worst bug this page has ever had. The dolly now works in the
+   plane, where it is safe: the hero eases back as the reader scrolls and the
+   board comes forward. The perspective on the sheet still carries the pointer
+   tilt on the cards further down. */
+.panel--hero {
+  transform: translateY(calc(var(--dolly, 0) * -8px)) scale(calc(1 - var(--dolly, 0) * 0.018));
+}
+.panel--hud {
+  transform: scale(calc(1 + var(--dolly, 0) * 0.024));
+}
+[data-theme="night"] /* holo ring around the live price */
+.board__last {
+  position: relative;
+  padding: 4px 14px;
+}
+.board__last::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 50%; top: 50%;
+  width: 148%; aspect-ratio: 1;
+  transform: translate(-50%, -50%) rotateX(72deg);
+  background: conic-gradient(from 0deg, transparent 0deg, var(--aura) 40deg, transparent 90deg, transparent 180deg, var(--cyan) 220deg, transparent 270deg);
+  opacity: 0.5;
+  border-radius: 50%;
+  animation: holo-spin 7s linear infinite;
+  pointer-events: none;
+}
+@keyframes holo-spin { to { transform: translate(-50%, -50%) rotateX(72deg) rotate(360deg); } }
+
+/* the LIVE badge throws a ring when it goes live */
+.board__badge--live {
+  animation: badge-lock 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes badge-lock {
+  0% { transform: scale(0.7); box-shadow: 0 0 0 0 var(--green); }
+  60% { transform: scale(1.12); }
+  100% { transform: scale(1); box-shadow: 0 0 0 10px transparent; }
+}
+
+/* manga chapter tab, pressed into the page */
+.preset.is-active { transform: translateZ(18px) scale(1.04); }
+
+/* tool cards lift off the page like cut-outs */
+.tool[open] { transform: translateZ(12px); }
+
+/* the screener table gets a subtle 3D scroll plane */
+.sc-table-wrap { perspective: 900px; }
+.sc-table thead th { transform: translateZ(6px); }
+
+/* the tape runs on a shallow plane */
+.tape__row { transform: translateZ(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .panel.tilt, .tool.tilt, .step.tilt, .source.tilt, .metric-panel.tilt { transform: none; }
+  .panel--hero, .panel--hud { transform: none; }
+  .board__last::before { animation: none; }
+}
+
+/* ---------- screener ------------------------------------------------------- */
+
+.screener {
+  display: grid;
+  grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+  gap: var(--gutter);
+  align-items: start;
+}
+
+.screener__controls { display: flex; flex-direction: column; gap: 14px; }
+
+.presets { display: flex; flex-wrap: wrap; gap: 6px; }
+.preset {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 7px 11px;
+  border: 2px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+}
+.preset:hover { background: var(--paper-2); }
+.preset.is-active {
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow: 3px 3px 0 var(--cyan);
+}
+
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field__label {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.field input {
+  font-family: var(--font-data);
+  font-size: 13px;
+  padding: 8px 10px;
+  border: 2px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink);
+  width: 100%;
+}
+/* the browser's default placeholder grey is 4.2:1 on paper - the search box
+   is the one field whose placeholder is the only instruction it has */
+.field input::placeholder {
+  color: var(--ink-2);
+  opacity: 1;
+}
+
+.filters { display: flex; flex-direction: column; gap: 11px; }
+.filter { display: flex; flex-direction: column; gap: 4px; }
+.filter > span {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.filter b {
+  font-family: var(--font-data);
+  font-weight: 600;
+  color: var(--ink);
+}
+.filter input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  /* the control is a 26px target; the track drawn inside it stays 6px */
+  height: 26px;
+  background: transparent;
+  border: 0;
+  /* the browser's own field colour, so the focus ring that is drawn in the
+     control's text colour comes out in the theme's ink and not in black */
+  color: var(--ink);
+  cursor: pointer;
+}
+.filter input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  background: var(--paper-2);
+  border: 2px solid var(--rule);
+}
+.filter input[type="range"]::-moz-range-track {
+  height: 6px;
+  background: var(--paper-2);
+  border: 2px solid var(--rule);
+}
+.filter input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 24px;
+  background: var(--ink);
+  border: 2px solid var(--paper);
+  cursor: grab;
+}
+.filter input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 24px;
+  border-radius: 0;
+  background: var(--ink);
+  border: 2px solid var(--paper);
+  cursor: grab;
+}
+
+.sc-call { display: flex; flex-direction: column; gap: 7px; }
+.sc-call .code { border: 2px solid var(--rule); max-height: 260px; overflow: auto; }
+
+.screener__results { padding: 0; overflow: hidden; }
+
+.sc-bar {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 12px 15px;
+  background: var(--band-bg);
+  color: var(--band-fg);
+}
+.sc-count {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.sc-count b { font-family: var(--font-data); font-weight: 600; color: var(--band-accent); }
+.sc-note { font-size: 12px; color: var(--band-dim); }
+
+.sc-table-wrap { max-height: 620px; overflow: auto; }
+
+.sc-table { font-size: 12.5px; }
+.sc-table th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--paper-2);
+  cursor: pointer;
+  user-select: none;
+  padding: 9px 8px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+.sc-table th:hover { background: var(--tone); }
+.sc-table th.is-sorted { color: var(--cyan); }
+.sc-table th i { font-style: normal; margin-left: 4px; }
+.sc-table td { padding: 7px 8px; border-bottom: 1px solid var(--tone); white-space: nowrap; }
+.sc-table td.num { text-align: right; font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+.sc-table tbody tr { cursor: pointer; }
+.sc-table tbody tr:hover { background: var(--cyan-bright); }
+[data-theme="night"] .sc-table tbody tr:hover { background: #123842; }
+.sc-table tbody tr:nth-child(even) { background: color-mix(in srgb, var(--paper-2) 55%, transparent); }
+
+.sc-sym { position: sticky; left: 0; background: var(--paper); z-index: 1; }
+.sc-table tbody tr:nth-child(even) .sc-sym { background: color-mix(in srgb, var(--paper-2) 92%, var(--paper)); }
+.sc-sym b { font-family: var(--font-data); font-weight: 600; font-size: 12px; }
+.sc-sym span {
+  display: block;
+  font-size: 12px;
+  color: var(--ink-3);
+  max-width: 16ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.is-up { color: var(--green); }
+.is-down { color: var(--verm); }
+.sc-signal { font-family: var(--font-ui); font-weight: 700; font-size: 12px; letter-spacing: 0.06em; }
+
+.sc-hint {
+  margin: 0;
+  padding: 10px 15px;
+  font-size: 12px;
+  color: var(--ink-3);
+  border-top: 2px solid var(--rule);
+}
+
+/* ---------- responsive --------------------------------------------------- */
+
+@media (max-width: 1080px) {
+  /* minmax(0, 1fr), not 1fr: a plain 1fr floors at min-content, so a wide
+     code block pushed the whole page wider than the phone */
+  .splash { grid-template-columns: minmax(0, 1fr); }
+  .install { grid-template-columns: minmax(0, 1fr); }
+  .board { grid-template-columns: minmax(0, 1fr); }
+  .screener { grid-template-columns: minmax(0, 1fr); }
+  }
+
+@media (max-width: 720px) {
+  .masthead { flex-wrap: wrap; gap: 6px 10px; padding: 8px 0 6px; }
+  .wordmark { font-size: clamp(22px, 6vw, 25px); }
+  .nav {
+    order: 3;
+    width: 100%;
+    margin-left: 0;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 9px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  /* If the row still has to scroll - a wider fallback face, a longer label -
+     it says so: the right edge fades out, so the cut reads as more rather
+     than as a missing link. */
+  .nav--more {
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent 100%);
+    mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent 100%);
+  }
+  .nav a {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    padding: 2px 0;
+  }
+  .theme-toggle { margin-left: auto; gap: 5px; font-size: 11px; padding: 4px 9px; }
+  .strip__list { grid-template-columns: repeat(2, 1fr); }
+  .strip__list li { border-right: var(--edge) solid var(--rule); border-bottom: var(--edge) solid var(--rule); }
+  .strip__list li:nth-child(2n) { border-right: 0; }
+  .strip__list li:nth-last-child(-n + 2) { border-bottom: 0; }
+  .tool summary { grid-template-columns: auto 1fr; }
+  .tool__meta { grid-column: 2; }
+}
+
+@media print {
+  .masthead, .theme-toggle, .toast { display: none; }
+  .tool { break-inside: avoid; }
+}
+
+/* ---------- the domain: cursed energy, drawn in code ------------------------
+   A barrier the page can open over itself. The vocabulary is the technique,
+   not the character: shockwave, veil, motes, reversed palette. No licensed
+   artwork, no borrowed faces.
+   -------------------------------------------------------------------------- */
+
+/* The Infinite Void. Deep obsidian, cosmic midnight navy, electric cerulean
+   and phosphor cyan on pure white. A black iris with a light ring refracting
+   outward over a floor of frozen black liquid. */
+[data-theme="void"] {
+  --paper: #05050a;
+  --paper-2: #0b132b;
+  --ink: #ffffff;
+  --ink-2: #d6ecf5;
+  --ink-3: #8fb8c9;
+  --tone: #12304d;
+  --rule: #48cae4;
+
+  --cyan: #00f0ff;
+  --cyan-bright: #02121c;
+  --cyan-deep: #ffffff;
+  --verm: #ff4d6d;
+  --green: #4ff0b4;
+
+  /* the void keeps its own darkness instead of flipping to a light bar */
+  --band-bg: #0b132b;
+  --band-fg: #d6ecf5;
+  --band-accent: #48cae4;
+  --band-dim: #8fb8c9;
+  --band-up: #4ff0b4;
+  --band-down: #ff7a5c;
+
+  --flag-ink: #a8381c;
+
+  --aura: #48cae4;
+  --flame: #ffffff;
+  --indigo: #0b132b;
+
+  --plate-tone: url("assets/plates/tone-night-mid.png");
+  --plate-tone-light: url("assets/plates/tone-night-light.png");
+  --plate-tone-dark: url("assets/plates/tone-night-dark.png");
+}
+
+/* The Malevolent Shrine. Charred obsidian, blood-ink and molten ember: the
+   field is burnt out, the gate is cut from razor light, and the only warmth
+   left in the palette is the furnace burning behind the cases. */
+[data-theme="shrine"] {
+  --paper: #050405;        /* pitch obsidian: the ground the shrine stands on */
+  --paper-2: #171014;      /* altar iron: the inner surface of a case */
+  --ink: #f5f2eb;          /* bleached bone: primary text */
+  --ink-2: #c4bcb7;        /* ashen bone: secondary text */
+  --ink-3: #8d8386;        /* ash: muted text, units, meta */
+  --tone: #3a1218;         /* dried blood: hairlines, rules, grid */
+  --rule: #e50914;         /* razor crimson: every hard edge */
+
+  --cyan: #e50914;         /* primary accent: borders, active tabs, slashes */
+  --cyan-bright: #ff5500;  /* molten furnace: hot surfaces */
+  --cyan-deep: #140304;    /* ember black: type set on a hot surface */
+  --verm: #ff4d6d;         /* down */
+  --green: #4ff0b4;        /* up */
+
+  /* the shrine's band is altar iron with bone on it */
+  --band-bg: #1a0d10;
+  --band-fg: #f5f2eb;
+  --band-accent: #ff5500;
+  --band-dim: #8d8386;
+  --band-up: #4ff0b4;
+  --band-down: #ff8a6b;
+
+  --flag-ink: #a8381c;
+
+  --aura: #b00912;         /* the gate, the eaves */
+  --flame: #ff5500;        /* the furnace glow */
+  --indigo: #1a0508;
+
+  /* one cut, everywhere: 45 degrees, 12px */
+  --shrine-notch: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+
+  --plate-tone: url("assets/plates/tone-night-mid.png");
+  --plate-tone-light: url("assets/plates/tone-night-light.png");
+  --plate-tone-dark: url("assets/plates/tone-night-dark.png");
+}
+
+/* the title panel reads as a printed page: tone wash plus a dialogue row */
+.panel--hero {
+  background-image: var(--plate-tone-light);
+  background-size: 8px 8px;
+}
+.balloons { margin-top: auto; }
+@media (min-width: 721px) {
+  .balloons { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* the chart gets the HUD treatment: dot matrix under the plot, cut corner */
+.chart {
+  background-color: var(--paper);
+  background-image: radial-gradient(circle, var(--tone) 1px, transparent 1.3px);
+  background-size: 14px 14px;
+}
+.board__chart {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%);
+}
+
+/* the void: a black iris with a light ring, over frozen black liquid */
+.domain {
+  position: fixed;
+  inset: 0;
+  /* behind the page: the void is the space the page sits in, not a veil
+     painted over it. A veil at 55 dimmed every word to grey. */
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 420ms ease;
+}
+[data-theme="void"] .domain { opacity: 1; }
+
+/* the light field: warp streaks, not a bubble of stars */
+.domain__stars {
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.16) 0 1px, transparent 1px 230px),
+    repeating-linear-gradient(90deg, rgba(72, 202, 228, 0.12) 0 1px, transparent 1px 410px);
+  mask-image: radial-gradient(ellipse 86% 76% at 50% 44%, #000 14%, transparent 84%);
+  -webkit-mask-image: radial-gradient(ellipse 86% 76% at 50% 44%, #000 14%, transparent 84%);
+  opacity: 0.7;
+  animation: star-drift 140s linear infinite;
+}
+@keyframes star-drift {
+  to { background-position: 90px 0, -60px 0; }
+}
+
+/* the nebula: a slow vortex of cold light */
+.domain__swirl {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(ellipse 46% 30% at 26% 32%, rgba(11, 19, 43, 0.95), transparent 72%),
+    radial-gradient(ellipse 40% 26% at 76% 66%, rgba(0, 240, 255, 0.16), transparent 74%),
+    conic-gradient(
+      from 200deg at 50% 46%,
+      rgba(0, 240, 255, 0.14),
+      transparent 20%,
+      rgba(72, 202, 228, 0.13) 46%,
+      transparent 70%,
+      rgba(0, 240, 255, 0.1)
+    );
+  filter: blur(2px);
+  opacity: 0.5;
+  animation: swirl-turn 160s linear infinite;
+}
+@keyframes swirl-turn {
+  to { transform: rotate(360deg); }
+}
+
+/* the floor: black liquid, but a veil — never an opaque slab */
+.domain__floor {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 34vh;
+  background:
+    radial-gradient(ellipse 70% 100% at 50% 0%, rgba(0, 240, 255, 0.1), transparent 72%),
+    linear-gradient(to bottom, transparent, rgba(5, 5, 10, 0.42) 48%, rgba(5, 5, 10, 0.6) 100%);
+}
+
+/* the black sun: a pupil of pure black ringed in white light, with its
+   accretion rings. It sits behind the hero copy, the way a manga background
+   panel sits behind the balloon. */
+/* The void is not a ball. It is an event horizon seen edge-on: a thin
+   bright line of nothing, with the accretion band bent up around it. */
+.void-core {
+  position: absolute;
+  left: -12%;
+  right: -12%;
+  top: 44%;
+  height: 44vmin;
+  margin-top: -22vmin;
+  z-index: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* The Unlimited Void: a grid receding to a vanishing point, drifting forward,
+   with the space around it turning. Drawn in CSS, nothing borrowed. */
+.void-space {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 420ms ease;
+}
+/* the page-wide copy of the grid: it fills the gaps between panels */
+.void-space--page { z-index: 1; }
+.void-space--page .void-space__grid { perspective-origin: 50% 62%; }
+.void-space--page .void-space__grid::before {
+  top: 62%;
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 240, 255, 0.17) 0 1px, transparent 1px 56px),
+    repeating-linear-gradient(0deg, rgba(0, 240, 255, 0.11) 0 1px, transparent 1px 56px);
+}
+[data-theme="void"] .void-space { opacity: 1; }
+
+.void-space__grid {
+  position: absolute;
+  inset: 0;
+  perspective: 400px;
+  perspective-origin: 50% 58%;
+}
+.void-space__grid::before {
+  content: "";
+  position: absolute;
+  left: -80%;
+  right: -80%;
+  top: 58%;
+  height: 130%;
+  transform-origin: 50% 0;
+  transform: rotateX(73deg);
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 240, 255, 0.38) 0 1px, transparent 1px 56px),
+    repeating-linear-gradient(0deg, rgba(0, 240, 255, 0.26) 0 1px, transparent 1px 56px);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 58%, transparent 88%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 58%, transparent 88%);
+  animation: void-grid-drift 7s linear infinite;
+}
+@keyframes void-grid-drift {
+  from { background-position: 0 0, 0 0; }
+  to { background-position: 0 56px, 0 56px; }
+}
+
+/* the space around the void turns, very slowly */
+.void-space__rays {
+  position: absolute;
+  inset: -30%;
+  background: repeating-conic-gradient(
+    from 0deg at 50% 58%,
+    rgba(0, 240, 255, 0.12) 0deg 0.3deg,
+    transparent 0.3deg 3.4deg
+  );
+  -webkit-mask-image: radial-gradient(ellipse 64% 60% at 50% 58%, #000 2%, transparent 72%);
+  mask-image: radial-gradient(ellipse 64% 60% at 50% 58%, #000 2%, transparent 72%);
+  animation: void-rays-turn 44s linear infinite;
+}
+@keyframes void-rays-turn {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* the domain expanding: a shockwave leaving the vanishing point */
+.void-space__pulse {
+  position: absolute;
+  left: 50%;
+  top: 58%;
+  width: 18vmin;
+  height: 18vmin;
+  margin: -9vmin 0 0 -9vmin;
+  border: 1px solid rgba(0, 240, 255, 0.55);
+  border-radius: 50%;
+  box-shadow: 0 0 26px rgba(0, 240, 255, 0.22);
+  animation: void-pulse 4.6s cubic-bezier(0.18, 0.6, 0.3, 1) infinite;
+}
+@keyframes void-pulse {
+  0% { transform: scale(0.18); opacity: 0; }
+  16% { opacity: 0.85; }
+  100% { transform: scale(5.6); opacity: 0; }
+}
+
+/* the copy keeps its own ground: the grid is atmosphere, not a backdrop for
+   the text to sit on */
+/* the copy keeps its own ground: the grid is atmosphere, not a backdrop
+   for the text to sit on. Only the hero copy needs this scrim — applied to
+   the page-wide copy it dimmed the whole page. */
+.panel--hero .void-space::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    104deg,
+    rgba(5, 5, 10, 0.9) 0%,
+    rgba(5, 5, 10, 0.66) 34%,
+    rgba(5, 5, 10, 0.12) 62%,
+    transparent 80%
+  );
+}
+
+.void-core__disk {
+  position: absolute;
+  width: 130%;
+  height: 30vmin;
+  background:
+    radial-gradient(ellipse 58% 46% at 50% 50%, rgba(0, 240, 255, 0.2), transparent 72%),
+    linear-gradient(
+      to bottom,
+      transparent,
+      rgba(0, 240, 255, 0.24) 36%,
+      rgba(190, 250, 255, 0.38) 50%,
+      rgba(0, 240, 255, 0.24) 64%,
+      transparent
+    );
+  filter: blur(7px);
+  opacity: 0;
+  transform: rotate(-2deg);
+}
+[data-theme="void"] .void-core__disk {
+  opacity: 0.9;
+  animation: disk-turn 90s ease-in-out infinite;
+}
+@keyframes disk-turn {
+  0%, 100% { transform: rotate(-2deg) scaleX(1); opacity: 0.7; }
+  50% { transform: rotate(-1deg) scaleX(1.03); opacity: 1; }
+}
+/* what the page looks like from inside each domain */
+[data-theme="void"] .hero-title {
+  color: #ffffff;
+  text-shadow: 0 0 22px rgba(0, 240, 255, 0.5), 0 0 64px rgba(72, 202, 228, 0.4);
+}
+[data-theme="shrine"] .hero-title {
+  color: #e0ddcf;
+  text-shadow: 0 0 24px rgba(255, 186, 8, 0.45), 0 0 70px rgba(157, 2, 8, 0.5);
+}
+[data-theme="void"] .sfx {
+  color: var(--cyan);
+  text-shadow: 3px 3px 0 var(--rule), 0 0 18px rgba(0, 240, 255, 0.85);
+}
+[data-theme="shrine"] .sfx {
+  color: var(--flame);
+  text-shadow: 3px 3px 0 var(--rule), 0 0 18px rgba(255, 186, 8, 0.85);
+}
+[data-theme="void"] .panel { outline: 1px solid rgba(72, 202, 228, 0.4); outline-offset: 2px; }
+[data-theme="shrine"] .panel { outline: 1px solid rgba(157, 2, 8, 0.45); outline-offset: 2px; }
+[data-theme="void"] .hud-dot { background: var(--cyan); }
+[data-theme="shrine"] .hud-dot { background: var(--flame); }
+
+/* a cleave notch: the corners are cut, not squared */
+[data-theme="shrine"] .preset,
+[data-theme="void"] .preset,
+[data-theme="shrine"] .tech,
+[data-theme="void"] .tech {
+  clip-path: polygon(
+    0 0,
+    calc(100% - 9px) 0,
+    100% 9px,
+    100% 100%,
+    9px 100%,
+    0 calc(100% - 9px)
+  );
+}
+
+/* the domain's name, printed huge and faint behind the live panel */
+.watermark {
+  position: absolute;
+  top: 34px;
+  right: 14px;
+  z-index: 0;
+  font-family: var(--font-body);
+  font-size: clamp(26px, 3.1vw, 46px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--rule);
+  opacity: 0.1;
+  pointer-events: none;
+  white-space: nowrap;
+}
+/* Each domain's name is printed only in that domain. The shrine's watermark
+   used to ghost into the paper theme at ten percent opacity - a clipped
+   sliver of a name that meant nothing on that page. */
+.watermark--shrine { display: none; }
+.watermark--void { display: none; }
+[data-theme="shrine"] .watermark--shrine { display: block; }
+[data-theme="void"] .watermark--void { display: block; }
+
+/* the board says which chart it is drawing */
+.section__note {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin: 0 0 10px;
+}
+.theme-note { display: none; }
+[data-theme="shrine"] .theme-note--shrine,
+[data-theme="void"] .theme-note--void { display: inline; }
+[data-theme="shrine"] .theme-note--plain,
+[data-theme="void"] .theme-note--plain { display: none; }
+
+/* the glowing area under the price line */
+.chart__area { fill: url(#priceFill); }
+.chart__area-stop { stop-color: var(--cyan); stop-opacity: 0.3; }
+.chart__area-stop--low { stop-color: var(--cyan); stop-opacity: 0; }
+
+/* ---------- the shrine: eaves, seals, lenses ------------------------------
+   Original line art. Architecture and data, never a borrowed character.
+   -------------------------------------------------------------------------- */
+.eaves {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 92px;
+  color: var(--aura);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+[data-theme="shrine"] .eaves { opacity: 0.55; }
+[data-theme="shrine"] .panel--hud { gap: 9px; }
+.panel--hud { position: relative; overflow: hidden; }
+/* the watermark is an inscription carved into the wall behind the panel, so it
+   must stay out of the flow - otherwise it takes a row of the column */
+.panel--hud > *:not(.eaves):not(.watermark) { position: relative; z-index: 1; }
+
+/* the ritual score keeps its own name inside the shrine */
+[data-theme="shrine"] .hud-label--score::before { content: "Ritual · "; }
+
+/* the finger tracker: one seal per session, filled when the day closed up */
+.tracker {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--rule);
+}
+.tracker__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 10px;
+  margin-bottom: 8px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.tracker__row { display: grid; gap: 4px; }
+.tracker__row--seals { grid-template-columns: repeat(20, 1fr); }
+.tracker__row--lenses { grid-template-columns: repeat(6, 1fr); display: none; }
+[data-theme="void"] .tracker__row--seals,
+[data-theme="void"] .tracker__label--seals,
+[data-theme="void"] .tracker__count--seals { display: none; }
+[data-theme="void"] .tracker__row--lenses { display: grid; }
+
+.seal {
+  height: 10px;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+}
+.seal--up {
+  background: var(--green);
+  border-color: var(--green);
+  /* the halo takes its hue from the theme's green, so the paper theme does
+     not get a neon mint ring around a dark green bar */
+  box-shadow: 0 0 8px color-mix(in srgb, var(--green) 55%, transparent);
+}
+.lens {
+  height: 12px;
+  border-radius: 50%;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+}
+.lens--charged {
+  background: var(--cyan);
+  border-color: var(--cyan);
+  box-shadow: 0 0 10px var(--cyan);
+}
+
+/* the chart answers the domain it is drawn in */
+[data-theme="shrine"] .chart__price {
+  stroke: #e50914;
+  filter: drop-shadow(0 0 5px rgba(229, 9, 20, 0.55));
+}
+[data-theme="shrine"] .chart__sma20 { stroke: #ff6b00; }
+[data-theme="void"] .chart__price {
+  stroke: #eafcff;
+  filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.55));
+}
+[data-theme="void"] .chart__sma20 { stroke: #00f0ff; }
+
+
+/* the themed call to action: Fūga in the shrine, Blue Lapse in the void */
+.btn--fuga { position: relative; overflow: hidden; }
+[data-theme="shrine"] .btn--fuga {
+  background: var(--cyan);
+  color: #1a0608;
+  border-color: var(--rule);
+  box-shadow: 6px 6px 0 var(--rule);
+}
+[data-theme="void"] .btn--fuga {
+  background: var(--cyan);
+  color: #02121c;
+  border-color: var(--rule);
+  box-shadow: 6px 6px 0 var(--rule);
+}
+.btn--fuga:hover { background: var(--paper-2); color: var(--ink); }
+[data-theme="shrine"] .btn--fuga:hover { background: #ff6b00; color: #1a0608; }
+[data-theme="void"] .btn--fuga:hover { background: #48cae4; color: #02121c; }
+html.is-cast .panel--hero { animation: cast-flash 800ms ease-out; }
+@keyframes cast-flash {
+  0%, 100% { filter: none; }
+  25% { filter: brightness(1.3) saturate(1.35); }
+}
+
+/* the shrine filters read as seals on a case */
+[data-theme="shrine"] .preset { border-color: rgba(229, 9, 20, 0.45); }
+[data-theme="shrine"] .preset.is-active { background: var(--verm); color: #fff; }
+
+/* ---------- the shrine overlay: an open field, a gate, ash -----------------
+   Original line art drawn in the markup: a torii and a roof. Architecture,
+   not a character — nothing is borrowed from the source art.
+   -------------------------------------------------------------------------- */
+.shrine {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 420ms ease;
+}
+[data-theme="shrine"] .shrine { opacity: 1; }
+
+.shrine__sky {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 74% 46% at 50% -6%, rgba(157, 2, 8, 0.32), transparent 72%),
+    radial-gradient(ellipse 38% 28% at 16% 10%, rgba(120, 8, 20, 0.26), transparent 72%),
+    radial-gradient(ellipse 34% 24% at 86% 18%, rgba(96, 6, 16, 0.24), transparent 74%);
+  filter: blur(16px);
+}
+.shrine__horizon {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 42vh;
+  background: linear-gradient(to top, rgba(157, 2, 8, 0.18), transparent);
+}
+.shrine__pool {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 26vh;
+  background: linear-gradient(to bottom, transparent, rgba(55, 6, 23, 0.34) 45%, rgba(55, 6, 23, 0.5) 100%);
+}
+/* the shrine breathes ash: thin rising streaks, never dots */
+.shrine__embers {
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(255, 186, 8, 0.18) 0 1px, transparent 1px 150px),
+    repeating-linear-gradient(90deg, rgba(224, 71, 44, 0.14) 0 1px, transparent 1px 260px);
+  background-size: 100% 120vmin, 100% 190vmin;
+  mask-image: linear-gradient(to top, #000 0%, rgba(0, 0, 0, 0.35) 62%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to top, #000 0%, rgba(0, 0, 0, 0.35) 62%, transparent 100%);
+  animation: ash-rise 15s linear infinite;
+}
+@keyframes ash-rise {
+  from { background-position: 0 0, 0 0; }
+  to { background-position: 26px -120vmin, -20px -190vmin; }
+}
+
+.shrine-gate {
+  position: absolute;
+  top: 0;
+  right: -7%;
+  bottom: 0;
+  left: auto;
+  width: 66%;
+  height: 100%;
+  color: var(--aura);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+[data-theme="shrine"] .shrine-gate {
+  opacity: 0.26;
+  animation: shrine-rise 1400ms cubic-bezier(0.16, 0.84, 0.44, 1) forwards;
+}
+@keyframes shrine-rise {
+  0% { opacity: 0; transform: translateY(26px) scale(0.97); }
+  22% { opacity: 0.26; }
+  100% { opacity: 0.26; transform: translateY(0) scale(1); }
+}
+
+/* The gate posts would otherwise run straight through the hero copy. A soft
+   scrim of the page's own ink keeps the torii visible in the margins and out
+   of the text. */
+.shrine-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 66% 50% at 31% 34%,
+    rgba(23, 7, 11, 0.92),
+    rgba(23, 7, 11, 0.66) 46%,
+    transparent 78%
+  );
+}
+[data-theme="shrine"] .shrine-scrim { opacity: 1; }
+.panel--hero { position: relative; overflow: hidden; }
+.panel--hero > *:not(.shrine-gate):not(.void-core):not(.void-space):not(.shrine-scrim):not(.shrine-brackets) { position: relative; z-index: 1; }
+
+/* The tape and the screener's result strip are the only surfaces that
+   invert the page, and they take their colours from --band-* rather than
+   from --ink, so flipping a theme cannot strand a light accent on a light
+   strip. One rule, four themes, no per-theme patch to forget. */
+
+/* ---------- the technique rail --------------------------------------------
+   Four ways to change what the page feels like. The vocabulary is the
+   technique, not the character.
+   -------------------------------------------------------------------------- */
+.techs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--rule);
+  background: var(--paper-2);
+  box-shadow: 5px 5px 0 var(--rule);
+}
+.techs__cap {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.tech {
+  --tech-c: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 13px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tech-c);
+  background: transparent;
+  border: 1px solid var(--tech-c);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: background 150ms ease, color 150ms ease, transform 150ms ease;
+}
+.tech:hover { transform: translate(-1px, -1px); }
+.tech:focus-visible { outline: 2px solid var(--tech-c); outline-offset: -2px; }
+/* On the light page the technique colours have to be dark enough to read;
+   inside a domain they can be the bright, glowing version. */
+.tech--void { --tech-c: #0a6478; }
+.tech--shrine { --tech-c: #9c1a10; }
+[data-theme="night"] .tech--void,
+[data-theme="void"] .tech--void,
+[data-theme="shrine"] .tech--void { --tech-c: #48cae4; }
+[data-theme="night"] .tech--shrine,
+[data-theme="void"] .tech--shrine { --tech-c: #ff7a4d; }
+[data-theme="shrine"] .tech--shrine { --tech-c: #ff7a4d; }
+
+.tech__txt {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  line-height: 1.15;
+}
+.tech__txt b { font-size: 13px; letter-spacing: 0.16em; }
+.tech__txt i {
+  font-style: normal;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: none;
+  color: var(--ink-3);
+}
+.tech[aria-pressed="true"] { background: var(--tech-c); color: var(--paper); }
+.tech[aria-pressed="true"] .tech__txt i { color: var(--paper-2); }
+
+.tech__sig {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  flex: none;
+  border: 2px solid var(--tech-c);
+}
+.tech--void .tech__sig { border-radius: 50%; background: radial-gradient(circle, #000 0 40%, transparent 42%); box-shadow: 0 0 8px var(--tech-c); }
+.tech--shrine .tech__sig { border-width: 0 0 2px 0; }
+.tech--shrine .tech__sig::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  right: -4px;
+  top: 1px;
+  height: 2px;
+  background: var(--tech-c);
+}
+.tech--shrine .tech__sig::after {
+  content: "";
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  top: 6px;
+  bottom: 0;
+  border-left: 2px solid var(--tech-c);
+  border-right: 2px solid var(--tech-c);
+}
+
+/* the cut between the two techniques. Shrine furniture, so it parks itself
+   in every other theme. */
+.techs__slash { display: none; }
+[data-theme="shrine"] .techs__slash {
+  display: block;
+  flex: none;
+  width: 58px;
+  height: 12px;
+  object-fit: fill;
+  mix-blend-mode: lighten;
+  opacity: 0.95;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.techs__tick {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  padding: 6px 10px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  border: 1px dashed var(--rule);
+}
+/* The tick's blue has to be read on the card's own ground, #e9eaea, and the
+   first blue was 4.04:1 there. It only shows when the market is up, so a
+   sweep run on a red day would never have caught it. */
+.techs__tick[data-tone="ao"] { color: #006ba8; border-color: #006ba8; }
+.techs__tick[data-tone="aka"] { color: #a4161a; border-color: #a4161a; }
+/* the night theme's ground is dark, so the crimson of the red pull has to be
+   the lit one - the dark crimson reads as a smudge on #1e2025 */
+[data-theme="night"] .techs__tick[data-tone="ao"] { color: #38b6dd; border-color: #38b6dd; }
+[data-theme="night"] .techs__tick[data-tone="aka"] { color: #ff7a8a; border-color: #ff7a8a; }
+[data-theme="void"] .techs__tick[data-tone="ao"] { color: #00b4d8; border-color: #00b4d8; }
+[data-theme="void"] .techs__tick[data-tone="aka"] { color: #ff4d6d; border-color: #ff4d6d; }
+[data-theme="shrine"] .techs__tick[data-tone="ao"] { color: #48cae4; border-color: #48cae4; }
+[data-theme="shrine"] .techs__tick[data-tone="aka"] { color: #ff758f; border-color: #ff758f; }
+
+/* ---------- the powers, used as components --------------------------------
+   Lapse: Blue pulls, Reversal: Red pushes. They are not themes: a signed
+   value is pulled in when it rises and pushed out when it falls.
+   -------------------------------------------------------------------------- */
+.readout__value--up,
+.readout__value--down {
+  position: relative;
+}
+.readout__value--up::after,
+.readout__value--down::after {
+  content: "";
+  position: absolute;
+  inset: -6px -10px;
+  border-radius: 3px;
+  opacity: 0;
+  transition: opacity 200ms ease;
+  pointer-events: none;
+}
+.readout__value--up::after {
+  background: radial-gradient(ellipse at 50% 50%, rgba(0, 180, 216, 0.3), transparent 72%);
+}
+.readout__value--down::after {
+  background: radial-gradient(ellipse at 50% 50%, rgba(255, 77, 109, 0.3), transparent 72%);
+}
+.readout__value--up:hover::after { opacity: 1; }
+.readout__value--down:hover::after { opacity: 1; }
+
+/* live numbers roll when a real update lands. The roll must never leave a
+   digit fully invisible - a live price that blinks out is a bug, not a flourish. */
+.digit { display: inline-block; }
+.digit--changed { animation: digit-roll 520ms cubic-bezier(0.22, 1, 0.36, 1); }
+@keyframes digit-roll {
+  0% { transform: translateY(-0.4em) scaleY(1.25); opacity: 0.35; color: var(--cyan); }
+  60% { color: var(--cyan); }
+  100% { transform: translateY(0) scaleY(1); opacity: 1; color: inherit; }
+}
+
+/* Sukuna's cleave: the cut drawn across the biggest single-day move.
+   It surfaces only in the Shrine. */
+.chart__cleave { opacity: 0; transition: opacity 320ms ease; }
+[data-theme="shrine"] .chart__cleave { opacity: 1; }
+.chart__cleave {
+  stroke: #e0ddcf;
+  stroke-width: 1.4;
+  stroke-dasharray: 6 5;
+}
+.legend--shrine { display: none; }
+[data-theme="shrine"] .legend--shrine { display: inline-flex; }
+.legend__key--cleave {
+  background: repeating-linear-gradient(90deg, #e0ddcf 0 5px, transparent 5px 9px);
+}
+
+/* Dismantle: one clean cut across the page when a domain lets go. */
+.cut {
+  position: fixed;
+  inset: 0;
+  z-index: 56;
+  pointer-events: none;
+}
+.cut::after {
+  content: "";
+  position: absolute;
+  left: -10%;
+  top: 50%;
+  width: 120%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #ffffff 22%, #ff4d6d 52%, #ffffff 78%, transparent);
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.75);
+  transform: rotate(-7deg) translateX(-120%);
+}
+html.is-cut .cut::after { animation: cut-slash 620ms ease-out forwards; }
+@keyframes cut-slash {
+  0% { transform: rotate(-7deg) translateX(-120%); opacity: 0; }
+  18% { opacity: 1; }
+  100% { transform: rotate(-7deg) translateX(120%); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .domain__stars,
+  .domain__swirl,
+  .shrine__sky,
+  .shrine__embers,
+  .orb { animation: none; }
+  .tech:hover { transform: none; }
+  [data-theme="void"] .void-core__disk { animation: none; opacity: 0.6; }
+  [data-theme="shrine"] .shrine-gate { animation: none; opacity: 0.42; }
+  html.is-cut .cut::after { animation: none; opacity: 0; }
+}
+
+/* ==========================================================================
+   THE SHRINE, REBUILT: charred surfaces and surgical edges
+   The shrine was an open field: a gate, a sky of crimson cloud, a floor of
+   blood. It is redrawn here in charcoal and razor light. The ground the page
+   stands on is pitch obsidian, the cases are cut from charred ash, the
+   surfaces inside them are altar iron, and the only warmth left in the
+   palette is the furnace burning behind the panels.
+
+   Every rule in this section is scoped to the shrine. Paper, night and the
+   void keep exactly the look they had.
+   ========================================================================== */
+
+/* ---------- 1. surfaces: three planes of darkness ------------------------
+   The tokens carry the ground and the inner plane. The cases - the panels
+   themselves - are set here, because a case is a different plane of ash
+   from the ground it stands on, and a hairline of dried crimson is a
+   different edge from the heavy rules of the light themes. */
+
+[data-theme="shrine"] .panel,
+[data-theme="shrine"] .tool,
+[data-theme="shrine"] .step {
+  background: #0e0a0c;
+  border: 1px solid rgba(229, 9, 20, 0.28);
+  /* the old outline drew a rectangle around a panel that is now cut at 45
+     degrees; the hairline and the brackets below replace it */
+  outline: none;
+}
+[data-theme="shrine"] .tool[open] { background: #171014; }
+
+[data-theme="shrine"] .hud-readout,
+[data-theme="shrine"] .readout {
+  background: #171014;
+  border: 1px solid rgba(229, 9, 20, 0.45);
+}
+
+/* ---------- 2. nothing in the shrine has a rounded corner ----------------
+   Every case is cut at 45 degrees: the top right and the bottom left lose
+   12px, so the page reads as a stack of blades instead of a stack of boxes.
+
+   The notch clips what lives inside the case, so the panels that carry
+   their own decoration (.panel--hero with the gate, .panel--hud with the
+   eaves) keep their overflow: hidden and their decoration stays inside the
+   cut. A clip-path also clips the box-shadow of the thing it cuts, so the
+   shadows that must survive the cut are drawn with a filter instead. */
+
+[data-theme="shrine"] *,
+[data-theme="shrine"] *::before,
+[data-theme="shrine"] *::after { border-radius: 0; }
+
+[data-theme="shrine"] .panel,
+[data-theme="shrine"] .tool,
+[data-theme="shrine"] .step,
+[data-theme="shrine"] .source,
+[data-theme="shrine"] .metric-panel,
+[data-theme="shrine"] .install__code,
+[data-theme="shrine"] .code,
+[data-theme="shrine"] .btn {
+  clip-path: var(--shrine-notch);
+}
+/* the case is already cut - cutting the block inside it twice only makes
+   two notches where one would do */
+[data-theme="shrine"] .install__code .code { clip-path: none; }
+/* the chart keeps its long cut: a blade that big wants the room */
+[data-theme="shrine"] .board__chart {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%);
+}
+
+/* ---------- 3. surgical corner brackets ----------------------------------
+   The bracket technique the HUD readouts already use, lifted into a class
+   of its own and given to the shrine's cases: four metal corner marks in
+   razor crimson, laid over the hairline border. A case that already draws
+   its own brackets - the readouts - keeps just its own. */
+
+.shrine-bracket { position: relative; }
+.shrine-bracket::before,
+[data-theme="shrine"] .panel::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(#e50914, #e50914) 0 0 / 14px 2px no-repeat,
+    linear-gradient(#e50914, #e50914) 0 0 / 2px 14px no-repeat,
+    linear-gradient(#e50914, #e50914) 100% 0 / 14px 2px no-repeat,
+    linear-gradient(#e50914, #e50914) 100% 0 / 2px 14px no-repeat,
+    linear-gradient(#e50914, #e50914) 0 100% / 14px 2px no-repeat,
+    linear-gradient(#e50914, #e50914) 0 100% / 2px 14px no-repeat,
+    linear-gradient(#e50914, #e50914) 100% 100% / 14px 2px no-repeat,
+    linear-gradient(#e50914, #e50914) 100% 100% / 2px 14px no-repeat;
+}
+
+/* ---------- 4. the slash becomes a cut -----------------------------------
+   The ink slash that separates the sections is redrawn as a wound: the same
+   wedge, but razor crimson with a furnace-hot core, bleeding light into the
+   page around it. It must read as a cut across the sheet, not as a grey
+   band - so the fill carries the heat and the glow does the cutting. */
+
+[data-theme="shrine"] .slash {
+  /* the owner's razor cut, drawn as a plate: a red blade with three
+     slashes through it, glowing at the crossing */
+  background: url("assets/shrine/slash-divider.webp") center / 100% 100% no-repeat;
+  filter: drop-shadow(0 0 6px rgba(229, 9, 20, 0.75)) drop-shadow(0 0 18px rgba(255, 85, 0, 0.4));
+}
+[data-theme="shrine"] .slash svg { display: none; }
+
+/* ---------- 5. the domain's name, printed down the margin ---------------
+   The watermark is the inscription on the shrine wall: enormous, five per
+   cent, cut from the same crimson as the gate and running down the margin
+   of the live panel like a column of writing. Romaji, not kanji - a machine
+   without a CJK font would show tofu boxes instead of a character. */
+
+[data-theme="shrine"] .panel--hud > .watermark--shrine {
+  position: absolute;
+  /* the inscription rises out of the floor of the panel and runs off the
+     top of it: a name carved into the wall, not a caption */
+  bottom: -30px;
+  right: 16px;
+  writing-mode: vertical-rl;
+  font-family: var(--font-ui);
+  font-size: clamp(64px, 6.6vw, 104px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: #e50914;
+  opacity: 0.06;
+  text-shadow: 0 0 46px rgba(229, 9, 20, 0.55);
+  z-index: 0;
+}
+
+/* ---------- 6. the buttons ------------------------------------------------
+   The plain buttons keep a hard shadow, but a clipped one cannot be seen,
+   so the offset is drawn as a filter on the cut shape.
+
+   Fuga is the furnace opening: a molten core inside a dark ember shell, lit
+   from within. Its glow cannot be a box-shadow either - the notch would eat
+   it - so it is drawn as a filter too, and it is written after the plain
+   button so the furnace wins. */
+
+[data-theme="shrine"] .btn {
+  box-shadow: none;
+  filter: drop-shadow(4px 4px 0 rgba(229, 9, 20, 0.45));
+}
+[data-theme="shrine"] .btn:hover { filter: drop-shadow(6px 6px 0 rgba(229, 9, 20, 0.5)); }
+[data-theme="shrine"] .btn:active { filter: drop-shadow(2px 2px 0 rgba(229, 9, 20, 0.5)); }
+
+[data-theme="shrine"] .btn--fuga {
+  background: linear-gradient(180deg, #3a0508 0%, #8d0801 48%, #3a0508 100%);
+  color: #ffb066;
+  border: 1px solid #ff5500;
+  box-shadow: 0 0 20px rgba(255, 85, 0, 0.45);
+  filter: drop-shadow(0 0 18px rgba(255, 85, 0, 0.5));
+  text-shadow: 0 0 12px rgba(255, 85, 0, 0.55);
+}
+[data-theme="shrine"] .btn--fuga:hover {
+  background: linear-gradient(180deg, #8d0801 0%, #ff5500 52%, #8d0801 100%);
+  color: #140304;
+  text-shadow: none;
+  filter: drop-shadow(0 0 22px rgba(255, 85, 0, 0.6));
+}
+
+/* ---------- 7. the code --------------------------------------------------
+   The install panel was a bone-white header over a white block: a printer's
+   page. In the shrine the header is iron stained with blood, the command
+   names burn amber, and the body is the black of the floor. The body still
+   scrolls sideways: a long command must never widen the page. */
+
+[data-theme="shrine"] .install__bar {
+  background: #1a0d10;
+  color: #f5f2eb;
+  border-left: 3px solid #e50914;
+}
+[data-theme="shrine"] .install__bar--second { border-top: 1px solid rgba(229, 9, 20, 0.28); }
+[data-theme="shrine"] .install__bar > span {
+  color: #ff5500;
+  text-shadow: 0 0 10px rgba(255, 85, 0, 0.5);
+}
+[data-theme="shrine"] .install__bar .btn {
+  background: transparent;
+  color: #ff5500;
+  border: 1px solid #ff5500;
+}
+[data-theme="shrine"] .install__bar .btn:hover { background: #ff5500; color: #140304; }
+[data-theme="shrine"] .code {
+  background: #060405;
+  color: #c4bcb7;
+  border: 1px solid rgba(229, 9, 20, 0.28);
+  overflow-x: auto;
+}
+[data-theme="shrine"] .code--sm { border: 1px solid rgba(229, 9, 20, 0.28); }
+
+/* ---------- 8. the screener table ----------------------------------------
+   The header stops being a light strip: it is a stained iron band with the
+   column names cut into it in bone, and a row caught by the light turns
+   faintly red under the pointer. */
+
+[data-theme="shrine"] .sc-bar {
+  background: var(--band-bg);
+  color: var(--band-fg);
+  border-bottom: 1px solid rgba(229, 9, 20, 0.28);
+}
+[data-theme="shrine"] .sc-count b { color: var(--band-accent); }
+[data-theme="shrine"] .sc-note { color: var(--band-dim); }
+[data-theme="shrine"] .sc-table thead th {
+  background: #1c0a0e;
+  color: #f5f2eb;
+  font-family: var(--font-data);
+  font-weight: 600;
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+[data-theme="shrine"] .sc-table th:hover { background: rgba(229, 9, 20, 0.22); }
+[data-theme="shrine"] .sc-table tbody tr:hover { background: rgba(229, 9, 20, 0.1); }
+[data-theme="shrine"] .sc-sym { background: #0e0a0c; }
+[data-theme="shrine"] .sc-table tbody tr:nth-child(even) .sc-sym {
+  background: color-mix(in srgb, #171014 92%, #0e0a0c);
+}
+
+/* ---------- 9. the chart -------------------------------------------------
+   The price line is a razor edge lit from behind: crimson, throwing a
+   furnace glow onto the grid. The area under it is blood pooling in the
+   dark, deepest at the line and gone by the floor. */
+
+[data-theme="shrine"] .chart__price {
+  stroke: #e50914;
+  filter: drop-shadow(0 0 5px rgba(229, 9, 20, 0.9)) drop-shadow(0 0 13px rgba(255, 85, 0, 0.4));
+}
+[data-theme="shrine"] .chart__sma20 { stroke: #ff5500; }
+[data-theme="shrine"] .chart__cleave { stroke: #ff5500; }
+[data-theme="shrine"] .chart__area-stop { stop-color: #b30612; stop-opacity: 0.55; }
+[data-theme="shrine"] .chart__area-stop--low { stop-color: #2a0508; stop-opacity: 0; }
+[data-theme="shrine"] .chart__grid { stroke: rgba(245, 242, 235, 0.12); opacity: 1; }
+[data-theme="shrine"] .chart__rsi { stroke: #8d8386; }
+[data-theme="shrine"] .legend__key--price { background: #e50914; }
+[data-theme="shrine"] .legend__key--sma20 { background: #ff5500; }
+[data-theme="shrine"] .legend__key--rsi { background: #8d8386; }
+[data-theme="shrine"] .legend__key--cleave {
+  background: repeating-linear-gradient(90deg, #ff5500 0 5px, transparent 5px 9px);
+}
+
+/* ---------- 10. the bars that were bone ---------------------------------
+   On the light page a white bar was a label. Here a white bar would be a
+   hole in the dark, so every one of them becomes iron with a crimson edge.
+   Bone text on iron keeps the contrast the light themes had. */
+
+[data-theme="shrine"] .hud-tag {
+  background: #1a0d10;
+  color: #f5f2eb;
+  border-left: 3px solid #e50914;
+}
+[data-theme="shrine"] .board__bar {
+  background: #1a0d10;
+  color: #f5f2eb;
+}
+[data-theme="shrine"] .board__name { color: #8d8386; }
+[data-theme="shrine"] .board__badge:not(.board__badge--live) { color: #8d8386; border-color: rgba(229, 9, 20, 0.5); }
+[data-theme="shrine"] .board__symbol input {
+  border-color: rgba(229, 9, 20, 0.55);
+  color: #f5f2eb;
+}
+[data-theme="shrine"] .board__bar .btn {
+  background: transparent;
+  color: #ff5500;
+  border-color: #ff5500;
+}
+[data-theme="shrine"] .board__bar .btn:hover { background: #ff5500; color: #140304; }
+[data-theme="shrine"] .tape__stamp {
+  background: #0e0a0c;
+  color: #8d8386;
+  border-left-color: rgba(229, 9, 20, 0.5);
+}
+[data-theme="shrine"] .tape__price { color: #f5f2eb; }
+[data-theme="shrine"] .toast {
+  background: #1a0d10;
+  color: #f5f2eb;
+  border-color: #e50914;
+  box-shadow: 6px 6px 0 rgba(229, 9, 20, 0.55);
+}
+[data-theme="shrine"] .tool__no,
+[data-theme="shrine"] .step__no {
+  background: #1a0d10;
+  color: #ff5500;
+  border: 1px solid rgba(229, 9, 20, 0.6);
+}
+/* the step number used to hang above the card; the notch would cut it off,
+   so the seal moves inside the case */
+[data-theme="shrine"] .step { padding-top: 44px; }
+[data-theme="shrine"] .step__no { top: 12px; left: 16px; }
+[data-theme="shrine"] .preset.is-active { background: #e50914; color: #fff; }
+[data-theme="shrine"] .tech--shrine[aria-pressed="true"] {
+  background: #e50914;
+  color: #fff;
+}
+[data-theme="shrine"] .tech--shrine[aria-pressed="true"] .tech__txt i { color: #fff; }
+
+/* ---------- 11. the headline and the marks on it ------------------------
+   The title is bone lit by a furnace: the glow moves from amber to the
+   crimson of the gate. */
+
+[data-theme="shrine"] .hero-title {
+  color: #f5f2eb;
+  text-shadow: 0 0 26px rgba(255, 85, 0, 0.4), 0 0 72px rgba(229, 9, 20, 0.55);
+}
+[data-theme="shrine"] .sfx {
+  color: var(--flame);
+  text-shadow: 3px 3px 0 var(--rule), 0 0 18px rgba(255, 85, 0, 0.85);
+}
+
+/* a live number catches fire when it rolls: the same roll the light themes
+   use, but burning amber instead of the accent */
+[data-theme="shrine"] .digit--changed {
+  animation: shrine-digit-roll 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes shrine-digit-roll {
+  0% { transform: translateY(-0.4em) scaleY(1.25); opacity: 0.35; color: var(--flame); }
+  60% { color: var(--flame); }
+  100% { transform: translateY(0) scaleY(1); opacity: 1; color: inherit; }
+}
+
+/* ---------- 12. the shrine's own marks ----------------------------------
+   A seal cut at 45 degrees in the corner of every step, the corner mark of
+   the case, and the roof and frame art - drawn inside the panel, never over
+   it, so nothing dims the page. */
+
+[data-theme="shrine"] .shrine-seal {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  width: 26px;
+  height: 26px;
+  border: 1px solid rgba(229, 9, 20, 0.4);
+  transform: rotate(45deg);
+  opacity: 0.55;
+  pointer-events: none;
+}
+[data-theme="shrine"] .panel--hud > .shrine-corner,
+[data-theme="shrine"] .screener__results > .shrine-corner {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 54px;
+  height: 54px;
+  border-right: 2px solid rgba(229, 9, 20, 0.55);
+  border-bottom: 2px solid rgba(229, 9, 20, 0.55);
+  z-index: 1;
+  pointer-events: none;
+}
+/* ---------- the plates ----------------------------------------------------
+   The shrine is built from plates: the jaws around the price, a beam at the
+   foot, a seal cut into every card and a mark in the corner. They are art the
+   owner drew, cut to transparent PNG, and they sit INSIDE their panels -
+   never over the copy. */
+
+/* The shrine plates carry a src, so they paint even outside the shrine - at
+   their full intrinsic size, straight over the void theme's copy. They are
+   shrine-only furniture: park them everywhere else. */
+.shrine-fangs {
+  display: none;
+}
+[data-theme="shrine"] .shrine-fangs {
+  display: block;
+}
+
+/* the roof is gone from the page: the shrine keeps the jaws, the beam, the
+   seals and the corner mark, and the two boxes carry the shrine on their own */
+
+
+
+/* the jaws sit behind the price. Screen-blended so the teeth read as light
+   on the panel rather than as a lid over the number. The shrine builds them
+   in the hero section at the foot of this file. */
+/* the number keeps its own ground: it is lifted above the jaws and given a
+   shadow so it stays crisp against them */
+[data-theme="shrine"] .hud-readout--hero > *:not(.shrine-fangs) {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* the seal cut into the corner of every card */
+[data-theme="shrine"] .shrine-seal {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 30px;
+  height: 30px;
+  background: url("assets/shrine/seal-badge.png") center / contain no-repeat;
+  border: 0;
+  transform: rotate(0deg);
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+/* the mark in the corner of the live and screener panels */
+[data-theme="shrine"] .panel--hud > .shrine-corner,
+[data-theme="shrine"] .screener__results > .shrine-corner {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 62px;
+  height: 62px;
+  background: url("assets/shrine/corner-bracket.png") right bottom / contain no-repeat;
+  border-right: 0;
+  border-bottom: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* the beam across the top of the panel: the furnace light falling on it */
+[data-theme="shrine"] .panel--hud::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 132px;
+  background: linear-gradient(
+    180deg,
+    rgba(229, 9, 20, 0.24),
+    rgba(229, 9, 20, 0.05) 58%,
+    transparent
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ---------- the neon gate frame ----------------------------------------
+   The owner's neon panel plate is a rectangle with studded corners, which is
+   exactly what border-image is for: the four edges stretch, the four corner
+   studs stay square. Slicing at 40px keeps every stud whole (they sit at
+   x 14-26, y 22-39 of the 800x200 source). */
+
+
+/* the maw needs room to breathe: the price sits in its throat */
+[data-theme="shrine"] .hud-readout--hero {
+  padding: 68px 18px 72px;
+}
+
+/* the label sits on the maw's throat, so it needs its own light */
+[data-theme="shrine"] .hud-readout--hero .hud-label {
+  color: rgba(245, 242, 235, 0.72);
+  text-shadow: 0 1px 7px rgba(5, 4, 4, 0.95);
+}
+
+/* ==========================================================================
+   THE HERO AS A GATE
+   The painted roof is gone from the page. What is left is the gate itself:
+   the left hero column and the right Live Analysis Panel, cut at 45 degrees,
+   with the neon plate that used to frame the hero panel moved onto the Fuga
+   button, where it becomes the furnace opening.
+   ========================================================================== */
+
+/* The drawn eaves used to be the panel's roof. The painted one is now the
+   roof, and it hangs over the panel from outside - so the line drawing only
+   crossed the tag and doubled the eave. */
+[data-theme="shrine"] .panel--hud > .eaves { display: none; }
+
+/* ---------- the ground and the burning sky ------------------------------ */
+[data-theme="shrine"] .splash {
+  position: relative;
+  background: #050405;
+  background-image: radial-gradient(circle at 50% 0%, rgba(165, 0, 12, 0.2) 0%, transparent 62%);
+}
+
+/* the shrine is dense on purpose: the panels hold their content close, so the
+   two boxes read as one carved plate rather than two pieces */
+[data-theme="shrine"] .panel { --panel-pad: 22px; }
+[data-theme="shrine"] .panel--hero { gap: 20px; }
+
+/* ---------- the terminal command box ------------------------------------ */
+.terminal {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 12px 12px 15px;
+  background: var(--paper);
+  border: 1px solid var(--tone);
+  border-color: color-mix(in srgb, var(--cyan) 40%, transparent);
+  border-left: 4px solid var(--cyan);
+}
+
+/* The install command is the page's one call to action, and it does not
+   resolve yet. The sentence under it says so, in the same type as the
+   rest of the page's small print. */
+.terminal__note {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+.terminal__note a {
+  color: var(--ink);
+  font-weight: 700;
+}
+.terminal__flag,
+.install__flag {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 2px 7px;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--verm);
+  border: 1px solid color-mix(in srgb, var(--verm) 55%, transparent);
+  background: color-mix(in srgb, var(--verm) 9%, transparent);
+}
+.install__flag {
+  margin-left: auto;
+  margin-right: 0;
+  color: var(--flag-ink);
+  border-color: color-mix(in srgb, var(--flag-ink) 55%, transparent);
+  background: color-mix(in srgb, var(--flag-ink) 12%, transparent);
+}
+
+/* the board says when it cannot show what was asked for */
+.board__error {
+  margin: 0;
+  padding: 9px 12px;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--verm);
+  background: color-mix(in srgb, var(--verm) 10%, transparent);
+  border-bottom: 2px solid color-mix(in srgb, var(--verm) 45%, transparent);
+}
+.board__error[hidden] { display: none; }
+
+/* the screener's sort headers are buttons, so they have a focus ring and a
+   name; the row's symbol is a button too, so a keyboard can load it */
+.sc-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.sc-sort i { font-style: normal; }
+.sc-load {
+  padding: 0;
+  font: inherit;
+  font-weight: 600;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+}
+.sc-load:hover { text-decoration: underline; }
+
+/* the footer links out to the repository, the issues and the tool reference */
+.footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+}
+.footer__links a {
+  color: var(--ink);
+  font-weight: 700;
+}
+.footer__links a:hover { color: var(--cyan); }
+
+/* the metric catalogue says what it is: names, with the manual one click away */
+.metrics__note {
+  margin: 12px 0 0;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+.metrics__note a {
+  color: var(--ink);
+  font-weight: 700;
+}
+/* the shell prompt: the command reads as something you type */
+.terminal__prompt {
+  flex: none;
+  align-self: center;
+  font-family: var(--font-data);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cyan);
+  opacity: 0.75;
+}
+.terminal__cmd {
+  flex: 1;
+  align-self: center;
+  min-width: 0;
+  font-family: var(--font-data);
+  font-size: 17px;
+  line-height: 1.3;
+  color: var(--cyan);
+  background: none;
+  border: 0;
+  padding: 0;
+  overflow-wrap: anywhere;
+}
+.terminal__copy {
+  flex: none;
+  border: 1px solid var(--tone);
+  border-color: color-mix(in srgb, var(--cyan) 55%, transparent);
+  background: var(--paper-2);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 9px 13px;
+  cursor: pointer;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  transition: background 140ms ease, color 140ms ease;
+}
+.terminal__copy:hover { background: var(--cyan); color: var(--paper); }
+.terminal__copy:focus-visible { outline: 2px solid currentColor; outline-offset: -2px; }
+
+/* The source install. The npx command above it is the product's front door,
+   but it does not resolve until the package is published, so the command that
+   works today sits right under it, in the same hand. */
+.terminal__src {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 8px 8px 12px;
+  background: var(--paper-2);
+  border: 1px solid color-mix(in srgb, var(--cyan) 45%, transparent);
+}
+.terminal__src code {
+  flex: 1 1 200px;
+  min-width: 0;
+  font-family: var(--font-data);
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--ink);
+  /* The URL is one long token, and breaking it anywhere split "aswathas" into
+     "aswat" and "has" - a command nobody can retype. It breaks at the path
+     separators instead, which the markup marks with <wbr>. */
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+.terminal__src .terminal__copy { width: auto; flex: none; font-size: 11px; padding: 6px 10px; }
+[data-theme="shrine"] .terminal__src { background: #120a0c; border-color: rgba(229, 9, 20, 0.55); }
+[data-theme="shrine"] .terminal__src code { color: #ff5500; }
+
+/* the shrine burns: amber command on black */
+[data-theme="shrine"] .terminal { background: #050304; }
+[data-theme="shrine"] .terminal__cmd { color: #ff5500; }
+[data-theme="shrine"] .terminal__prompt { color: #ff5500; opacity: 0.9; }
+[data-theme="shrine"] .terminal__copy { background: #120a0c; color: #f5f2eb; }
+[data-theme="shrine"] .terminal__copy:hover { background: #e50914; color: #f5f2eb; }
+
+/* ---------- the nameplate --------------------------------------------------
+   Casting a domain stamps its name across the hero and lets it go. It is the
+   one place where the page says out loud which domain is open, in the site's
+   own language, and it is the only thing the cast does that the palette
+   cannot say by itself. */
+.cast-plate {
+  position: absolute;
+  left: 50%;
+  top: 34%;
+  z-index: 4;
+  transform: translate(-50%, -50%) rotate(-4deg);
+  pointer-events: none;
+  opacity: 0;
+}
+.cast-plate__name {
+  display: inline-block;
+  font-family: var(--font-shout);
+  font-size: clamp(28px, 6.5vw, 58px);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: var(--paper);
+  background: var(--ink);
+  border: 3px solid var(--cyan);
+  box-shadow: 8px 8px 0 var(--rule);
+  padding: 10px 20px 12px;
+  white-space: nowrap;
+}
+.cast-plate.is-stamped { animation: cast-plate 1800ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+@keyframes cast-plate {
+  0% { opacity: 0; transform: translate(-50%, -50%) rotate(-4deg) scale(1.45); }
+  12% { opacity: 1; transform: translate(-50%, -50%) rotate(-4deg) scale(1); }
+  74% { opacity: 1; transform: translate(-50%, -50%) rotate(-4deg) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) rotate(-4deg) scale(0.94); }
+}
+/* Reduced motion kills the animation, and an animation with fill-mode "both"
+   resolves straight to its last keyframe - which is invisible. So the plate is
+   given a still state of its own: the name is simply there, for as long as
+   the stamp is held. */
+@media (prefers-reduced-motion: reduce) {
+  .cast-plate.is-stamped {
+    animation: none;
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(-4deg) scale(1);
+  }
+}
+
+/* ---------- the technique panel ------------------------------------------
+   The rail is a bordered plate with the cut between the two techniques, the
+   way the mockup draws it. */
+[data-theme="shrine"] .techs {
+  padding: 11px 14px;
+  gap: 14px;
+  border: 1px solid rgba(229, 9, 20, 0.55);
+  background: #0b0709;
+  box-shadow: none;
+}
+[data-theme="shrine"] .techs__cap { color: #8d8386; }
+[data-theme="shrine"] .tech { border-color: currentColor; background: transparent; }
+[data-theme="shrine"] .tech__txt i { color: #8d8386; }
+
+/* On a phone the command needs the whole row and the copy button gets its
+   own line under it, instead of the command breaking in half. The command
+   stays the same size as the source command under it: the flagged line must
+   never be the smallest thing in the hero. */
+@media (max-width: 560px) {
+  .terminal { flex-wrap: wrap; }
+  .terminal__prompt { align-self: flex-start; }
+  .terminal__cmd { font-size: 13px; }
+  .terminal__copy { width: 100%; text-align: center; }
+}
+
+/* The rail wraps into two clean lines on a phone: the label and the tick on
+   top, the two techniques under them with the cut between. */
+@media (max-width: 720px) {
+  .techs {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-areas: "cap cap tick" "void slash shrine";
+    gap: 12px 8px;
+    align-items: center;
+  }
+  .techs__cap { grid-area: cap; }
+  .techs__tick { grid-area: tick; justify-self: end; margin-left: 0; }
+  .tech--void { grid-area: void; justify-self: start; }
+  .techs__slash { grid-area: slash; justify-self: center; width: 44px; }
+  .tech--shrine { grid-area: shrine; justify-self: end; }
+}
+
+/* ---------- the narrowest phones ------------------------------------------
+   At 320px the technique rail cannot hold a label, a cut and two buttons on
+   one line: the shrine's 58px blade pushed the Fuga button off the edge and
+   `overflow-x: clip` turned that into a control that could not be reached.
+   The blade goes, the tick gets its own line, and the stat strip stacks.
+
+   This block has to come AFTER the 720px block above it. Two media queries
+   that both match a 320px phone are settled by source order, not by which
+   one is more specific, and a rule written first loses: this block used to
+   sit above the 720px block and every rule in it was dead. The blade also
+   has to be hidden with the shrine's own weight, because the shrine turns it
+   back on with a more specific selector than the plain one. */
+@media (max-width: 380px) {
+  .strip__list { grid-template-columns: 1fr; }
+  .strip__list li {
+    padding: 14px 12px;
+    border-right: 0;
+    border-bottom: var(--edge) solid var(--rule);
+  }
+  .strip__list li:last-child { border-bottom: 0; }
+  .techs {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "cap cap" "tick tick" "void shrine";
+  }
+  .techs__slash,
+  [data-theme="shrine"] .techs__slash { display: none; }
+  .techs__tick { justify-self: start; margin-left: 0; }
+}
+
+/* ---------- the furnace button ------------------------------------------
+   The neon plate is the border. Lighten keeps the dark body of the frame
+   transparent and lets only the orange line survive. */
+.btn__flame {
+  display: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  mix-blend-mode: lighten;
+  opacity: 0.95;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+[data-theme="shrine"] .btn__flame { display: block; }
+[data-theme="shrine"] .btn--fuga {
+  background: linear-gradient(180deg, #170b0d, #0a0608);
+  color: #f5f2eb;
+  border-color: rgba(229, 9, 20, 0.55);
+  box-shadow: none;
+  isolation: isolate;
+}
+[data-theme="shrine"] .btn__flame { filter: drop-shadow(0 0 7px rgba(255, 85, 0, 0.9)); }
+[data-theme="shrine"] .btn--fuga:hover { background: #140a0c; color: #f5f2eb; }
+[data-theme="shrine"] .btn--fuga .btn__label {
+  position: relative;
+  z-index: 1;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-shadow: 0 0 14px rgba(255, 85, 0, 0.85);
+}
+/* the other half of the pair: the cut, in red */
+[data-theme="shrine"] .btn--dismantle {
+  background: #0a0608;
+  color: #ff7a4d;
+  border-color: rgba(229, 9, 20, 0.5);
+  box-shadow: none;
+}
+[data-theme="shrine"] .btn--dismantle:hover { background: #1a0b0d; color: #ffb08a; }
+
+/* ---------- the price in the jaws ---------------------------------------
+   The maw is wider than the price box. Its two jaw walls reach out past the
+   left and right edges, so the number is held between the teeth instead of
+   sitting on top of them. */
+[data-theme="shrine"] .hud-readout.hud-readout--hero {
+  height: clamp(112px, 8.8vw, 138px);
+  padding: 0 var(--panel-pad);
+  justify-content: center;
+  gap: 2px;
+}
+[data-theme="shrine"] .hud-readout--hero > .shrine-fangs {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% + 2 * (var(--panel-pad) - 6px));
+  height: 100%;
+  /* A background, not an <img>. The maw is 180 KB, and a background on a
+     display:none element is never fetched - so a visitor who never opens the
+     shrine never downloads it, and no empty image ships. */
+  background: url("assets/shrine/shrine-fang-frame.webp") center / 100% 100% no-repeat;
+  z-index: 0;
+  opacity: 0.8;
+  mix-blend-mode: lighten;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+/* a dark throat over the teeth, under the number */
+[data-theme="shrine"] .hud-readout--hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse 58% 44% at 50% 50%, rgba(5, 3, 4, 0.94) 26%, rgba(5, 3, 4, 0.6) 64%, transparent 90%);
+  pointer-events: none;
+}
+[data-theme="shrine"] .hud-readout--hero .hud-value--xl {
+  text-shadow: 0 2px 10px rgba(5, 4, 4, 0.95), 0 0 15px rgba(229, 9, 20, 0.9);
+}
+
+/* ---------- the surgical grid of ratios --------------------------------- */
+[data-theme="shrine"] .hud-readout {
+  background: #130c0f;
+  border: 1px solid rgba(229, 9, 20, 0.3);
+  padding: 9px 12px 10px;
+}
+[data-theme="shrine"] .hud-label {
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  color: #8d8386;
+}
+[data-theme="shrine"] .hud-value { color: #f5f2eb; }
+[data-theme="shrine"] .hud-head { border-bottom-color: rgba(229, 9, 20, 0.4); padding-bottom: 8px; }
+[data-theme="shrine"] .hud-head .hud-tag {
+  background: none;
+  color: #ff7a4d;
+  border: 1px solid rgba(229, 9, 20, 0.5);
+  padding: 4px 9px;
+  font-size: 12px;
+}
+[data-theme="shrine"] .hud-row--bars { gap: 8px; }
+[data-theme="shrine"] .hud-readout--bar { padding: 8px 10px 9px; }
+[data-theme="shrine"] .hud-note { font-size: 12px; }
+.hud-foot {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--ink-3);
+}
+
+/* ---------- the cursed technical score ---------------------------------- */
+[data-theme="shrine"] .gauge {
+  height: 18px;
+  background: #191014;
+  border: 1px solid rgba(229, 9, 20, 0.4);
+}
+[data-theme="shrine"] .gauge__zone--sell {
+  background: repeating-linear-gradient(45deg, #8d0801 0 5px, transparent 5px 10px);
+  opacity: 0.55;
+}
+[data-theme="shrine"] .gauge__zone--neutral { background: #191014; }
+[data-theme="shrine"] .gauge__zone--buy {
+  background: repeating-linear-gradient(45deg, #e50914 0 5px, transparent 5px 10px);
+  opacity: 0.45;
+}
+.gauge__fill {
+  display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  background: linear-gradient(90deg, #8d0801, #e50914 55%, #ff5500);
+  box-shadow: 0 0 10px #e50914;
+  pointer-events: none;
+}
+[data-theme="shrine"] .gauge__fill { display: block; }
+
+/* ---------- the four corners of the analysis panel ----------------------- */
+.shrine-brackets { display: none; }
+[data-theme="shrine"] .shrine-brackets {
+  display: block;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+.shrine-brackets i {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #e50914;
+}
+.shrine-brackets i:nth-child(1) { top: 8px; left: 8px; border-right: 0; border-bottom: 0; }
+.shrine-brackets i:nth-child(2) { top: 8px; right: 8px; border-left: 0; border-bottom: 0; }
+.shrine-brackets i:nth-child(3) { bottom: 8px; left: 8px; border-right: 0; border-top: 0; }
+.shrine-brackets i:nth-child(4) { bottom: 8px; right: 8px; border-left: 0; border-top: 0; }
+
+/* ==========================================================================
+   THE TOUCH — the cursor that transfigures what it touches
+   ==========================================================================
+   cursor.js draws a fountain-pen nib and hands it the pointer. The native
+   arrow is only hidden once that script has proved it can take over, so a
+   failure anywhere leaves the visitor with a working pointer.
+   -------------------------------------------------------------------------- */
+
+html.has-cursor,
+html.has-cursor body { cursor: none; }
+
+/* the caret must survive — a text field is not a place to lose the cursor */
+html.has-cursor input,
+html.has-cursor textarea,
+html.has-cursor select,
+html.has-cursor [contenteditable] { cursor: text; }
+
+/* drag targets keep their own affordance */
+html.has-cursor input[type="range"]::-webkit-slider-thumb { cursor: grab; }
+html.has-cursor input[type="range"]::-moz-range-thumb { cursor: grab; }
+
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2147483000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 120ms ease;
+  will-change: transform;
+}
+.cursor.is-on { opacity: 1; }
+/* over a text field the nib steps aside and the caret takes over */
+.cursor.is-text { opacity: 0; }
+
+.cursor__nib {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-11px, -20px);
+  /* the hard offset of the page's own panels: the nib reads on any ground */
+  filter: drop-shadow(1.5px 1.5px 0 var(--paper));
+}
+.cursor__nib-body { fill: var(--ink); }
+.cursor__nib-slit { stroke: var(--paper); stroke-width: 1.4; fill: none; }
+.cursor__nib-hole { fill: var(--paper); }
+.cursor__nib-tip { fill: var(--verm); }
+
+.cursor__trail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 28px;
+  height: 2px;
+  margin: -1px 0 0 -1px;
+  background: linear-gradient(90deg, transparent, var(--ink));
+  transform-origin: right center;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* the ring with four focus ticks — the manga vocabulary, already on the page */
+.cursor__ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 38px;
+  height: 38px;
+  margin: -19px 0 0 -19px;
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+  background:
+    linear-gradient(var(--ink), var(--ink)) 50% 0 / 1.5px 8px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) 50% 100% / 1.5px 8px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) 0 50% / 8px 1.5px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) 100% 50% / 8px 1.5px no-repeat;
+  opacity: 0;
+  transform: scale(0.55);
+  transition: opacity 140ms ease, transform 140ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.cursor.is-target .cursor__ring { opacity: 1; transform: scale(1); }
+
+/* the press: the nib squashes into the paper */
+.cursor.is-press .cursor__nib { transform: translate(-11px, -20px) scale(0.86); }
+.cursor__nib { transition: transform 140ms cubic-bezier(0.16, 1, 0.3, 1); }
+
+/* the control that was clicked gets a cyan flash */
+.is-hit { outline: 2px solid var(--cyan); outline-offset: 3px; }
+
+/* ---------- the transfigure ------------------------------------------------
+   The pointer is a hand. What it touches is reshaped: the hard rule softens
+   into an organic seam and the box lifts a hair off the page.
+
+   This part is deliberately pure CSS. :hover works even where pointer
+   events never reach the page, so the effect is not held hostage to a
+   script. The script adds the angle on top of it.
+
+   Transform and opacity only — no filter, no repaint of the whole panel.
+   -------------------------------------------------------------------------- */
+
+.panel:hover,
+.tool:hover,
+.metric-panel:hover,
+.step:hover,
+.source:hover,
+.call__board:hover,
+.panel.is-touched,
+.tool.is-touched,
+.metric-panel.is-touched,
+.step.is-touched,
+.source.is-touched,
+.call__board.is-touched {
+  --touch-scale: 1.02;
+  border-radius: 18px 6px 16px 8px / 10px 16px 8px 14px;
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+/* The ring with the four focus ticks also answers to CSS, so a control shows
+   its target state even if the script never hears a pointer. */
+body:has(a:hover, button:hover, summary:hover, [role="button"]:hover, [role="tab"]:hover)
+  .cursor__ring {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel:hover,
+  .tool:hover,
+  .metric-panel:hover,
+  .step:hover,
+  .source:hover,
+  .call__board:hover,
+  .is-touched {
+    --touch-scale: 1;
+    border-radius: 0;
+    outline: 2px solid var(--cyan);
+    outline-offset: 3px;
+  }
+}
+
+/* ==========================================================================
+   THE CALL — one MCP handshake, in CSS 3D
+   ==========================================================================
+   Two stations and the wire between them: the agent on the left, the market
+   on the right, and one packet that crosses the wire and comes back with the
+   answer. The 3D here is a diagram of a real call, not a decoration.
+
+   The light comes from the top left — the same light as every hard offset
+   shadow on the page. The top face of each slab is lit, the side face is in
+   shadow, and the plate on the floor falls down and to the right.
+
+   call.js only says which phase the diagram is in. The flight itself is
+   keyframes here, so the panel still reads with the script turned off.
+   -------------------------------------------------------------------------- */
+
+.call__state {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 3px 8px;
+  border: 1px solid var(--rule);
+  background: var(--paper-2);
+  color: var(--ink-3);
+  font-family: var(--font-data);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  vertical-align: 2px;
+}
+.call__state[data-state="live"] { color: var(--cyan); border-color: var(--cyan); }
+.call__state[data-state="snapshot"] { color: var(--ink); border-color: var(--ink); }
+.call__state[data-state="error"] { color: var(--verm); border-color: var(--verm); }
+
+/* ---------- the board ----------------------------------------------------- */
+
+.section--call .call__board { max-width: 1080px; }
+
+.call__board {
+  display: grid;
+  grid-template-columns: minmax(0, 430px) minmax(0, 1fr);
+  grid-template-areas:
+    "scene    io"
+    "answer   io"
+    "meta     io"
+    "controls io";
+  gap: var(--gutter);
+  align-items: start;
+  background: var(--paper);
+  border: var(--edge) solid var(--rule);
+  padding: var(--panel-pad);
+}
+
+@media (max-width: 900px) {
+  .call__board {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "scene" "answer" "meta" "controls" "io";
+  }
+}
+
+/* ---------- the 3D scene --------------------------------------------------- */
+
+.call__scene {
+  grid-area: scene;
+  position: relative;
+  height: 288px;
+  perspective: 1100px;
+  perspective-origin: 50% 44%;
+  transform-style: preserve-3d;
+  --call-node-w: clamp(96px, 13vw, 136px);
+  --call-node-h: clamp(74px, 9.5vw, 104px);
+}
+
+/* the floor: the same screentone lattice the rest of the page is printed on,
+   tipped back into the page so the stations have something to stand on */
+.call__ground {
+  position: absolute;
+  left: -6%;
+  right: -6%;
+  bottom: -10px;
+  height: 200px;
+  background-image: var(--plate-tone-light);
+  background-size: 8px 8px;
+  border-top: 2px solid var(--ink-3);
+  opacity: 0.8;
+  transform: rotateX(64deg);
+  transform-origin: bottom center;
+}
+
+/* the wire: a plain ink rule at the back of the scene, so the stations
+   stand in front of it and the packet crosses in front of everything */
+.call__wire {
+  position: absolute;
+  left: calc(6% + var(--call-node-w) / 2);
+  right: calc(6% + var(--call-node-w) / 2);
+  top: 50%;
+  height: 3px;
+  margin-top: -1.5px;
+  background: var(--rule);
+  transform: translateZ(16px);
+  transform-style: preserve-3d;
+}
+
+.call__station {
+  position: absolute;
+  top: 50%;
+  width: var(--call-node-w);
+  height: var(--call-node-h);
+  transform-style: preserve-3d;
+}
+.call__station--agent {
+  left: 6%;
+  transform: translateY(-52%) translateZ(44px) rotateY(20deg);
+}
+.call__station--market {
+  right: 6%;
+  transform: translateY(-52%) translateZ(44px) rotateY(-20deg);
+}
+
+.call__face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  padding: 8px 10px;
+  background: var(--paper);
+  border: 2px solid var(--rule);
+}
+
+.call__node-kicker {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.call__node-name {
+  font-family: var(--font-ui);
+  font-weight: 800;
+  font-size: clamp(13px, 1.5vw, 17px);
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.call__node-value {
+  font-family: var(--font-data);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--cyan);
+}
+
+/* the two planes that give the slab its thickness. The top face is lit,
+   the side face is in shadow — one light, shared with the 2D page. */
+.call__node-side {
+  position: absolute;
+  top: 0;
+  width: 12px;
+  height: 100%;
+  background: var(--paper-2);
+  background: color-mix(in srgb, var(--paper) 66%, #000);
+  border-top: 2px solid var(--rule);
+  border-bottom: 2px solid var(--rule);
+}
+.call__node-side--left {
+  left: -12px;
+  transform-origin: right center;
+  transform: rotateY(-90deg);
+}
+.call__node-side--right {
+  right: -12px;
+  transform-origin: left center;
+  transform: rotateY(90deg);
+}
+.call__node-top {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 12px;
+  background: var(--paper-2);
+  background: color-mix(in srgb, var(--paper) 88%, #fff);
+  border-left: 2px solid var(--rule);
+  border-right: 2px solid var(--rule);
+  transform-origin: top center;
+  transform: rotateX(90deg);
+}
+
+/* the plate on the floor, thrown down and to the right like every hard
+   offset shadow on this page */
+.call__shadow {
+  position: absolute;
+  top: 50%;
+  height: 13px;
+  background: var(--rule);
+  opacity: 0.16;
+  transform: skewX(-38deg);
+  pointer-events: none;
+}
+.call__shadow--agent {
+  left: calc(6% + 8px);
+  width: calc(var(--call-node-w) + 12px);
+  margin-top: calc(var(--call-node-h) / 2 - 8px);
+}
+.call__shadow--market {
+  right: calc(6% - 8px);
+  width: calc(var(--call-node-w) + 12px);
+  margin-top: calc(var(--call-node-h) / 2 - 8px);
+}
+
+/* the server says it is working */
+.call__reading {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 9px);
+  transform: translateX(-50%);
+  font-family: var(--font-data);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  opacity: 0;
+  white-space: nowrap;
+}
+
+/* one ring per update: the market answers, the agent receives. The ring
+   starts already outside the face, so it reads as a ring leaving the node
+   and not as an outline drawn around it. */
+.call__aura {
+  position: absolute;
+  inset: -16px;
+  border: 3px solid var(--cyan);
+  opacity: 0;
+  pointer-events: none;
+}
+.call__board[data-phase="answer"] .call__station--market .call__aura {
+  animation: call-aura 1200ms ease-out forwards;
+}
+.call__board[data-phase="done"] .call__station--agent .call__aura {
+  animation: call-aura 1200ms ease-out forwards;
+}
+@keyframes call-aura {
+  0% { opacity: 0.85; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.55); }
+}
+
+/* a still is a settled frame, not a frame caught mid-ring */
+html.is-flat .call__aura { display: none; }
+
+/* the packet: one small card, crossing the wire and coming back */
+.call__packet {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 46px;
+  height: 30px;
+  margin: -15px 0 0 -23px;
+  display: grid;
+  place-items: center;
+  background: var(--paper);
+  border: 2px solid var(--cyan);
+  box-shadow: 4px 4px 0 var(--cyan);
+  opacity: 0;
+  transform: translateZ(46px);
+}
+.call__packet-tag {
+  font-family: var(--font-data);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--cyan);
+}
+[data-theme="shrine"] .call__packet-tag,
+[data-theme="shrine"] .call__node-value { color: #ff8a6b; }
+[data-theme="shrine"] .call__state[data-state="live"] {
+  color: #ff8a6b;
+  border-color: #ff8a6b;
+}
+
+.call__board[data-phase="ask"] .call__packet {
+  animation: call-out 760ms cubic-bezier(0.42, 0, 0.2, 1) forwards;
+}
+.call__board[data-phase="answer"] .call__packet {
+  animation: call-back 760ms cubic-bezier(0.42, 0, 0.2, 1) forwards;
+}
+.call__board[data-phase="ask"] .call__reading {
+  animation: call-read 200ms 620ms ease-out forwards;
+}
+@keyframes call-out {
+  0% { left: 0%; opacity: 0; transform: translateZ(46px) scale(0.78) rotateY(-16deg); }
+  12% { opacity: 1; }
+  100% { left: 100%; opacity: 1; transform: translateZ(46px) scale(1) rotateY(14deg); }
+}
+@keyframes call-back {
+  0% { left: 100%; opacity: 1; transform: translateZ(46px) scale(1) rotateY(14deg); }
+  88% { opacity: 1; }
+  100% { left: 0%; opacity: 0; transform: translateZ(46px) scale(0.78) rotateY(-16deg); }
+}
+@keyframes call-read {
+  from { opacity: 0; transform: translateX(-50%) translateY(4px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ---------- what came back -------------------------------------------------- */
+
+.call__answer {
+  grid-area: answer;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 14px;
+  padding: 10px 12px;
+  border: var(--edge) solid var(--rule);
+  background: var(--paper-2);
+}
+.call__answer-sym {
+  font-family: var(--font-ui);
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.call__answer-price {
+  font-family: var(--font-data);
+  font-weight: 600;
+  font-size: clamp(20px, 2.4vw, 27px);
+  line-height: 1;
+  color: var(--ink);
+}
+.call__answer-chg {
+  font-family: var(--font-data);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.call__answer[data-tone="up"] .call__answer-chg { color: var(--green); }
+.call__answer[data-tone="down"] .call__answer-chg { color: var(--verm); }
+.call__answer-time {
+  margin-left: auto;
+  font-family: var(--font-data);
+  font-size: 11px;
+  color: var(--ink-3);
+}
+
+/* ---------- the two halves of the handshake --------------------------------- */
+
+.call__io {
+  grid-area: io;
+  display: grid;
+  /* minmax(0, 1fr), not auto: a <pre> that does not wrap has a huge
+     min-content width, and a grid item's automatic minimum size would let
+     it push the whole page sideways on a phone. */
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--gutter);
+  align-content: start;
+  min-width: 0;
+}
+.call__pane {
+  border: var(--edge) solid var(--rule);
+  background: var(--paper);
+  min-width: 0;
+}
+
+/* On a wide screen the two panes share the height of the board, so the JSON
+   gets the room it deserves instead of a short box and a hole underneath.
+   The request is short and fixed, so it takes what it needs and the response
+   takes the rest. */
+@media (min-width: 901px) {
+  .call__io {
+    align-self: stretch;
+    grid-template-rows: auto minmax(0, 1fr);
+    align-content: stretch;
+  }
+  .call__pane {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .call__code {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: none;
+  }
+}
+.call__pane-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 7px 10px;
+  border-bottom: 2px solid var(--rule);
+  background: var(--paper-2);
+}
+.call__pane-tag {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.call__pane-meta {
+  font-family: var(--font-data);
+  font-size: 11px;
+  color: var(--ink-3);
+}
+.call__code {
+  margin: 0;
+  padding: 10px 12px;
+  max-height: 196px;
+  overflow: auto;
+  font-family: var(--font-data);
+  font-size: 11px;
+  line-height: 1.55;
+  color: var(--ink);
+  white-space: pre;
+  tab-size: 2;
+}
+.call__code:focus-visible { outline: 2px solid currentColor; outline-offset: -2px; }
+
+/* ---------- what it cost ---------------------------------------------------- */
+
+.call__meta {
+  grid-area: meta;
+  display: grid;
+  grid-template-columns: minmax(0, 5.6rem) minmax(0, 1fr);
+  gap: 5px 12px;
+  margin: 0;
+}
+.call__meta dt {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding-top: 3px;
+}
+.call__meta dd {
+  margin: 0;
+  font-family: var(--font-data);
+  font-size: 12px;
+  color: var(--ink);
+}
+
+/* ---------- the controls ---------------------------------------------------- */
+
+.call__controls {
+  grid-area: controls;
+  display: grid;
+  gap: 10px;
+}
+.call__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+}
+.call__syms { display: flex; flex-wrap: wrap; gap: 6px; flex: 1 1 auto; }
+.call__sym {
+  font-family: var(--font-data);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  padding: 5px 9px;
+  border: 2px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink-3);
+}
+.call__sym:hover { color: var(--ink); }
+.call__sym[aria-pressed="true"] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+.call__go {
+  flex: 0 0 auto;
+  padding: 7px 13px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+}
+.call__foot {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+.call__foot code {
+  font-family: var(--font-data);
+  font-size: 11.5px;
+  color: var(--ink);
+}
+
+/* the charge bar: a segmented energy bar, 60ms per segment, 2px ink cap.
+   A full bar means a full response. The end state is a plain rule, so the
+   bar is right whether you arrive during the fill or after it. */
+.call__charge {
+  display: flex;
+  gap: 3px;
+  height: 12px;
+}
+.call__charge i {
+  flex: 1 1 0;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  transition: background-color 60ms linear;
+  transition-delay: calc(var(--i) * 60ms);
+}
+.call__charge-cap {
+  width: 3px;
+  background: var(--rule);
+  opacity: 0;
+  transition: opacity 60ms linear 720ms;
+}
+.call__board[data-phase="done"] .call__charge i { background: var(--cyan); }
+.call__board[data-phase="done"] .call__charge-cap { opacity: 1; }
+
+/* a still must not be caught halfway through a fill */
+html.is-flat .call__board[data-phase="done"] .call__charge i {
+  background: var(--cyan);
+  transition: none;
+}
+html.is-flat .call__board[data-phase="done"] .call__charge-cap {
+  opacity: 1;
+  transition: none;
+}
+
+/* ---------- reduced motion --------------------------------------------------
+   The flight is removed, the call is not. The request still goes out and the
+   real response still lands; the packet simply stops crossing the wire. */
+@media (prefers-reduced-motion: reduce) {
+  .call__board[data-phase="ask"] .call__packet,
+  .call__board[data-phase="answer"] .call__packet { animation-duration: 1ms; }
+  .call__board[data-phase="ask"] .call__reading {
+    animation-duration: 1ms;
+    animation-delay: 0ms;
+  }
+  .call__aura { animation: none !important; opacity: 0; }
+  .call__board[data-phase="done"] .call__charge i,
+  .call__board[data-phase="done"] .call__charge-cap { transition-delay: 0ms; }
+}
