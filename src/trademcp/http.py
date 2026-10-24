@@ -58,7 +58,13 @@ async def get_json(url: str, params: dict[str, Any] | None = None, *, source: st
             if resp.status_code in _RETRY_STATUS:
                 raise httpx.HTTPStatusError("retryable", request=resp.request, response=resp)
             resp.raise_for_status()
-            return resp.json()
+            try:
+                return resp.json()
+            except ValueError as exc:
+                raise DataSourceError(
+                    f"{source}: response was not valid JSON (HTTP {resp.status_code}). "
+                    "The upstream endpoint may be rate limiting - retry shortly."
+                ) from exc
         except DataSourceError:
             raise
         except httpx.HTTPStatusError as exc:

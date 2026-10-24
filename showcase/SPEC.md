@@ -14,7 +14,7 @@ a stock screener and portfolio analytics. No API keys, no paid tiers, no account
 | Fundamental ratios | 54 across 6 groups |
 | Candlestick patterns | 18 |
 | Pivot point styles | 5 |
-| Indian indices covered | 15 |
+| Indian indices in the default snapshot | 15 |
 | Data sources | 3, all free and keyless |
 | Dependencies | 2 (`mcp`, `httpx`) |
 
@@ -25,7 +25,7 @@ AI agent  ──(MCP stdio)──▶  TradeMCP server
                                │
                                ├─▶ Yahoo Finance   prices · quotes · statements
                                ├─▶ NSE static CSVs symbol universe · ISIN · industry
-                               └─▶ Screener.in     ROCE · ROCE · promoter holding
+                               └─▶ Screener.in     ROCE · ROE · promoter holding
 ```
 
 1. **Resolve.** Any input is normalised to an NSE code and a Yahoo ticker. `RELIANCE`,
@@ -49,7 +49,7 @@ AI agent  ──(MCP stdio)──▶  TradeMCP server
 | Yahoo Finance quote | Price, market cap, multiples, dividend yield | Public, with a free cookie + crumb handshake the server does itself |
 | Yahoo fundamentals-timeseries | Annual, quarterly and trailing statement lines | Public JSON endpoint |
 | NSE static CSV listings | Symbol, company, ISIN, industry, index membership | Static files, no session required |
-| Screener.in | ROCE, ROCE, promoter/FII/DII holding, working-capital days | Public pages, parsed defensively, treated as optional |
+| Screener.in | ROCE, ROE, promoter/FII/DII holding, working-capital days | Public pages, parsed defensively, treated as optional |
 
 ## Tool reference
 
@@ -60,7 +60,7 @@ Get a full fundamental picture of an Indian stock.
 | Parameter | Type | Required | Description |
 |---|---|---|---|
 | `symbol` | string | yes | NSE symbol or company name, e.g. 'HDFCBANK' |
-| `include_india_metrics` | boolean | no | Include India-specific ratios from Screener.in (ROCE, ROCE, promoter holding, working-capital days) |
+| `include_india_metrics` | boolean | no | Include India-specific ratios from Screener.in (ROCE, ROE, promoter holding, working-capital days) |
 | `response_format` | any | no | 'markdown' or 'json' |
 
 ### `trademcp_get_valuation`
@@ -151,9 +151,9 @@ Screen Indian stocks by fundamental and technical criteria.
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|
-| `universe` | string | no | Stock universe to scan: 'NIFTY 50', 'NIFTY 100', 'NIFTY 500' or 'NSE' (all listed) |
-| `min_pe` | any | no | Only stocks with P/E at or below this |
-| `max_pe` | any | no | Only stocks with P/E at or above this |
+| `universe` | string | no | Stock universe to scan: 'NIFTY 50', 'NIFTY 100', 'NIFTY 500' or 'NSE' (the NSE universe is the first 600 symbols in NSE listing order, not every listed stock) |
+| `min_pe` | any | no | Only stocks with P/E at or above this (a floor) |
+| `max_pe` | any | no | Only stocks with P/E at or below this (a ceiling) |
 | `min_roe` | any | no | Minimum return on equity (%) |
 | `min_roce` | any | no | Minimum return on capital employed (%) |
 | `min_net_margin` | any | no | Minimum net profit margin (%) |
@@ -188,7 +188,7 @@ Compute technical indicators for an Indian stock.
 | Parameter | Type | Required | Description |
 |---|---|---|---|
 | `symbol` | string | yes | NSE symbol or company name, e.g. 'RELIANCE' |
-| `indicators` | any | no | Indicator names to compute, e.g. ['rsi_14','macd','atr_14']. Omit for all 60+. |
+| `indicators` | any | no | Indicator names to compute, e.g. ['rsi_14','macd','atr_14']. Omit for all 57. |
 | `range` | string | no | Lookback window: 3mo, 6mo, 1y, 2y, 5y |
 | `interval` | string | no | Bar size: 1d, 1wk, 1h, 30m |
 | `limit` | integer | no | How many recent data points to keep per indicator (1-100) |
@@ -221,10 +221,10 @@ Compute support and resistance levels for an Indian stock.
 
 | Family | Indicators |
 |---|---|
-| Trend | `sma_20` `sma_50` `sma_200` `ema_9` `ema_21` `ema_50` `ema_200` `macd` `macd_signal` `macd_histogram` `adx_14` `plus_di` `minus_di` `supertrend` `parabolic_sar` `ichimoku_tenkan` `ichimoku_kijun` `ichimoku_senkou_a` `ichimoku_senkou_b` `aroon_up` `aroon_down` `vortex_plus` `vortex_minus` `linear_slope_20` |
-| Momentum | `rsi_7` `rsi_14` `stochastic_k` `stochastic_d` `stoch_rsi_k` `cci_20` `williams_r` `mfi_14` `roc_10` `cmo_14` `tsi` `ultimate_oscillator` `awesome_oscillator` |
-| Volatility | `atr_14` `true_range` `bollinger_upper` `bollinger_middle` `bollinger_lower` `bollinger_percent_b` `bollinger_bandwidth` `keltner_upper` `keltner_lower` `donchian_upper` `donchian_lower` `historical_volatility` `zscore_20` |
-| Volume | `obv` `vwap` `chaikin_money_flow` `accumulation_distribution` `price_volume_trend` `force_index` `volume_ratio_20` |
+| Trend | `sma_20` `sma_50` `sma_200` `ema_9` `ema_21` `ema_50` `ema_200` `macd` `macd_signal` `macd_histogram` `adx_14` `plus_di` `minus_di` `aroon_up` `aroon_down` `vortex_plus` `vortex_minus` `supertrend` `parabolic_sar` `ichimoku_tenkan` `ichimoku_kijun` `ichimoku_senkou_a` `ichimoku_senkou_b` `linear_slope_20` |
+| Momentum | `rsi_14` `rsi_7` `stochastic_k` `stochastic_d` `stoch_rsi_k` `cci_20` `williams_r` `mfi_14` `roc_10` `cmo_14` `ultimate_oscillator` `awesome_oscillator` `tsi` |
+| Volatility | `atr_14` `true_range` `bollinger_upper` `bollinger_middle` `bollinger_lower` `bollinger_percent_b` `bollinger_bandwidth` `keltner_upper` `keltner_lower` `historical_volatility` `zscore_20` `donchian_upper` `donchian_lower` |
+| Volume | `vwap` `obv` `chaikin_money_flow` `accumulation_distribution` `price_volume_trend` `force_index` `volume_ratio_20` |
 
 ### Fundamental ratios
 
@@ -240,15 +240,19 @@ Compute support and resistance levels for an Indian stock.
 
 ### India-specific (Screener.in)
 
-ROCE, ROCE, book value, face value, market cap in crore, debt/equity, ROCE history,
+ROCE, ROE, book value, face value, market cap in crore, debt/equity, ROCE history,
 debtor days, inventory days, days payable, cash conversion cycle, and the promoter /
 FII / DII / government / public holding pattern with quarterly history.
 
 ## Indices covered
 
-NIFTY 50, SENSEX, NIFTY BANK, NIFTY IT, NIFTY AUTO, NIFTY FMCG, NIFTY PHARMA,
-NIFTY REALTY, NIFTY METAL, NIFTY MEDIA, NIFTY ENERGY, NIFTY PSU BANK,
-NIFTY FINANCIAL SERVICES, NIFTY PRIVATE BANK, NIFTY 500, INDIA VIX.
+The default snapshot covers NIFTY 50, SENSEX, NIFTY BANK, NIFTY IT, NIFTY AUTO, NIFTY FMCG, NIFTY PHARMA, NIFTY REALTY, NIFTY METAL, NIFTY MEDIA, NIFTY ENERGY, NIFTY PSU BANK, NIFTY PRIVATE BANK, NIFTY FINANCIAL SERVICES, INDIA VIX.
+
+It also accepts these names on request: NIFTY 500, NIFTY TOTAL MARKET.
+
+One of them, the free source does not publish: Yahoo carries every index in the default
+set except Nifty Private Bank, so that one is reported back under "unavailable"
+rather than quietly dropped.
 
 ## Configuration
 

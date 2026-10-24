@@ -48,7 +48,7 @@ async def trademcp_get_fundamentals(
     symbol: Annotated[str, _fmt_field("NSE symbol or company name, e.g. 'HDFCBANK'")],
     include_india_metrics: Annotated[
         bool,
-        _fmt_field("Include India-specific ratios from Screener.in (ROCE, ROCE, promoter holding, working-capital days)"),
+        _fmt_field("Include India-specific ratios from Screener.in (ROCE, ROE, promoter holding, working-capital days)"),
     ] = True,
     response_format: Annotated[ResponseFormat, _fmt_field("'markdown' or 'json'")] = ResponseFormat.MARKDOWN,
 ) -> str:

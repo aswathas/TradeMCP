@@ -48,21 +48,51 @@ async function getJSON(path, timeoutMs = 20000) {
   try {
     const res = await fetch(url, { signal: controller.signal });
     if (!res.ok) {
-      if (res.status === 404 && !path.startsWith("http")) apiIsLive = false;
+      if (res.status === 404 && !path.startsWith("http")) {
+        apiIsLive = false;
+        if (settleApi) { settleApi(false); settleApi = null; }
+      }
       throw new Error(`HTTP ${res.status}`);
     }
     apiIsLive = true;
+    if (settleApi) { settleApi(true); settleApi = null; }
     return await res.json();
   } finally {
     clearTimeout(timer);
   }
 }
 
+/* One snapshot, one fetch. call.js needs the same file for its own fallback
+   answer, and two modules pulling the same 26 KB file is two of everything.
+   The promise is kept, but a failure clears it so a later retry still tries. */
+let snapshotPromise = null;
 async function loadSnapshot() {
-  const res = await fetch(SNAPSHOT_URL);
-  if (!res.ok) throw new Error(`snapshot HTTP ${res.status}`);
-  return res.json();
+  if (!snapshotPromise) {
+    snapshotPromise = fetch(SNAPSHOT_URL)
+      .then((res) => {
+        if (!res.ok) throw new Error(`snapshot HTTP ${res.status}`);
+        return res.json();
+      })
+      .catch((err) => {
+        snapshotPromise = null;
+        throw err;
+      });
+  }
+  return snapshotPromise;
 }
+
+/* Whether this host has a backend is settled by the first /api/* request that
+   comes back, and only that request settles it. The board's own first
+   attempt is the one: it is fired before anything else, so the tape, the HUD
+   and the CALL panel can wait for the answer instead of each firing a
+   request of their own and logging a 404 apiece on a static host. */
+let settleApi = null;
+const apiSettled = new Promise((resolve) => { settleApi = resolve; });
+
+/* call.js answers from the same snapshot file and the same backend, so it
+   shares both instead of fetching a second copy of each. */
+window.trademcpSnapshot = loadSnapshot;
+window.trademcpApiReady = apiSettled;
 
 function chartPath(symbol) {
   return `history?symbol=${encodeURIComponent(symbol)}&range=6mo`;
@@ -964,9 +994,8 @@ function setPrice(rawQuote) {
     // (Ao) when the price rises and a push (Aka) when it falls.
     const power = up ? "ao" : "aka";
     const tendency = document.getElementById("tech-tendency");
-    const tickText = document.getElementById("tick-text");
     if (tendency) tendency.dataset.tone = power;
-    if (tickText) tickText.textContent = up ? "Live tick ▸ AO attract" : "Live tick ▸ AKA repel";
+    setTickText(quote.change_pct);
   }
   if (range && quote.high && quote.low) {
     const pos = ((quote.price - quote.low) / (quote.high - quote.low)) * 100;
@@ -976,8 +1005,21 @@ function setPrice(rawQuote) {
       `<span class="board__range-nums">${nf(quote.low, 2)} — ${nf(quote.high, 2)}</span>`;
   }
   if (nameNode && quote.name) nameNode.textContent = quote.name;
+}
+
+/* The tick and the feed label say where the number came from. A snapshot is
+   not a live feed, and a page that calls itself live while it is serving a
+   saved file is lying in the one place a reader would look for it. */
+function setTickText(changePct) {
+  const tickText = document.getElementById("tick-text");
+  if (!tickText) return;
+  const up = changePct >= 0;
+  tickText.textContent = `${state.live ? "Live" : "Saved"} tick ▸ ${up ? "AO attract" : "AKA repel"}`;
+}
+
+function setFeedState(live) {
   const feed = document.getElementById("board-feed-label");
-  if (feed) feed.textContent = "live feed";
+  if (feed) feed.textContent = live ? "live feed" : "snapshot feed";
 }
 /* ---------- the hero HUD ----------------------------------------------------
    The first screen used to be static markup with a LIVE tag over snapshot
@@ -1151,8 +1193,8 @@ function setLiveCopy(live) {
   }
   if (note) {
     note.textContent = live
-      ? "These candles come from the TradeMCP server right now, and the indicators below are recomputed in your browser from the same raw series."
-      : "These candles are a saved run of the TradeMCP server, and the indicators below are recomputed in your browser from that same raw series.";
+      ? "These candles come from the TradeMCP server right now, and the indicators below are recomputed in your browser from the same raw series. Type any NSE symbol and press Enter."
+      : "These candles are a saved run of the TradeMCP server, and the indicators below are recomputed in your browser from that same raw series. Type any NSE symbol and press Enter.";
   }
 }
 
@@ -1224,11 +1266,6 @@ async function refreshHud(snapshot) {
 async function refreshBoard(symbol, snapshot) {
   const badge = document.getElementById("board-badge");
   if (badge) badge.textContent = "…";
-  if (apiIsLive === false) {
-    state.live = false;
-    paintSnapshot(symbol, snapshot, "server snapshot — live endpoint unavailable");
-    return;
-  }
   try {
     const history = await getJSON(chartPath(symbol), 20000);
     const { rows } = toCandles(history);
@@ -1240,6 +1277,7 @@ async function refreshBoard(symbol, snapshot) {
     setBadge(true, state.stamp);
 
     const quote = await getJSON(`quote?symbol=${encodeURIComponent(symbol)}`, 20000);
+    setFeedState(true);
     setPrice(quote);
 
     const computed = renderChart(rows);
@@ -1257,7 +1295,10 @@ async function refreshBoard(symbol, snapshot) {
     }
   } catch {
     state.live = false;
-    paintSnapshot(symbol, snapshot, "server snapshot — live endpoint unavailable");
+    /* Without a backend the snapshot IS the data, so wait for it rather than
+       painting an empty board and repainting it a moment later. */
+    const data = snapshot || (await loadSnapshot().catch(() => null));
+    paintSnapshot(symbol, data, "server snapshot — live endpoint unavailable");
   }
 }
 
@@ -1280,8 +1321,12 @@ function paintSnapshot(symbol, snapshot, stamp) {
     setReadouts(buildIndicatorRows(candles, computed), "indicator-list");
     setBoardError("");
   } else {
+    /* Nothing to draw for this symbol. Everything the last symbol painted is
+       cleared first: a visitor must never see one company's price sitting
+       beside another company's name. */
+    clearSeriesReadouts(symbol);
     setBoardError(
-      `The saved snapshot holds a series for ${chartSymbol} only. The live server draws any symbol you ask for.`
+      `The bundled snapshot holds a series for ${chartSymbol} only.`
     );
   }
 
@@ -1290,11 +1335,12 @@ function paintSnapshot(symbol, snapshot, stamp) {
     setPrice(fallback.market || fallback);
     setBoardName(fallback.name || symbol);
   } else {
+    setReadouts([], "fundamental-list");
+    clearPrice();
     setBoardName(symbol);
   }
 
-  const feed = document.getElementById("board-feed-label");
-  if (feed) feed.textContent = "snapshot feed";
+  setFeedState(false);
   setBadge(false, stamp || "server snapshot");
 }
 
@@ -1303,6 +1349,53 @@ function paintSnapshot(symbol, snapshot, stamp) {
 function setBoardName(name) {
   const node = document.getElementById("board-name");
   if (node) node.textContent = name;
+}
+
+/* The price, the change and the 52-week band, emptied. Called when the board
+   has nothing honest to show for the symbol it was asked for. */
+function clearPrice() {
+  const last = document.getElementById("board-last");
+  if (last) last.textContent = "—";
+  const change = document.getElementById("board-change");
+  if (change) {
+    change.textContent = "";
+    change.className = "board__change";
+  }
+  const range = document.getElementById("board-range");
+  if (range) range.textContent = "";
+}
+
+/* Everything a series paints, wiped, and replaced with a sentence that says
+   what is missing instead of leaving the last symbol's picture behind. */
+function clearSeriesReadouts(symbol) {
+  state.computed = null;
+
+  const host = document.getElementById("chart");
+  if (host) {
+    host.textContent = "";
+    host.dataset.draw = "none";
+    const note = document.createElement("p");
+    note.className = "chart__empty";
+    note.textContent = `No saved series for ${symbol}.`;
+    host.appendChild(note);
+  }
+  const legend = document.getElementById("chart-legend");
+  if (legend) legend.textContent = "";
+  const summary = document.getElementById("chart-summary");
+  if (summary) summary.textContent = `No saved series for ${symbol}.`;
+
+  setReadouts([], "indicator-list");
+
+  const seals = document.getElementById("tracker-seals");
+  if (seals) seals.textContent = "";
+  const lenses = document.getElementById("tracker-lenses");
+  if (lenses) lenses.textContent = "";
+  const sealCount = document.getElementById("tracker-count");
+  if (sealCount) sealCount.textContent = "— / 20 seals converged";
+  const lensCount = document.getElementById("lenses-count");
+  if (lensCount) lensCount.textContent = "— / 6 lenses charged";
+
+  clearPrice();
 }
 
 function setBoardError(message) {
@@ -1381,28 +1474,28 @@ function wireBoard() {
     });
   }
 
-  loadSnapshot()
+  /* The snapshot loads in the background. The board needs it only when this
+     host turns out to have no backend. */
+  const snapshotReady = loadSnapshot()
     .then((data) => {
       snapshot = data;
-      // A static host has no /api/* endpoints: paint the board from the
-      // snapshot the server itself wrote, and say so on screen.
-      if (!state.live) {
-        paintSnapshot(state.symbol || "RELIANCE", data, "server snapshot");
-      }
-      return refreshTape(data.tape || []);
+      return data;
     })
-    .catch(() => refreshTape([]))
+    .catch(() => null);
+
+  /* The board runs first, and its first request settles whether this host has
+     a backend. The tape and the HUD wait for that answer instead of each
+     firing a request of their own - on a static host, one 404 for the page
+     rather than one per section. */
+  run()
+    .then(() => snapshotReady)
+    .then(() => refreshTape(snapshot ? snapshot.tape || [] : []))
     .finally(() => {
-      // The first run started before the snapshot had arrived, so the HUD
-      // painted from nothing. Paint it again from the snapshot - but only
-      // when the host has no live endpoint, or the API is asked twice for
-      // every number it already gave us.
+      // The HUD is painted from the snapshot when there is no live endpoint.
+      // On a live host the API has already given it every number it wants, and
+      // asking again would be a second request for the same answer.
       if (!state.live) refreshHud(snapshot);
     });
-
-  // The board runs immediately; the tape is a background extra and must never
-  // hold up the headline numbers.
-  run();
 
   const poll = function () { run({ quiet: true }); };
   timer = setInterval(poll, 90000);

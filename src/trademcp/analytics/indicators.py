@@ -685,7 +685,11 @@ def daily_returns(closes: Sequence[float]) -> list[float]:
 def beta_alpha(
     stock_closes: Sequence[float], bench_closes: Sequence[float]
 ) -> tuple[float | None, float | None]:
-    """Beta and annualised alpha of the stock against a benchmark."""
+    """Beta and annualised alpha of the stock against a benchmark.
+
+    Alpha is returned in percent (e.g. -7.2 means -7.2% a year), which is the
+    unit every caller writes into its ``*_pct`` field.
+    """
     n = min(len(stock_closes), len(bench_closes))
     if n < 30:
         return None, None
@@ -699,7 +703,7 @@ def beta_alpha(
     if var_b == 0:
         return None, None
     beta = cov / var_b
-    alpha = (mean_s - beta * mean_b) * 252
+    alpha = (mean_s - beta * mean_b) * 252 * 100  # fraction -> percent
     return beta, alpha
 
 
@@ -934,7 +938,7 @@ def candlestick_patterns(bars: Sequence[Bar]) -> list[dict[str, Any]]:
         if (
             _is_bullish(prev)
             and not _is_bullish(cur)
-            and prev.close > cur.open < prev.open
+            and prev.close > cur.open > prev.open
             and cur.close < (prev.open + prev.close) / 2
         ):
             add("Dark Cloud Cover", "bearish", "Bears reversed more than half the prior gain")

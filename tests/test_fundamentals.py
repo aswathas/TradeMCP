@@ -111,6 +111,48 @@ class TestHealthScore:
         profile = fa.build_fundamentals({})
         assert profile["health_score"]["score"] == 0.0
 
+    def test_missing_metrics_leave_the_denominator(self):
+        # One excellent metric and nothing else: the score is driven by the
+        # metric we have, not diluted by the nine we do not.
+        result = fa.health_score(
+            valuation={},
+            profitability={"return_on_equity_pct": 30.0},
+            leverage={},
+            liquidity={},
+            growth={},
+        )
+        assert result["score"] == pytest.approx(100.0)
+        assert result["metrics_scored"] == 1
+        assert result["metrics_total"] == 10
+        assert result["data_completeness_pct"] == pytest.approx(10.0)
+
+    def test_data_completeness_is_reported(self, simple_profile):
+        health = fa.build_fundamentals(simple_profile)["health_score"]
+        assert 0 < health["data_completeness_pct"] < 100
+        assert health["metrics_scored"] < health["metrics_total"]
+
+    def test_missing_metrics_are_unknown_not_zero(self):
+        result = fa.health_score({}, {"return_on_equity_pct": 20.0}, {}, {}, {})
+        missing = [c for c in result["components"] if c.get("note") == "no data"]
+        assert missing
+        assert all(c["score"] is None for c in missing)
+
+    def test_a_company_with_no_data_is_not_called_weak(self):
+        health = fa.build_fundamentals({})["health_score"]
+        assert health["score"] == 0.0
+        assert health["label"] == "No data"
+        assert health["data_completeness_pct"] == 0.0
+
+    def test_a_thinly_covered_company_is_not_labelled_weak(self):
+        result = fa.health_score(
+            valuation={},
+            profitability={"return_on_equity_pct": 30.0},
+            leverage={},
+            liquidity={},
+            growth={},
+        )
+        assert result["label"] != "Weak"
+
 
 class TestStatements:
     def test_build_statements_groups_lines(self, simple_profile):

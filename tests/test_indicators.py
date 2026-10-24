@@ -27,6 +27,14 @@ def make_bars(closes: list[float], *, spread: float = 1.0, volume: int = 1000) -
     return bars
 
 
+def closes_from_returns(returns: list[float], start: float = 100.0) -> list[float]:
+    """Compound a return series into a close series."""
+    closes = [start]
+    for r in returns:
+        closes.append(closes[-1] * (1 + r))
+    return closes
+
+
 class TestMovingAverages:
     def test_sma_windows(self):
         values = ind.sma([1, 2, 3, 4, 5], 3)
@@ -146,6 +154,19 @@ class TestStatistics:
     def test_beta_of_short_series_is_none(self):
         assert ind.beta_alpha([1.0, 2.0], [1.0, 2.0]) == (None, None)
 
+    def test_alpha_is_reported_in_percent(self):
+        # The stock earns a constant 0.1% a day more than the benchmark, so
+        # beta is 1 and the annualised alpha is 0.001 * 252 * 100 = 25.2%
+        # - not 0.252, and not 25.2 as a fraction.
+        bench_returns = [0.01, -0.01, 0.02, -0.02] * 10
+        stock_returns = [r + 0.001 for r in bench_returns]
+        bench = closes_from_returns(bench_returns)
+        stock = closes_from_returns(stock_returns)
+
+        beta, alpha = ind.beta_alpha(stock, bench)
+        assert beta == pytest.approx(1.0)
+        assert alpha == pytest.approx(25.2, rel=1e-9)
+
     def test_sharpe_and_sortino_are_finite(self):
         closes = [100.0 * (1.01 ** i) * (1.05 if i % 7 == 0 else 1.0) for i in range(120)]
         sharpe = ind.sharpe_ratio(closes)
@@ -229,3 +250,32 @@ class TestLevels:
         ]
         names = [p["pattern"] for p in ind.candlestick_patterns(bars)]
         assert "Hammer" in names
+
+    def test_candlestick_patterns_detect_dark_cloud_cover(self):
+        # Textbook instance: a strong up bar, then a down bar that opens inside
+        # the prior body (above its open, below its close) and closes below
+        # the midpoint of the prior body.
+        bars = [
+            Bar(date="d1", open=96, high=101, low=95, close=100, volume=10),
+            Bar(date="d2", open=99, high=100, low=91, close=92, volume=10),
+        ]
+        names = [p["pattern"] for p in ind.candlestick_patterns(bars)]
+        assert "Dark Cloud Cover" in names
+
+    def test_dark_cloud_cover_needs_the_open_inside_the_prior_body(self):
+        # A gap down below the prior open is not a dark cloud cover - the old
+        # condition flagged exactly this candle and missed the real pattern.
+        bars = [
+            Bar(date="d1", open=96, high=101, low=95, close=100, volume=10),
+            Bar(date="d2", open=94, high=95, low=90, close=92, volume=10),
+        ]
+        names = [p["pattern"] for p in ind.candlestick_patterns(bars)]
+        assert "Dark Cloud Cover" not in names
+
+    def test_dark_cloud_cover_needs_a_bearish_reversal(self):
+        bars = [
+            Bar(date="d1", open=96, high=101, low=95, close=100, volume=10),
+            Bar(date="d2", open=99, high=101, low=98, close=100, volume=10),
+        ]
+        names = [p["pattern"] for p in ind.candlestick_patterns(bars)]
+        assert "Dark Cloud Cover" not in names

@@ -3,9 +3,12 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from ..formatting import to_json, to_markdown
+
+if TYPE_CHECKING:
+    from mcp.types import ToolAnnotations
 
 
 class ResponseFormat(str, Enum):
@@ -26,7 +29,7 @@ def error_text(exc: Exception) -> str:
     return f"Error: {message}"
 
 
-def tool_annotations(title: str) -> dict[str, Any]:
+def tool_annotations(title: str) -> "ToolAnnotations":
     """Annotations for read-only market data tools."""
     from mcp.types import ToolAnnotations
 

@@ -7,9 +7,12 @@ crumb flow is cheap and public, so we do it once per process and reuse it.
 from __future__ import annotations
 
 import asyncio
+import hashlib
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import Any, Iterable
+from typing import Any, Iterable, Sequence
+
+import httpx
 
 from .. import config
 from ..cache import cache
@@ -101,7 +104,13 @@ async def _get_crumb() -> str:
             await client.get("https://fc.yahoo.com")  # sets the consent cookies
         except Exception:
             pass
-        resp = await client.get("https://query1.finance.yahoo.com/v1/test/getcrumb")
+        try:
+            resp = await client.get("https://query1.finance.yahoo.com/v1/test/getcrumb")
+        except httpx.TransportError as exc:
+            raise DataSourceError(
+                f"Yahoo Finance: crumb request failed ({type(exc).__name__}). "
+                "The network may be flaky - retry shortly."
+            ) from exc
         if resp.status_code != 200:
             raise DataSourceError(
                 f"Yahoo Finance: could not obtain a session crumb (HTTP {resp.status_code}). Try again shortly."
@@ -275,6 +284,17 @@ async def _quotes_from_chart(tickers: list[str]) -> dict[str, dict[str, Any]]:
     return fallback
 
 
+def _timeseries_cache_key(symbol: str, wanted: Sequence[str], years: int) -> str:
+    """A process-stable cache key for a fundamentals request.
+
+    ``hash()`` of strings is salted per process (PEP 456), so a hash-based key
+    never survives a restart and the disk cache never hits. A truncated
+    sha256 of the metric names is stable everywhere.
+    """
+    digest = hashlib.sha256(",".join(sorted(wanted)).encode("utf-8")).hexdigest()[:16]
+    return f"ts:{symbol}:{digest}:{years}"
+
+
 async def get_timeseries(
     symbol: str,
     types: Iterable[str],
@@ -287,7 +307,9 @@ async def get_timeseries(
     if not wanted:
         return {}
 
-    cache_key = f"ts:{symbol}:{hash(tuple(wanted))}:{years}"
+    # A stable digest, not hash(): string hashing is salted per process, so a
+    # hash()-based key never survives a restart and the disk cache never hits.
+    cache_key = _timeseries_cache_key(symbol, wanted, years)
     if use_cache:
         cached = await cache.get(cache_key, config.FUNDAMENTALS_TTL)
         if cached:

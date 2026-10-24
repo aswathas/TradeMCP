@@ -23,6 +23,13 @@ scripts/_*.txt
 .impeccable/
 .mavis/
 logs/
+mavis-deep-research/
+
+# Local artefacts that land in the working directory and are not the project:
+# a pip download cache, a stray probe page, and an audio snippet.
+pip/
+--selector
+*.mp3
 
 # Unused art: the manga figure plates were cut from the page, only the
 # screentone tiles in assets/plates are still referenced.
@@ -54,6 +61,11 @@ Assets for ui/
 # Temporary probe pages the layout tools drop into the site directory
 showcase/site/_probe.html
 showcase/site/_frame.html
+showcase/site/_verify.html
+showcase/site/_measure.html
+showcase/site/_section.html
+showcase/site/_sweep.html
+showcase/site/_sweep2.html
 
 # Knowledge-graph build output from /graphify. A generated artefact, not source.
 graphify-out/

@@ -17,6 +17,25 @@ from ..providers import nse, yahoo
 from ..symbols import SymbolNotFound, resolve
 from .common import ResponseFormat, error_text, render, tool_annotations
 
+# How many symbols one screen may pull fundamentals for. The NSE equity master
+# holds ~2600 names; scanning all of them per call is slow and rate-limited, so
+# the scan is capped and the payload says so.
+MAX_UNIVERSE_SCAN = 600
+
+
+def pe_in_band(pe: float | None, min_pe: float | None, max_pe: float | None) -> bool:
+    """Does a P/E pass the screen's bounds?
+
+    ``min_pe`` is a floor and ``max_pe`` is a ceiling, matching every other
+    min_/max_ parameter. A stock with no P/E (loss-making) never passes a
+    bound that is set.
+    """
+    if min_pe is not None and (pe is None or pe < min_pe):
+        return False
+    if max_pe is not None and (pe is None or pe > max_pe):
+        return False
+    return True
+
 
 def _fmt_field(description: str):
     return Field(description=description)
@@ -56,10 +75,13 @@ async def _fetch_profiles(symbols: list[str]) -> dict[str, dict[str, Any]]:
 async def trademcp_screen_stocks(
     universe: Annotated[
         str,
-        _fmt_field("Stock universe to scan: 'NIFTY 50', 'NIFTY 100', 'NIFTY 500' or 'NSE' (all listed)"),
+        _fmt_field(
+            "Stock universe to scan: 'NIFTY 50', 'NIFTY 100', 'NIFTY 500' or 'NSE' "
+            "(the NSE universe is the first 600 symbols in NSE listing order, not every listed stock)"
+        ),
     ] = "NIFTY 50",
-    min_pe: Annotated[float | None, _fmt_field("Only stocks with P/E at or below this")] = None,
-    max_pe: Annotated[float | None, _fmt_field("Only stocks with P/E at or above this")] = None,
+    min_pe: Annotated[float | None, _fmt_field("Only stocks with P/E at or above this (a floor)")] = None,
+    max_pe: Annotated[float | None, _fmt_field("Only stocks with P/E at or below this (a ceiling)")] = None,
     min_roe: Annotated[float | None, _fmt_field("Minimum return on equity (%)")] = None,
     min_roce: Annotated[float | None, _fmt_field("Minimum return on capital employed (%)")] = None,
     min_net_margin: Annotated[float | None, _fmt_field("Minimum net profit margin (%)")] = None,
@@ -82,14 +104,16 @@ async def trademcp_screen_stocks(
 ) -> str:
     """Screen Indian stocks by fundamental and technical criteria.
 
-    Scans an index universe (or every NSE-listed stock), pulls the latest
-    fundamentals for each name, applies the fundamental filters, then applies
-    the technical filters to the survivors and returns the best matches.
+    Scans an index universe (or the NSE universe, capped at 600 symbols in
+    NSE listing order), pulls the latest fundamentals for each name, applies
+    the fundamental filters, then applies the technical filters to the
+    survivors and returns the best matches. The payload reports how many
+    symbols the universe holds and whether the scan was truncated.
 
     Args:
         universe: 'NIFTY 50', 'NIFTY 100', 'NIFTY 500' or 'NSE'
-        min_pe: maximum P/E
-        max_pe: minimum P/E
+        min_pe: minimum P/E (a floor - stocks must trade at or above this)
+        max_pe: maximum P/E (a ceiling - stocks must trade at or below this)
         min_roe: minimum return on equity (%)
         min_roce: minimum return on capital employed (%)
         min_net_margin: minimum net margin (%)
@@ -125,9 +149,11 @@ async def trademcp_screen_stocks(
     if not symbols:
         return error_text(DataSourceError(f"No symbols found for universe '{universe}'."))
 
+    universe_size = len(symbols)
+    if universe_size > MAX_UNIVERSE_SCAN:
+        symbols = symbols[:MAX_UNIVERSE_SCAN]
     scanned = len(symbols)
-    if scanned > 600:
-        symbols = symbols[:600]
+    universe_truncated = scanned < universe_size
 
     profiles = await _fetch_profiles(symbols)
 
@@ -154,9 +180,7 @@ async def trademcp_screen_stocks(
         growth = profile["growth"]
 
         pe = valuation.get("pe_ratio")
-        if min_pe is not None and (pe is None or pe > min_pe):
-            return False
-        if max_pe is not None and (pe is None or pe < max_pe):
+        if not pe_in_band(pe, min_pe, max_pe):
             return False
         if min_roe is not None:
             roe = profitability.get("return_on_equity_pct")
@@ -270,7 +294,10 @@ async def trademcp_screen_stocks(
 
     payload = {
         "universe": universe.upper(),
+        "universe_size": universe_size,
         "symbols_scanned": scanned,
+        "universe_truncated": universe_truncated,
+        "universe_scan_cap": MAX_UNIVERSE_SCAN,
         "with_fundamentals": len(profiles),
         "passed_fundamental_filters": len(passed),
         "final_matches": len(rows),

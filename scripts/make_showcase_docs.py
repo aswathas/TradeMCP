@@ -13,8 +13,10 @@ sources, and writes two Markdown files:
 from __future__ import annotations
 
 import asyncio
+import inspect
 import json
 import logging
+import re
 import sys
 import time
 from pathlib import Path
@@ -28,7 +30,11 @@ logging.getLogger("httpx").setLevel(logging.WARNING)
 
 from trademcp import tools  # noqa: E402
 from trademcp.analytics import fundamentals as fa  # noqa: E402
+from trademcp.analytics import indicators as ind  # noqa: E402
 from trademcp.app import mcp  # noqa: E402
+from trademcp.providers.yahoo import Bar  # noqa: E402
+from trademcp.symbols import INDEX_TICKERS  # noqa: E402
+from trademcp.tools.market import DEFAULT_INDICES  # noqa: E402
 from trademcp.tools.technical import REGISTRY  # noqa: E402
 
 DEMO_CALLS: list[tuple[str, dict, str]] = [
@@ -38,7 +44,7 @@ DEMO_CALLS: list[tuple[str, dict, str]] = [
     ("trademcp_get_index_snapshot", {"indices": ["NIFTY 50", "SENSEX", "NIFTY BANK", "INDIA VIX"]}, "Where the market stands"),
     ("trademcp_get_market_breadth", {"index": "NIFTY 50", "include_trend": False}, "Breadth across index constituents"),
     ("trademcp_compare_stocks", {"symbols": ["RELIANCE", "TCS"]}, "Side-by-side on price, quality and momentum"),
-    ("trademcp_get_technical_indicators", {"symbol": "RELIANCE", "indicators": ["rsi_14", "macd", "atr_14", "supertrend"], "limit": 3}, "Any of the 57 indicators"),
+    ("trademcp_get_technical_indicators", {"symbol": "RELIANCE", "indicators": ["rsi_14", "macd", "atr_14", "supertrend"], "limit": 3}, f"Any of the {len(REGISTRY)} indicators"),
     ("trademcp_get_technical_analysis", {"symbol": "HDFCBANK", "range": "1y"}, "Scored signals plus risk statistics"),
     ("trademcp_get_support_resistance", {"symbol": "SBIN"}, "Five pivot styles, fib levels, swing points"),
     ("trademcp_get_fundamentals", {"symbol": "TCS"}, "The full fundamental picture"),
@@ -58,7 +64,96 @@ def count_ratios() -> dict[str, int]:
     return counts
 
 
-async def gather() -> dict:
+def count_pivot_styles() -> int:
+    """How many pivot point styles the analytics engine emits."""
+    sample = Bar(date="2024-01-01", open=100.0, high=110.0, low=95.0, close=105.0, volume=1000)
+    return len(ind.pivot_points(sample))
+
+
+def count_candlestick_patterns() -> int:
+    """How many candlestick pattern families the detector recognises.
+
+    One `add(...)` branch per pattern family, so the number comes from the
+    detector itself rather than from a hand-maintained number in this script.
+    (The Marubozu branch emits a bullish or a bearish label from that one
+    branch, so it counts once here.)
+    """
+    source = inspect.getsource(ind.candlestick_patterns)
+    return len(re.findall(r"^\s*add\(", source, re.M))
+
+
+def index_lines() -> tuple[list[str], list[str]]:
+    """The default index set, plus the extra index names it can also fetch.
+
+    The default set is the server's own DEFAULT_INDICES. The extras are the
+    remaining ticker names in INDEX_TICKERS whose ticker is not already
+    covered, so plain aliases (BANKNIFTY for NIFTY BANK) are left out.
+    """
+    default = list(DEFAULT_INDICES)
+    covered = {INDEX_TICKERS[name.upper()] for name in default if name.upper() in INDEX_TICKERS}
+    extras = [name for name, ticker in INDEX_TICKERS.items() if ticker not in covered]
+    return default, extras
+
+
+# Which family each registered indicator belongs to. The families below must
+# cover the registry exactly: write_spec raises if they do not, so a new
+# indicator cannot slip into the docs unnamed.
+INDICATOR_FAMILIES: dict[str, tuple[str, ...]] = {
+    "Trend": (
+        "sma_20", "sma_50", "sma_200",
+        "ema_9", "ema_21", "ema_50", "ema_200",
+        "macd", "macd_signal", "macd_histogram",
+        "adx_14", "plus_di", "minus_di",
+        "supertrend", "parabolic_sar",
+        "ichimoku_tenkan", "ichimoku_kijun", "ichimoku_senkou_a", "ichimoku_senkou_b",
+        "aroon_up", "aroon_down",
+        "vortex_plus", "vortex_minus",
+        "linear_slope_20",
+    ),
+    "Momentum": (
+        "rsi_7", "rsi_14",
+        "stochastic_k", "stochastic_d", "stoch_rsi_k",
+        "cci_20", "williams_r", "mfi_14",
+        "roc_10", "cmo_14", "tsi",
+        "ultimate_oscillator", "awesome_oscillator",
+    ),
+    "Volatility": (
+        "atr_14", "true_range",
+        "bollinger_upper", "bollinger_middle", "bollinger_lower",
+        "bollinger_percent_b", "bollinger_bandwidth",
+        "keltner_upper", "keltner_lower",
+        "donchian_upper", "donchian_lower",
+        "historical_volatility", "zscore_20",
+    ),
+    "Volume": (
+        "obv", "vwap", "chaikin_money_flow", "accumulation_distribution",
+        "price_volume_trend", "force_index", "volume_ratio_20",
+    ),
+}
+
+
+def indicator_rows() -> list[tuple[str, list[str]]]:
+    """The registry split into families, in the server's own registry order.
+
+    Every registered indicator must appear in exactly one family, otherwise
+    the generator refuses to write a spec that would misstate the count.
+    """
+    listed = [name for names in INDICATOR_FAMILIES.values() for name in names]
+    if len(listed) != len(set(listed)):
+        raise SystemExit("an indicator is listed in more than one family")
+    missing = set(REGISTRY) - set(listed)
+    unknown = set(listed) - set(REGISTRY)
+    if missing or unknown:
+        raise SystemExit(
+            f"indicator families do not match the registry: missing={sorted(missing)} "
+            f"unknown={sorted(unknown)}"
+        )
+    rows = [(family, [n for n in REGISTRY if n in names]) for family, names in INDICATOR_FAMILIES.items()]
+    return rows
+
+
+async def gather_tools() -> list[dict]:
+    """The registered tools and their parameter schemas."""
     listing = await mcp.list_tools()
     tools_meta = []
     for tool in listing:
@@ -77,6 +172,11 @@ async def gather() -> dict:
                 "read_only": bool(tool.annotations and tool.annotations.read_only_hint),
             }
         )
+    return tools_meta
+
+
+async def gather() -> dict:
+    tools_meta = await gather_tools()
 
     demos = []
     for name, args, caption in DEMO_CALLS:
@@ -101,6 +201,10 @@ def write_spec(data: dict) -> str:
     ratios = count_ratios()
     total_params = sum(len(t["params"]) for t in tools_meta)
     required_params = sum(sum(1 for p in t["params"] if p["required"]) for t in tools_meta)
+    indicators = len(REGISTRY)
+    patterns = count_candlestick_patterns()
+    pivots = count_pivot_styles()
+    default_indices, extra_indices = index_lines()
 
     lines: list[str] = []
     add = lines.append
@@ -108,7 +212,7 @@ def write_spec(data: dict) -> str:
     add("# TradeMCP — Specification")
     add("")
     add("A free Model Context Protocol server for Indian equities (NSE/BSE). It gives an AI agent")
-    add("live market data, 57 technical indicators, full fundamental ratios, financial statements,")
+    add(f"live market data, {indicators} technical indicators, full fundamental ratios, financial statements,")
     add("a stock screener and portfolio analytics. No API keys, no paid tiers, no account.")
     add("")
     add("## At a glance")
@@ -117,11 +221,11 @@ def write_spec(data: dict) -> str:
     add("|---|---|")
     add(f"| Tools | {len(tools_meta)} |")
     add(f"| Tool parameters | {total_params} ({required_params} required) |")
-    add(f"| Technical indicators | {len(REGISTRY)} |")
+    add(f"| Technical indicators | {indicators} |")
     add(f"| Fundamental ratios | {ratios['total']} across {len(ratios) - 1} groups |")
-    add("| Candlestick patterns | 18 |")
-    add("| Pivot point styles | 5 |")
-    add("| Indian indices covered | 15 |")
+    add(f"| Candlestick patterns | {patterns} |")
+    add(f"| Pivot point styles | {pivots} |")
+    add(f"| Indian indices in the default snapshot | {len(default_indices)} |")
     add("| Data sources | 3, all free and keyless |")
     add("| Dependencies | 2 (`mcp`, `httpx`) |")
     add("")
@@ -133,7 +237,7 @@ def write_spec(data: dict) -> str:
     add("                               │")
     add("                               ├─▶ Yahoo Finance   prices · quotes · statements")
     add("                               ├─▶ NSE static CSVs symbol universe · ISIN · industry")
-    add("                               └─▶ Screener.in     ROCE · ROCE · promoter holding")
+    add("                               └─▶ Screener.in     ROCE · ROE · promoter holding")
     add("```")
     add("")
     add("1. **Resolve.** Any input is normalised to an NSE code and a Yahoo ticker. `RELIANCE`,")
@@ -158,7 +262,7 @@ def write_spec(data: dict) -> str:
     add("| Yahoo Finance quote | Price, market cap, multiples, dividend yield | Public, with a free cookie + crumb handshake the server does itself |")
     add("| Yahoo fundamentals-timeseries | Annual, quarterly and trailing statement lines | Public JSON endpoint |")
     add("| NSE static CSV listings | Symbol, company, ISIN, industry, index membership | Static files, no session required |")
-    add("| Screener.in | ROCE, ROCE, promoter/FII/DII holding, working-capital days | Public pages, parsed defensively, treated as optional |")
+    add("| Screener.in | ROCE, ROE, promoter/FII/DII holding, working-capital days | Public pages, parsed defensively, treated as optional |")
     add("")
 
     add("## Tool reference")
@@ -178,14 +282,12 @@ def write_spec(data: dict) -> str:
 
     add("## The metrics")
     add("")
-    add("### Technical indicators (57)")
+    add(f"### Technical indicators ({indicators})")
     add("")
     add("| Family | Indicators |")
     add("|---|---|")
-    add("| Trend | `sma_20` `sma_50` `sma_200` `ema_9` `ema_21` `ema_50` `ema_200` `macd` `macd_signal` `macd_histogram` `adx_14` `plus_di` `minus_di` `supertrend` `parabolic_sar` `ichimoku_tenkan` `ichimoku_kijun` `ichimoku_senkou_a` `ichimoku_senkou_b` `aroon_up` `aroon_down` `vortex_plus` `vortex_minus` `linear_slope_20` |")
-    add("| Momentum | `rsi_7` `rsi_14` `stochastic_k` `stochastic_d` `stoch_rsi_k` `cci_20` `williams_r` `mfi_14` `roc_10` `cmo_14` `tsi` `ultimate_oscillator` `awesome_oscillator` |")
-    add("| Volatility | `atr_14` `true_range` `bollinger_upper` `bollinger_middle` `bollinger_lower` `bollinger_percent_b` `bollinger_bandwidth` `keltner_upper` `keltner_lower` `donchian_upper` `donchian_lower` `historical_volatility` `zscore_20` |")
-    add("| Volume | `obv` `vwap` `chaikin_money_flow` `accumulation_distribution` `price_volume_trend` `force_index` `volume_ratio_20` |")
+    for family, names in indicator_rows():
+        add(f"| {family} | " + " ".join(f"`{n}`" for n in names) + " |")
     add("")
 
     add("### Fundamental ratios")
@@ -203,16 +305,20 @@ def write_spec(data: dict) -> str:
 
     add("### India-specific (Screener.in)")
     add("")
-    add("ROCE, ROCE, book value, face value, market cap in crore, debt/equity, ROCE history,")
+    add("ROCE, ROE, book value, face value, market cap in crore, debt/equity, ROCE history,")
     add("debtor days, inventory days, days payable, cash conversion cycle, and the promoter /")
     add("FII / DII / government / public holding pattern with quarterly history.")
     add("")
 
     add("## Indices covered")
     add("")
-    add("NIFTY 50, SENSEX, NIFTY BANK, NIFTY IT, NIFTY AUTO, NIFTY FMCG, NIFTY PHARMA,")
-    add("NIFTY REALTY, NIFTY METAL, NIFTY MEDIA, NIFTY ENERGY, NIFTY PSU BANK,")
-    add("NIFTY FINANCIAL SERVICES, NIFTY PRIVATE BANK, NIFTY 500, INDIA VIX.")
+    add("The default snapshot covers " + ", ".join(default_indices) + ".")
+    add("")
+    add("It also accepts these names on request: " + ", ".join(extra_indices) + ".")
+    add("")
+    add("One of them, the free source does not publish: Yahoo carries every index in the default")
+    add("set except Nifty Private Bank, so that one is reported back under \"unavailable\"")
+    add("rather than quietly dropped.")
     add("")
 
     add("## Configuration")
@@ -270,6 +376,17 @@ def write_demo(data: dict) -> str:
 
 
 async def main() -> int:
+    spec_only = "--spec-only" in sys.argv[1:]
+
+    if spec_only:
+        # SPEC.md is derived from the tool registry and the analytics engine
+        # alone, so it can be regenerated without any live calls and without
+        # touching DEMO.md.
+        data = {"tools": await gather_tools()}
+        spec = write_spec(data)
+        print(f"wrote {OUT / 'SPEC.md'} ({len(spec)} chars)")
+        return 0
+
     data = await gather()
     spec = write_spec(data)
     demo = write_demo(data)

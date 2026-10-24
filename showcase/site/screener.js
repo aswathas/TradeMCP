@@ -141,29 +141,48 @@ function renderTable(rows) {
     const tr = document.createElement("tr");
     tr.dataset.symbol = row.symbol;
 
-    const cells = [];
     /* The symbol is a button, not just a label: clicking a row loads it, and
        a keyboard has to be able to do the same thing. */
-    cells.push(
-      `<td class="sc-sym"><b><button type="button" class="sc-load" data-symbol="${row.symbol}">${row.symbol}</button></b><span>${row.name || ""}</span></td>`
-    );
-    cells.push(`<td class="num">${nf(row.price, 2)}</td>`);
+    const symCell = document.createElement("td");
+    symCell.className = "sc-sym";
+    const strong = document.createElement("b");
+    const load = document.createElement("button");
+    load.type = "button";
+    load.className = "sc-load";
+    load.dataset.symbol = row.symbol;
+    load.textContent = row.symbol;
+    strong.appendChild(load);
+    symCell.appendChild(strong);
+    const name = document.createElement("span");
+    name.textContent = row.name || "";
+    symCell.appendChild(name);
+    tr.appendChild(symCell);
+
+    const cell = (text, cls) => {
+      const td = document.createElement("td");
+      td.className = cls;
+      td.textContent = text;
+      return td;
+    };
+    tr.appendChild(cell(nf(row.price, 2), "num"));
     const chg = num(row.change_pct);
-    cells.push(`<td class="num ${chg === null ? "" : chg >= 0 ? "is-up" : "is-down"}">${chg === null ? "—" : `${chg >= 0 ? "▲" : "▼"} ${nf(Math.abs(chg), 2)}`}</td>`);
-    cells.push(`<td class="num">${nf(row.pe_ratio, 2)}</td>`);
-    cells.push(`<td class="num">${nf(row.roe_pct, 2)}</td>`);
-    cells.push(`<td class="num">${nf(row.roce_pct, 2)}</td>`);
-    cells.push(`<td class="num">${nf(row.net_margin_pct, 2)}</td>`);
-    cells.push(`<td class="num">${nf(row.debt_to_equity, 2)}</td>`);
-    cells.push(`<td class="num">${nf(row.dividend_yield_pct, 2)}</td>`);
-    cells.push(`<td class="num">${nf(row.revenue_cagr_3y_pct, 2)}</td>`);
-    cells.push(`<td class="num">${nf(row.health_score, 1)}</td>`);
-    cells.push(`<td class="num">${nf(row.rsi_14, 2)}</td>`);
+    tr.appendChild(cell(
+      chg === null ? "—" : `${chg >= 0 ? "▲" : "▼"} ${nf(Math.abs(chg), 2)}`,
+      `num ${chg === null ? "" : chg >= 0 ? "is-up" : "is-down"}`
+    ));
+    tr.appendChild(cell(nf(row.pe_ratio, 2), "num"));
+    tr.appendChild(cell(nf(row.roe_pct, 2), "num"));
+    tr.appendChild(cell(nf(row.roce_pct, 2), "num"));
+    tr.appendChild(cell(nf(row.net_margin_pct, 2), "num"));
+    tr.appendChild(cell(nf(row.debt_to_equity, 2), "num"));
+    tr.appendChild(cell(nf(row.dividend_yield_pct, 2), "num"));
+    tr.appendChild(cell(nf(row.revenue_cagr_3y_pct, 2), "num"));
+    tr.appendChild(cell(nf(row.health_score, 1), "num"));
+    tr.appendChild(cell(nf(row.rsi_14, 2), "num"));
     const label = row.technical_label || "";
     const tone = label.includes("Buy") ? "is-up" : label.includes("Sell") ? "is-down" : "";
-    cells.push(`<td class="sc-signal ${tone}">${label || "—"}</td>`);
+    tr.appendChild(cell(label || "—", `sc-signal ${tone}`));
 
-    tr.innerHTML = cells.join("");
     body.appendChild(tr);
   }
 }
@@ -213,15 +232,21 @@ function renderHeader() {
 function buildToolCall() {
   const f = screenerFilters;
   /* The table shows every row that passes; the call has to ask for the same
-     number, or the panel prints a command that returns less than it shows. */
+     number, or the panel prints a command that returns less than it shows.
+
+     The server's RSI bounds read the way the tool documents them: rsi_above
+     is a floor (RSI at or above it) and rsi_below is a ceiling (RSI at or
+     below it). The sliders here are a band - minRsi is the floor and maxRsi
+     is the ceiling - so they cross over on the way into the call. Printing
+     them the other way round asks the server for the opposite band. */
   const args = { universe: "NIFTY 50", limit: screenerRows.length || 50 };
   if (f.maxPe !== DEFAULT_FILTERS.maxPe) args.max_pe = f.maxPe;
   if (f.minRoe !== DEFAULT_FILTERS.minRoe) args.min_roe = f.minRoe;
   if (f.minRoce !== DEFAULT_FILTERS.minRoce) args.min_roce = f.minRoce;
   if (f.minDivYield !== DEFAULT_FILTERS.minDivYield) args.min_dividend_yield = f.minDivYield;
   if (f.maxDe !== DEFAULT_FILTERS.maxDe) args.max_debt_to_equity = f.maxDe;
-  if (f.maxRsi !== DEFAULT_FILTERS.maxRsi) args.rsi_above = f.maxRsi;
-  if (f.minRsi !== undefined && f.minRsi > 0) args.rsi_below = f.minRsi;
+  if (f.minRsi !== DEFAULT_FILTERS.minRsi) args.rsi_above = f.minRsi;
+  if (f.maxRsi !== DEFAULT_FILTERS.maxRsi) args.rsi_below = f.maxRsi;
   if (f.minRevCagr !== DEFAULT_FILTERS.minRevCagr) args.min_revenue_cagr = f.minRevCagr;
   if (f.minMarketCapCr !== DEFAULT_FILTERS.minMarketCapCr) args.min_market_cap = f.minMarketCapCr * 1e7;
   args.sort_by = screenerSort.key === "market_cap" ? "market_cap" : screenerSort.key;
@@ -246,6 +271,15 @@ function render() {
   const note = document.getElementById("sc-note");
   if (note) {
     note.textContent = `Universe NIFTY 50 · metrics from ${screenerRows.length} constituents pulled by the server · ${sorted.length} pass the filters above`;
+    /* The health floor is the one filter the server has no parameter for, so
+       the printed call cannot reproduce the table while it is set. Say so
+       rather than let the two disagree quietly. */
+    if (screenerFilters.minHealth > DEFAULT_FILTERS.minHealth) {
+      const extra = document.createElement("span");
+      extra.className = "sc-note__gap";
+      extra.textContent = ` · the health floor of ${screenerFilters.minHealth} is applied here only — the server's screener has no health parameter, so the call below returns more rows than this table`;
+      note.appendChild(extra);
+    }
   }
 }
 

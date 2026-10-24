@@ -93,7 +93,7 @@ async def trademcp_get_technical_indicators(
     symbol: Annotated[str, _fmt_field("NSE symbol or company name, e.g. 'RELIANCE'")],
     indicators: Annotated[
         list[str] | None,
-        _fmt_field("Indicator names to compute, e.g. ['rsi_14','macd','atr_14']. Omit for all 60+."),
+        _fmt_field("Indicator names to compute, e.g. ['rsi_14','macd','atr_14']. Omit for all 57."),
     ] = None,
     range: Annotated[str, _fmt_field("Lookback window: 3mo, 6mo, 1y, 2y, 5y")] = "1y",
     interval: Annotated[str, _fmt_field("Bar size: 1d, 1wk, 1h, 30m")] = "1d",
@@ -102,7 +102,7 @@ async def trademcp_get_technical_indicators(
 ) -> str:
     """Compute technical indicators for an Indian stock.
 
-    Covers 60+ indicators across trend (moving averages, MACD, ADX, Supertrend,
+    Covers 57 indicators across trend (moving averages, MACD, ADX, Supertrend,
     Ichimoku, Parabolic SAR, Aroon, Vortex), momentum (RSI, Stochastic, CCI,
     Williams %R, MFI, ROC, CMO, TSI, Ultimate Oscillator), volatility (ATR,
     Bollinger, Keltner, Donchian, historical volatility), volume (OBV, VWAP,

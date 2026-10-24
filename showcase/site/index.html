@@ -8,11 +8,8 @@
 <meta property="og:title" content="TradeMCP — live Indian market data for your AI agent">
 <meta property="og:description" content="14 tools. 57 technical indicators. 54 fundamental ratios. 3 free data sources. 0 API keys.">
 <meta property="og:type" content="website">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Martian+Mono:wght@400;600&family=Permanent+Marker&family=Saira+Condensed:wght@600;700;800&family=Saira:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="styles.css?v=39">
+<link rel="stylesheet" href="styles.css?v=41">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -22,7 +19,7 @@
   <header class="masthead" id="top">
     <a class="wordmark" href="#top" aria-label="TradeMCP home">TradeMCP</a>
     <nav class="nav" aria-label="Primary">
-      <a href="#live">Live</a>
+      <a href="#live">Board</a>
       <a href="#screener">Screener</a>
       <a href="#tools">Tools</a>
       <a href="#metrics">Metrics</a>
@@ -36,7 +33,7 @@
     </button>
   </header>
 
-  <div class="tape" role="group" aria-label="Live quotes for NSE stocks">
+  <div class="tape" role="group" aria-label="Saved quotes for NSE stocks">
     <div class="tape__row" id="tape-row-a"></div>
     <div class="tape__row tape__row--reverse" id="tape-row-b"></div>
     <span class="tape__stamp" id="tape-stamp"></span>
@@ -107,7 +104,7 @@
             <span class="tech__txt"><b>FŪGA</b><i class="tech__sub">Malevolent Shrine</i></span>
           </button>
           <span class="techs__tick" id="tech-tendency" data-tone="flat">
-            <span id="tick-text">Live tick ▸ —</span>
+            <span id="tick-text">Tick ▸ —</span>
           </span>
         </div>
 
@@ -196,7 +193,7 @@
         <div class="hud-row hud-row--bars">
           <div class="hud-readout hud-readout--bar">
             <span class="hud-label">52-week range</span>
-            <div class="range" id="hud-range" role="img" aria-label="52-week range. The price is filled in when the live quote arrives.">
+            <div class="range" id="hud-range" role="img" aria-label="52-week range. The price is filled in when the quote arrives.">
               <span class="range__marker" id="hud-range-marker" style="left:0%"></span>
             </div>
             <span class="hud-note"><b id="hud-range-price">—</b> · low <span id="hud-range-low">—</span> · high <span id="hud-range-high">—</span></span>
@@ -250,16 +247,14 @@
     <!-- ================= LIVE BOARD ================= -->
     <section class="section" id="live" aria-labelledby="live-title">
       <header class="section__head">
-        <span class="caption">LIVE BOARD</span>
-        <h2 id="live-title">The same numbers, live in this tab</h2>
+        <span class="caption">MARKET BOARD</span>
+        <h2 id="live-title">The same numbers, from the last server run</h2>
         <p class="section__note">
           <span class="theme-note theme-note--shrine">Cursed chart &amp; screener filter</span>
           <span class="theme-note theme-note--void">Infinite convergence chart</span>
-          <span class="theme-note theme-note--plain">Live chart &amp; screener filter</span>
+          <span class="theme-note theme-note--plain">Chart &amp; screener filter</span>
         </p>
-        <p id="live-note">These candles come from the TradeMCP server right now, and the indicators below are
-        recomputed in your browser from the same raw series. Type any NSE symbol
-        and press Enter.</p>
+        <p id="live-note">These candles are a saved run of the TradeMCP server, and the indicators below are recomputed in your browser from that same raw series. Type any NSE symbol and press Enter.</p>
       </header>
 
       <div class="board">
@@ -279,7 +274,7 @@
           <div class="board__price">
             <span class="board__last" id="board-last">—</span>
             <span class="board__change" id="board-change"></span>
-            <span class="board__feed"><span class="energy"></span> <span id="board-feed-label">live feed</span></span>
+            <span class="board__feed"><span class="energy"></span> <span id="board-feed-label">snapshot feed</span></span>
           </div>
 
           <div class="chart" id="chart"></div>
@@ -383,7 +378,7 @@
               <tbody id="sc-body"></tbody>
             </table>
           </div>
-          <p class="sc-hint">Click any row to load that symbol into the live board above.</p>
+          <p class="sc-hint">Click any row to load that symbol into the board above.</p>
         </div>
       </div>
     </section>
@@ -615,7 +610,7 @@
     <section class="section section--call" id="call" aria-labelledby="call-title">
       <header class="section__head">
         <span class="caption">THE CALL</span>
-        <span class="call__state" id="call-state" data-state="idle">Standing by</span>
+        <span class="call__state" id="call-state" data-state="idle" role="status" aria-live="polite">Standing by</span>
         <h2 id="call-title">An agent asks. The market answers.</h2>
         <p>Everything else on this page is what the server returns. This is the part before
         that: the JSON-RPC handshake your agent performs to get it. The request that goes out,
@@ -713,7 +708,7 @@
             <button class="btn btn--ghost call__go" type="button" id="call-go">Call again</button>
           </div>
 
-          <p class="call__foot">The page calls <code>/api/quote</code> over HTTP; the showcase server
+          <p class="call__foot" id="call-foot">The page calls <code>/api/quote</code> over HTTP; the showcase server
           turns that into one MCP <code>tools/call</code> over stdio against the real server.
           No API key, no relay, no hard-coded price.</p>
         </div>
@@ -918,7 +913,7 @@ pip install -e .</pre>
               <h3>Verify it works</h3>
 <pre class="code code--sm">python scripts/verify_all_tools.py
 python -m pytest tests -q</pre>
-              <p class="install__note">70 offline unit tests, plus a live call against every one
+              <p class="install__note">109 offline unit tests, plus a live call against every one
               of the 14 tools.</p>
             </div>
           </li>
@@ -1000,10 +995,10 @@ python -m pytest tests -q</pre>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="app.js?v=39"></script>
-<script src="live.js?v=39"></script>
-<script src="screener.js?v=39"></script>
-<script src="cursor.js?v=38"></script>
-<script src="call.js?v=38"></script>
+<script src="app.js?v=41"></script>
+<script src="live.js?v=41"></script>
+<script src="screener.js?v=41"></script>
+<script src="cursor.js?v=41"></script>
+<script src="call.js?v=41"></script>
 </body>
 </html>

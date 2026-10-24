@@ -24,5 +24,5 @@ PROFILE_TTL = int(os.getenv("TRADEMCP_PROFILE_TTL", "86400"))
 # Cap on simultaneous upstream requests (public endpoints are rate limited).
 MAX_CONCURRENCY = int(os.getenv("TRADEMCP_MAX_CONCURRENCY", "8"))
 
-# Screener.in adds India-specific ratios (ROCE, ROCE, promoter holding).
+# Screener.in adds India-specific ratios (ROCE, ROE, promoter holding).
 ENABLE_SCREENER_IN = os.getenv("TRADEMCP_ENABLE_SCREENER_IN", "1").lower() not in ("0", "false", "no")

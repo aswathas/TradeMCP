@@ -323,9 +323,29 @@ function castDomain(key) {
   paintDomain();
 }
 
+/* Storage can throw. A browser with site data blocked, a strict privacy
+   setting, a private window - the read raises SecurityError. One unguarded
+   read used to take the whole page init down with it: no theme toggle, no
+   domain, no tool cards, and nothing on screen to say why. */
+function readStored(key) {
+  try {
+    return window.localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function writeStored(key, value) {
+  try {
+    window.localStorage.setItem(key, value);
+  } catch {
+    /* The theme still applies for this visit; it just will not be remembered. */
+  }
+}
+
 function wireThemeToggle() {
   const button = document.getElementById("theme-toggle");
-  const stored = localStorage.getItem("trademcp-theme");
+  const stored = readStored("trademcp-theme");
   // The direction is a printed manga page, so paper is the default even when
   // the OS asks for dark. Night stays one click away.
   domainState.base = stored === "night" ? "night" : "paper";
@@ -349,7 +369,7 @@ function wireThemeToggle() {
     domainState.base = domainState.base === "paper" ? "night" : "paper";
     paintTheme(domainState.base);
     paintDomain();
-    localStorage.setItem("trademcp-theme", domainState.base);
+    writeStored("trademcp-theme", domainState.base);
   });
 }
 
@@ -526,7 +546,11 @@ function wireAnchorOffset() {
 
   const update = () => {
     const h = Math.round(masthead.getBoundingClientRect().height);
-    if (h > 0) root.style.setProperty("--masthead-h", `${h}px}`);
+    /* The stray brace this used to carry ("${h}px}") made the value invalid,
+       and setProperty drops an invalid value without a word - so the masthead
+       height never reached the stylesheet and every anchor landed under the
+       header on a narrow screen. */
+    if (h > 0) root.style.setProperty("--masthead-h", `${h}px`);
     markNavOverflow();
   };
 

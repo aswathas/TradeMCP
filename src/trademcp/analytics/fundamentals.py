@@ -287,12 +287,16 @@ def health_score(
 
     earned = 0.0
     total = 0.0
+    available = 0
     details: list[dict[str, Any]] = []
     for name, value, good, weight in checks:
-        total += weight
         if value is None:
-            details.append({"metric": name, "value": None, "score": 0, "weight": weight, "note": "no data"})
+            # A metric we have no data for is unknown, not bad. It must not sit
+            # in the denominator, or a thinly covered company looks terrible.
+            details.append({"metric": name, "value": None, "score": None, "weight": weight, "note": "no data"})
             continue
+        total += weight
+        available += 1
         if name == "debt_to_equity":
             score = weight if value <= good / 2 else (weight * 0.6 if value <= good else (weight * 0.25 if value <= 1.5 else 0))
         elif name in ("current_ratio", "interest_coverage"):
@@ -303,7 +307,10 @@ def health_score(
         details.append({"metric": name, "value": round(value, 2), "score": round(score, 2), "weight": weight})
 
     score = round(100 * earned / total, 1) if total else 0.0
-    if score >= 75:
+    completeness = round(100 * available / len(checks), 1) if checks else 0.0
+    if available == 0:
+        label = "No data"
+    elif score >= 75:
         label = "Strong"
     elif score >= 55:
         label = "Healthy"
@@ -312,7 +319,14 @@ def health_score(
     else:
         label = "Weak"
 
-    return {"score": score, "label": label, "components": details}
+    return {
+        "score": score,
+        "label": label,
+        "data_completeness_pct": completeness,
+        "metrics_scored": available,
+        "metrics_total": len(checks),
+        "components": details,
+    }
 
 
 def build_statements(data: Series, *, years: int = 5, quarters: bool = False) -> dict[str, Any]:

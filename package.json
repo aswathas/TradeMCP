@@ -14,7 +14,7 @@
     "fundamentals",
     "screener"
   ],
-  "homepage": "https://github.com/aswathas/TradeMCP#readme",
+  "homepage": "https://aswathas.github.io/TradeMCP/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/aswathas/TradeMCP.git"
@@ -41,7 +41,11 @@
   },
   "scripts": {
     "postinstall": "node bin/trademcp.js --setup",
-    "test": "node bin/trademcp.js --selftest"
+    "test": "node bin/trademcp.js --smoke",
+    "test:client": "node bin/trademcp.js --smoke-client"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "dependencies": {}
 }

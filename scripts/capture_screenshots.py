@@ -45,8 +45,16 @@ SITE = Path(__file__).resolve().parent.parent / "showcase" / "site"
 PLAN = {
     "paper": (FRAME, [("01-paper", 0)]),
     "void": (3400, [("02-infinite-void", 0), ("05-live-board-void", 1311)]),
-    "shrine": (3800, [("03-malevolent-shrine", 0), ("04-live-board-shrine", 1245), ("06-screener", 2509, 1100)]),
+    "shrine": (3800, [("03-malevolent-shrine", 0), ("04-live-board-shrine", 1245)]),
 }
+
+# The screener sits directly below the live board, so it moves whenever the
+# live board resizes - the same reason THE CALL is framed by name. Captured by
+# a fixed offset it drifted by nearly fifty pixels the moment the board's copy
+# changed.
+SECTIONS = [
+    ("06-screener", "screener", 1100, "theme=shrine"),
+]
 
 # THE CALL sits below the fold of every other capture, and it is the one frame
 # that shows a live handshake rather than a painted result. It is captured by
@@ -187,6 +195,13 @@ def main() -> None:
                 else:
                     crop(chrome, tall, target, offset, profile, frame_height)
             tall.unlink(missing_ok=True)
+
+        for name, anchor, height, extra in SECTIONS:
+            target = out_dir / f"{name}.png"
+            page_url = f"{base}?flat=1&{extra}"
+            wrapper_url = f"{base}_section.html"
+            print(f"capture {target.name} <- {page_url}#{anchor}")
+            capture_section(chrome, page_url, wrapper_url, target, anchor, height, profile)
 
         name, anchor, height, extra = CALL
         target = out_dir / f"{name}.png"

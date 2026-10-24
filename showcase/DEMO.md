@@ -1,7 +1,7 @@
 # TradeMCP — Live demo
 
 Real output captured from the running server against live free data sources.
-Captured 2026-10-21 02:00 IST.
+Captured 2026-10-24 21:57 IST.
 
 **14/14 tool calls returned usable output.**
 
@@ -16,7 +16,7 @@ Captured 2026-10-21 02:00 IST.
 }
 ```
 
-Took 0.03s.
+Took 0.02s.
 
 ```markdown
 # Symbol search: tata motors
@@ -47,7 +47,7 @@ tata motors
 }
 ```
 
-Took 2.59s.
+Took 0.01s.
 
 ```markdown
 # RELIANCE - Reliance Industries Limited
@@ -82,31 +82,31 @@ INR
 
 ## Last Traded At
 
-2026-10-19 09:59 UTC
+2026-10-23 09:58 UTC
 
 ## Price
 
-1,202.00
+1,190.00
 
 ## Change
 
--9.20
+5.50
 
 ## Change Pct
 
--0.76
+0.46
 
 ## Open
 
-1,212.00
+1,184.00
 
 ## Day High
 
-1,228.20
+1,201.90
 
 ## Day Low
 
-1,201.00
+1,163.10
 
 ## Previous Close
 
@@ -114,11 +114,11 @@ INR
 
 ## Volume
 
-1.56 Cr
+1.49 Cr
 
 ## Average Volume
 
-1.45 Cr
+1.52 Cr
 
 ## Week 52 High
 
@@ -130,23 +130,23 @@ INR
 
 ## Position In 52W Range Pct
 
-10.84
+8.22
 
 ## Market Cap
 
-1,626,603.21 Cr
+1,610,364.22 Cr
 
 ## Trailing Pe
 
-21.77
+21.55
 
 ## Forward Pe
 
-16.92
+16.75
 
 ## Price To Book
 
-1.80
+1.78
 
 ## Eps Ttm
 
@@ -168,11 +168,11 @@ INR
 
 | Metric      | Value  |
 |-------------|--------|
-| 1 Week Pct  | 3.72   |
-| 1 Month Pct | -3.37  |
-| 3 Month Pct | -9.15  |
-| 6 Month Pct | -11.94 |
-| 1 Year Pct  | -      |
+| 1 Week Pct  | -2.06  |
+| 1 Month Pct | -4.06  |
+| 3 Month Pct | -6.46  |
+| 6 Month Pct | -12.63 |
+| 1 Year Pct  | -17.84 |
 ```
 
 ## `trademcp_get_price_history`
@@ -187,7 +187,7 @@ INR
 }
 ```
 
-Took 0.16s.
+Took 0.78s.
 
 ```markdown
 # INFY price history (1mo, 1d)
@@ -224,26 +224,26 @@ NSI
 
 | Metric            | Value      |
 |-------------------|------------|
-| Candles Available | 20         |
-| From              | 2026-09-21 |
-| To                | 2026-10-19 |
-| Start Close       | 1,038.50   |
-| End Close         | 1,130.70   |
-| Period Return Pct | 8.88       |
-| Highest           | 1,167.85   |
+| Candles Available | 21         |
+| From              | 2026-09-23 |
+| To                | 2026-10-23 |
+| Start Close       | 1,020.50   |
+| End Close         | 1,153.80   |
+| Period Return Pct | 13.06      |
+| Highest           | 1,197.80   |
 | Lowest            | 980.40     |
-| Total Volume      | 25.19 Cr   |
+| Total Volume      | 30.51 Cr   |
 
 ## Candles
 
 | Date       | Open     | High     | Low      | Close    | Volume  | Adj Close |
 |------------|----------|----------|----------|----------|---------|-----------|
+| 2026-10-23 | 1,187.00 | 1,197.80 | 1,038.05 | 1,153.80 | 3.30 Cr | 1,153.80  |
+| 2026-10-22 | 1,167.00 | 1,174.50 | 1,144.05 | 1,153.35 | 1.70 Cr | 1,153.35  |
+| 2026-10-21 | 1,154.85 | 1,170.90 | 1,147.95 | 1,168.00 | 1.86 Cr | 1,168.00  |
 | 2026-10-19 | 1,156.95 | 1,156.95 | 1,125.10 | 1,130.70 | 1.33 Cr | 1,130.70  |
 | 2026-10-16 | 1,127.50 | 1,167.85 | 1,122.00 | 1,161.20 | 2.56 Cr | 1,161.20  |
 | 2026-10-15 | 1,099.00 | 1,126.70 | 1,095.80 | 1,110.00 | 1.60 Cr | 1,110.00  |
-| 2026-10-14 | 1,073.70 | 1,096.40 | 1,069.45 | 1,088.00 | 2.21 Cr | 1,088.00  |
-| 2026-10-13 | 1,029.20 | 1,065.00 | 1,027.00 | 1,062.10 | 2.18 Cr | 1,062.10  |
-| 2026-10-12 | 1,029.30 | 1,033.80 | 1,010.65 | 1,020.00 | 84.29 L | 1,020.00  |
 ```
 
 ## `trademcp_get_index_snapshot`
@@ -261,7 +261,7 @@ NSI
 }
 ```
 
-Took 1.14s.
+Took 1.08s.
 
 ```markdown
 # Indian market index snapshot
@@ -274,10 +274,10 @@ Took 1.14s.
 
 | Index      | Price     | Change  | Change Pct | Day High  | Day Low   | Previous Close | Volume |
 |------------|-----------|---------|------------|-----------|-----------|----------------|--------|
-| NIFTY 50   | 22,888.95 | -257.20 | -1.11      | 23,175.25 | 22,845.00 | -              | 0      |
-| SENSEX     | 73,852.90 | -876.38 | -1.17      | 74,849.75 | 73,708.54 | -              | 0      |
-| NIFTY BANK | 55,488.10 | -355.90 | -0.64      | 55,883.70 | 55,331.10 | -              | 0      |
-| INDIA VIX  | 14.77     | 0.75    | 5.33       | 14.97     | 13.32     | -              | 0      |
+| NIFTY 50   | 22,600.00 | -87.65  | -0.39      | 22,787.25 | 22,372.00 | -              | 0      |
+| SENSEX     | 73,123.83 | -125.56 | -0.17      | 73,766.51 | 72,452.37 | -              | 0      |
+| NIFTY BANK | 54,287.35 | -638.35 | -1.16      | 54,990.50 | 53,942.35 | -              | 0      |
+| INDIA VIX  | 16.86     | 1.10    | 6.96       | 17.09     | 15.27     | -              | 0      |
 ```
 
 ## `trademcp_get_market_breadth`
@@ -291,7 +291,7 @@ Took 1.14s.
 }
 ```
 
-Took 2.13s.
+Took 1.05s.
 
 ```markdown
 # Market breadth - NIFTY 50
@@ -308,35 +308,35 @@ NIFTY 50
 
 | Metric                | Value |
 |-----------------------|-------|
-| Advancers             | 9     |
-| Decliners             | 41    |
+| Advancers             | 14    |
+| Decliners             | 36    |
 | Unchanged             | 0     |
-| Advance Decline Ratio | 0.22  |
-| Advance Pct           | 18.00 |
-| Decline Pct           | 82.00 |
-| Average Change Pct    | -0.92 |
-| Median Change Pct     | -1.02 |
+| Advance Decline Ratio | 0.39  |
+| Advance Pct           | 28.00 |
+| Decline Pct           | 72.00 |
+| Average Change Pct    | -0.65 |
+| Median Change Pct     | -0.57 |
 | Above 200Dma Pct      | -     |
 
 ## Top Gainers
 
-| Symbol    | Change Pct | Price    |
-|-----------|------------|----------|
-| JSWSTEEL  | 2.06       | 1,241.30 |
-| ONGC      | 1.35       | 225.00   |
-| SBIN      | 1.15       | 973.70   |
-| LT        | 0.96       | 3,661.90 |
-| EICHERMOT | 0.89       | 7,349.00 |
+| Symbol     | Change Pct | Price    |
+|------------|------------|----------|
+| ETERNAL    | 4.25       | 317.40   |
+| APOLLOHOSP | 1.65       | 7,730.00 |
+| ONGC       | 1.11       | 227.50   |
+| ASIANPAINT | 0.97       | 2,307.00 |
+| TCS        | 0.92       | 2,530.00 |
 
 ## Top Losers
 
 | Symbol     | Change Pct | Price    |
 |------------|------------|----------|
-| AXISBANK   | -4.19      | 1,236.00 |
-| TMPV       | -3.09      | 278.00   |
-| INFY       | -2.63      | 1,130.70 |
-| BAJFINANCE | -2.52      | 957.35   |
-| APOLLOHOSP | -2.41      | 7,700.00 |
+| SHRIRAMFIN | -3.98      | 865.00   |
+| ADANIENT   | -2.86      | 2,477.00 |
+| JSWSTEEL   | -2.83      | 1,185.50 |
+| JIOFIN     | -2.74      | 205.03   |
+| TATASTEEL  | -2.70      | 167.67   |
 ```
 
 ## `trademcp_compare_stocks`
@@ -352,7 +352,7 @@ NIFTY 50
 }
 ```
 
-Took 1.01s.
+Took 0.28s.
 
 ```markdown
 # Stock comparison
@@ -365,8 +365,8 @@ Took 1.01s.
 
 | Symbol   | Name                              | Industry                   | Price    | Change Pct | Market Cap      | Pe Ratio | Price To Book | Eps    | Dividend Yield Pct | Week 52 High | Week 52 Low | Volume  | Roe Pct | Net Margin Pct | Debt To Equity | Revenue Cagr 3Y Pct | Health Score | Technical Score | Technical Label |
 |----------|-----------------------------------|----------------------------|----------|------------|-----------------|----------|---------------|--------|--------------------|--------------|-------------|---------|---------|----------------|----------------|---------------------|--------------|-----------------|-----------------|
-| RELIANCE | Reliance Industries Limited       | Oil Gas & Consumable Fuels | 1,202.00 | -0.76      | 1,626,603.21 Cr | 21.77    | 1.80          | 55.22  | 0.50               | 1,611.80     | 1,152.20    | 1.56 Cr | 8.93    | 7.64           | 0.44           | 6.39                | 62.10        | -2.70           | Neutral         |
-| TCS      | Tata Consultancy Services Limited | Information Technology     | 2,460.90 | -0.17      | 890,375.14 Cr   | 17.25    | 7.48          | 142.66 | 1.95               | 3,350.00     | 1,976.80    | 86.75 L | 45.89   | 18.43          | 0.11           | 5.80                | 73.30        | 31.70           | Buy             |
+| RELIANCE | Reliance Industries Limited       | Oil Gas & Consumable Fuels | 1,190.00 | 0.46       | 1,610,364.22 Cr | 21.55    | 1.78          | 55.22  | 0.50               | 1,611.80     | 1,152.20    | 1.49 Cr | 8.93    | 7.64           | 0.44           | 6.39                | 78.60        | -67.60          | Strong Sell     |
+| TCS      | Tata Consultancy Services Limited | Information Technology     | 2,530.00 | 0.92       | 915,376.12 Cr   | 17.73    | 7.69          | 142.66 | 1.90               | 3,350.00     | 1,976.80    | 68.57 L | 45.89   | 18.43          | 0.11           | 5.80                | 92.80        | 43.90           | Buy             |
 ```
 
 ## `trademcp_get_technical_indicators`
@@ -413,7 +413,7 @@ RELIANCE.NS
 
 ## Candles Used
 
-247
+248
 
 ## Indicator Count
 
@@ -423,10 +423,10 @@ RELIANCE.NS
 
 | Indicator  | Latest   | As Of      | Recent Values             |
 |------------|----------|------------|---------------------------|
-| rsi_14     | 46.58    | 2026-10-19 | 49.64, 48.75, 46.58       |
-| macd       | -17.86   | 2026-10-19 | -23.17, -19.91, -17.86    |
-| atr_14     | 24.29    | 2026-10-19 | 24.19, 24.06, 24.29       |
-| supertrend | 1,146.87 | 2026-10-19 | 1146.87, 1228.86, 1146.87 |
+| rsi_14     | 44.35    | 2026-10-23 | 48.46, 42.78, 44.35       |
+| macd       | -14.74   | 2026-10-23 | -15.50, -15.42, -14.74    |
+| atr_14     | 26.00    | 2026-10-23 | 25.05, 25.01, 26.00       |
+| supertrend | 1,228.86 | 2026-10-23 | 1228.86, 1146.87, 1228.86 |
 
 ## Series
 
@@ -434,76 +434,76 @@ RELIANCE.NS
 
 ### Latest
 
-46.58
+44.35
 
 ### Date
 
-2026-10-19
+2026-10-23
 
 ### Points
 
 | Date       | Value |
 |------------|-------|
-| 2026-10-15 | 49.64 |
-| 2026-10-16 | 48.75 |
-| 2026-10-19 | 46.58 |
+| 2026-10-21 | 48.46 |
+| 2026-10-22 | 42.78 |
+| 2026-10-23 | 44.35 |
 
 
 ### Macd
 
 ### Latest
 
--17.86
+-14.74
 
 ### Date
 
-2026-10-19
+2026-10-23
 
 ### Points
 
 | Date       | Value  |
 |------------|--------|
-| 2026-10-15 | -23.17 |
-| 2026-10-16 | -19.91 |
-| 2026-10-19 | -17.86 |
+| 2026-10-21 | -15.50 |
+| 2026-10-22 | -15.42 |
+| 2026-10-23 | -14.74 |
 
 
 ### Atr 14
 
 ### Latest
 
-24.29
+26.00
 
 ### Date
 
-2026-10-19
+2026-10-23
 
 ### Points
 
 | Date       | Value |
 |------------|-------|
-| 2026-10-15 | 24.19 |
-| 2026-10-16 | 24.06 |
-| 2026-10-19 | 24.29 |
+| 2026-10-21 | 25.05 |
+| 2026-10-22 | 25.01 |
+| 2026-10-23 | 26.00 |
 
 
 ### Supertrend
 
 ### Latest
 
-1,146.87
+1,228.86
 
 ### Date
 
-2026-10-19
+2026-10-23
 
 ### Points
 
 | Date       | Value    |
 |------------|----------|
-| 2026-10-15 | 1,146.87 |
-| 2026-10-16 | 1,228.86 |
-| 2026-10-19 | 1,146.87 |
+| 2026-10-21 | 1,228.86 |
+| 2026-10-22 | 1,146.87 |
+| 2026-10-23 | 1,228.86 |
 ```
 
 ## `trademcp_get_technical_analysis`
@@ -517,7 +517,7 @@ RELIANCE.NS
 }
 ```
 
-Took 0.53s.
+Took 0.18s.
 
 ```markdown
 # HDFCBANK technical analysis
@@ -540,99 +540,100 @@ HDFCBANK.NS
 
 ## Last Close
 
-712.00
+692.80
 
 ## Last Date
 
-2026-10-19
+2026-10-23
 
 ## Summary
 
-| Metric        | Value   |
-|---------------|---------|
-| Score         | -5.70   |
-| Label         | Neutral |
-| Bullish       | 7       |
-| Bearish       | 9       |
-| Neutral       | 4       |
-| Total Signals | 20      |
+| Metric        | Value       |
+|---------------|-------------|
+| Score         | -60.50      |
+| Label         | Strong Sell |
+| Bullish       | 3           |
+| Bearish       | 14          |
+| Neutral       | 4           |
+| Total Signals | 21          |
 
 ## Signals
 
-| Indicator             | Value    | Signal  | Strength | Note                                          |
-|-----------------------|----------|---------|----------|-----------------------------------------------|
-| SMA alignment         | 712.00   | bearish | 3        | Price < 50 SMA < 200 SMA - clean downtrend    |
-| SMA 20/50 crossover   | 718.37   | bullish | 2        | 20 SMA above 50 SMA                           |
-| EMA 20/50             | 715.65   | bearish | 2        | Short-term EMA above/below the long-term EMA  |
-| Supertrend            | 686.78   | bullish | 3        | Supertrend is above price                     |
-| Parabolic SAR         | 693.00   | bullish | 2        | Price trading above/below the SAR stop        |
-| Ichimoku cross        | 712.70   | bearish | 2        | Tenkan-sen above/below Kijun-sen              |
-| Ichimoku cloud        | 712.00   | bearish | 2        | Price above/below/inside the Kumo cloud       |
-| ADX / DMI             | 14.64    | neutral | 1        | ADX 14.6 (weak trend), +DI 23.3 vs -DI 20.9   |
-| RSI (14)              | 47.92    | bearish | 1        | RSI 47.9 is below the midline                 |
-| MACD (12,26,9)        | 1.36     | bullish | 3        | MACD -1.49 above signal -2.85                 |
-| Stochastic %K         | 48.42    | bearish | 1        | %K vs %D crossover                            |
-| CCI (20)              | -8.03    | bearish | 2        | Below zero - sellers in control               |
-| ROC (10)              | 1.02     | bullish | 2        | 10-day rate of change +1.0%                   |
-| Ultimate Oscillator   | 51.14    | bullish | 2        | UO at 51.1                                    |
-| Awesome Oscillator    | 3.68     | bullish | 1        | 5/34 median price spread                      |
-| Bollinger %B          | 0.38     | neutral | 1        | Inside the bands                              |
-| VWAP                  | 818.55   | bearish | 2        | Price above/below the volume-weighted average |
-| ATR (14)              | 15.10    | neutral | 0        | Daily range ~15.10 (2.1% of price)            |
-| Volume vs 20d average | 1.09     | neutral | 1        | Volume running at 1.09x its 20-day average    |
-| OBV (21d change)      | -8.22 Cr | bearish | 2        | Distribution                                  |
+| Indicator             | Value     | Signal  | Strength | Note                                          |
+|-----------------------|-----------|---------|----------|-----------------------------------------------|
+| SMA alignment         | 692.80    | bearish | 3        | Price < 50 SMA < 200 SMA - clean downtrend    |
+| SMA 20/50 crossover   | 712.29    | bearish | 2        | 20 SMA below 50 SMA                           |
+| EMA 20/50             | 710.93    | bearish | 2        | Short-term EMA above/below the long-term EMA  |
+| Supertrend            | 737.63    | bearish | 3        | Supertrend is below price                     |
+| Parabolic SAR         | 733.98    | bearish | 2        | Price trading above/below the SAR stop        |
+| Ichimoku cross        | 710.88    | bearish | 2        | Tenkan-sen above/below Kijun-sen              |
+| Ichimoku cloud        | 692.80    | bearish | 2        | Price above/below/inside the Kumo cloud       |
+| ADX / DMI             | 13.96     | neutral | 1        | ADX 14.0 (weak trend), +DI 18.7 vs -DI 25.5   |
+| RSI (14)              | 40.85     | bearish | 1        | RSI 40.9 is below the midline                 |
+| MACD (12,26,9)        | -1.45     | bearish | 3        | MACD -4.65 below signal -3.21                 |
+| Stochastic %K         | 12.38     | bullish | 2        | Oversold territory                            |
+| CCI (20)              | -156.52   | bearish | 2        | Below zero - sellers in control               |
+| Williams %R           | -87.62    | bullish | 2        | Oversold                                      |
+| ROC (10)              | 0.08      | bullish | 2        | 10-day rate of change +0.1%                   |
+| Ultimate Oscillator   | 44.07     | bearish | 2        | UO at 44.1                                    |
+| Awesome Oscillator    | -4.94     | bearish | 1        | 5/34 median price spread                      |
+| Bollinger %B          | 0.10      | neutral | 1        | Inside the bands                              |
+| VWAP                  | 816.37    | bearish | 2        | Price above/below the volume-weighted average |
+| ATR (14)              | 15.04     | neutral | 0        | Daily range ~15.04 (2.2% of price)            |
+| Volume vs 20d average | 0.61      | neutral | 1        | Volume running at 0.61x its 20-day average    |
+| OBV (21d change)      | -16.48 Cr | bearish | 2        | Distribution                                  |
 
 ## Indicators
 
 | Metric               | Value   |
 |----------------------|---------|
-| Price                | 712.00  |
-| Sma 20               | 718.36  |
-| Sma 50               | 718.07  |
-| Sma 200              | 801.18  |
-| Ema 20               | 715.65  |
-| Ema 50               | 724.33  |
-| Rsi 14               | 47.92   |
-| Macd                 | -1.49   |
-| Macd Signal          | -2.85   |
-| Macd Histogram       | 1.36    |
-| Adx 14               | 14.64   |
-| Plus Di              | 23.32   |
-| Minus Di             | 20.89   |
-| Supertrend           | 686.78  |
-| Supertrend Direction | bullish |
-| Parabolic Sar        | 693.00  |
-| Bollinger Upper      | 744.84  |
-| Bollinger Middle     | 718.36  |
-| Bollinger Lower      | 691.89  |
-| Bollinger Percent B  | 0.38    |
-| Stochastic K         | 48.42   |
-| Stochastic D         | 69.58   |
-| Cci 20               | -8.03   |
-| Williams R           | -51.58  |
-| Money Flow Index     | 41.03   |
-| Roc 10               | 1.02    |
-| Ultimate Oscillator  | 51.14   |
-| Awesome Oscillator   | 3.68    |
-| Vwap                 | 818.55  |
-| Atr 14               | 15.10   |
-| Volume Ratio 20      | 1.09    |
-| Ichimoku Tenkan      | 712.70  |
-| Ichimoku Kijun       | 715.60  |
+| Price                | 692.80  |
+| Sma 20               | 712.29  |
+| Sma 50               | 716.12  |
+| Sma 200              | 796.78  |
+| Ema 20               | 710.93  |
+| Ema 50               | 721.32  |
+| Rsi 14               | 40.85   |
+| Macd                 | -4.65   |
+| Macd Signal          | -3.21   |
+| Macd Histogram       | -1.45   |
+| Adx 14               | 13.96   |
+| Plus Di              | 18.74   |
+| Minus Di             | 25.54   |
+| Supertrend           | 737.63  |
+| Supertrend Direction | bearish |
+| Parabolic Sar        | 733.98  |
+| Bollinger Upper      | 736.49  |
+| Bollinger Middle     | 712.29  |
+| Bollinger Lower      | 688.09  |
+| Bollinger Percent B  | 0.10    |
+| Stochastic K         | 12.38   |
+| Stochastic D         | 20.08   |
+| Cci 20               | -156.52 |
+| Williams R           | -87.62  |
+| Money Flow Index     | 33.88   |
+| Roc 10               | 0.08    |
+| Ultimate Oscillator  | 44.07   |
+| Awesome Oscillator   | -4.94   |
+| Vwap                 | 816.37  |
+| Atr 14               | 15.04   |
+| Volume Ratio 20      | 0.61    |
+| Ichimoku Tenkan      | 710.88  |
+| Ichimoku Kijun       | 718.07  |
 
 ## Statistics
 
 | Metric                    | Value  |
 |---------------------------|--------|
-| Annualised Volatility Pct | 22.28  |
-| Sharpe Ratio              | -1.46  |
-| Sortino Ratio             | -1.46  |
+| Annualised Volatility Pct | 22.30  |
+| Sharpe Ratio              | -1.60  |
+| Sortino Ratio             | -1.61  |
 | Max Drawdown Pct          | -31.94 |
 | Beta                      | 1.18   |
-| Annualised Alpha Pct      | -0.20  |
-| Return 30D Pct            | -0.01  |
-| Benchmark Return 30D Pct  | -4.22  |
-| Relative Strength 30D Pct | 4.21   |
+| Annualised Alpha Pct      | -19.20 |
+| Return 30D Pct            | 0.83   |
+| Benchmark Return 30D Pct  | -3.55  |
+| Relative Strength 30D Pct | 4.38   |
 
 ## Candlestick Patterns
 
@@ -643,6 +644,7 @@ HDFCBANK.NS
 | Doji              | 2026-10-16 | neutral | Indecision - open and close nearly equal     |
 | Bearish Engulfing | 2026-10-19 | bearish | Sellers wiped out the prior session's buyers |
 | Evening Star      | 2026-10-19 | bearish | Up day, indecision, then a strong down day   |
+| Doji              | 2026-10-23 | neutral | Indecision - open and close nearly equal     |
 ```
 
 ## `trademcp_get_support_resistance`
@@ -655,7 +657,7 @@ HDFCBANK.NS
 }
 ```
 
-Took 0.75s.
+Took 0.01s.
 
 ```markdown
 # SBIN support & resistance
@@ -670,11 +672,11 @@ State Bank of India
 
 ## Price
 
-973.70
+958.60
 
 ## As Of
 
-2026-10-19
+2026-10-23
 
 ## Pivots
 
@@ -682,56 +684,56 @@ State Bank of India
 
 | Metric | Value  |
 |--------|--------|
-| Pivot  | 960.07 |
-| R1     | 968.43 |
-| R2     | 974.27 |
-| R3     | 982.63 |
-| S1     | 954.23 |
-| S2     | 945.87 |
-| S3     | 940.03 |
+| Pivot  | 963.65 |
+| R1     | 977.25 |
+| R2     | 984.50 |
+| R3     | 998.10 |
+| S1     | 956.40 |
+| S2     | 942.80 |
+| S3     | 935.55 |
 
 ### Camarilla
 
 | Metric | Value  |
 |--------|--------|
-| R1     | 963.90 |
-| R2     | 965.20 |
-| R3     | 966.50 |
-| R4     | 970.41 |
-| S1     | 961.30 |
-| S2     | 960.00 |
-| S3     | 958.69 |
-| S4     | 954.79 |
+| R1     | 971.91 |
+| R2     | 973.82 |
+| R3     | 975.73 |
+| R4     | 981.47 |
+| S1     | 968.09 |
+| S2     | 966.18 |
+| S3     | 964.27 |
+| S4     | 958.53 |
 
 ### Fibonacci
 
 | Metric | Value  |
 |--------|--------|
-| Pivot  | 960.07 |
-| R1     | 965.49 |
-| R2     | 968.84 |
-| R3     | 974.27 |
-| S1     | 954.64 |
-| S2     | 951.29 |
-| S3     | 945.87 |
+| Pivot  | 963.65 |
+| R1     | 971.61 |
+| R2     | 976.54 |
+| R3     | 984.50 |
+| S1     | 955.69 |
+| S2     | 950.76 |
+| S3     | 942.80 |
 
 ### Woodie
 
 | Metric | Value  |
 |--------|--------|
-| Pivot  | 960.70 |
-| R1     | 969.70 |
-| R2     | 974.90 |
-| S1     | 955.50 |
-| S2     | 946.50 |
+| Pivot  | 965.24 |
+| R1     | 980.43 |
+| R2     | 986.09 |
+| S1     | 959.57 |
+| S2     | 944.39 |
 
 ### Demark
 
 | Metric | Value  |
 |--------|--------|
-| R1     | 961.53 |
-| S1     | 957.15 |
-| S2     | 971.35 |
+| R1     | 965.46 |
+| S1     | 960.02 |
+| S2     | 980.88 |
 
 
 ## Fibonacci Retracement
@@ -739,27 +741,26 @@ State Bank of India
 | Metric | Value    |
 |--------|----------|
 | 0.0%   | 1,234.70 |
-| 23.6%  | 1,153.60 |
-| 38.2%  | 1,103.43 |
-| 50.0%  | 1,062.87 |
-| 61.8%  | 1,022.32 |
-| 78.6%  | 964.59   |
-| 100.0% | 891.05   |
+| 23.6%  | 1,155.93 |
+| 38.2%  | 1,107.21 |
+| 50.0%  | 1,067.82 |
+| 61.8%  | 1,028.44 |
+| 78.6%  | 972.37   |
+| 100.0% | 900.95   |
 
 ## Range
 
 | Metric                | Value    |
 |-----------------------|----------|
 | Period High           | 1,234.70 |
-| Period Low            | 891.05   |
-| Period Days           | 247      |
-| Position In Range Pct | 24.05    |
+| Period Low            | 900.95   |
+| Period Days           | 248      |
+| Position In Range Pct | 17.27    |
 
 ## Swing Highs
 
 | Date       | Price    |
 |------------|----------|
-| 2026-04-08 | 1,077.80 |
 | 2026-04-20 | 1,120.95 |
 | 2026-05-07 | 1,108.00 |
 | 2026-05-26 | 978.80   |
@@ -769,6 +770,7 @@ State Bank of India
 | 2026-07-21 | 1,067.00 |
 | 2026-08-07 | 1,124.50 |
 | 2026-08-26 | 1,062.30 |
+| 2026-10-19 | 983.80   |
 
 ## Swing Lows
 
@@ -808,8 +810,6 @@ State Bank of India
 - -
 - -
 - -
-- 976.70
-- 984.45
 - 986.60
 - 986.60
 - 986.60
@@ -1036,6 +1036,9 @@ State Bank of India
 - 1,000.90
 - 1,000.10
 - 1,000.10
+- 1,000.10
+- 996.40
+- 992.00
 
 ### Lower
 
@@ -1058,8 +1061,6 @@ State Bank of India
 - -
 - -
 - -
-- 891.05
-- 900.95
 - 900.95
 - 900.95
 - 906.00
@@ -1286,14 +1287,17 @@ State Bank of India
 - 937.50
 - 937.50
 - 937.50
+- 937.50
+- 937.50
+- 937.50
 
 
 ## Volatility
 
 | Metric              | Value |
 |---------------------|-------|
-| Atr 14              | 17.40 |
-| Bollinger Width Pct | 6.28  |
+| Atr 14              | 18.19 |
+| Bollinger Width Pct | 4.24  |
 ```
 
 ## `trademcp_get_fundamentals`
@@ -1306,7 +1310,7 @@ State Bank of India
 }
 ```
 
-Took 0.88s.
+Took 0.03s.
 
 ```markdown
 # TCS fundamentals
@@ -1320,22 +1324,22 @@ TCS
 | Metric   | Value      |
 |----------|------------|
 | Annual   | 2026-03-31 |
-| Trailing | 2026-09-23 |
-| Price    | 2,460.90   |
+| Trailing | 2026-09-22 |
+| Price    | 2,530.00   |
 
 ## Valuation
 
 | Metric               | Value         |
 |----------------------|---------------|
-| Market Cap           | 756,035.57 Cr |
-| Enterprise Value     | 767,318.57 Cr |
-| Pe Ratio             | 15.18         |
-| Peg Ratio            | 2.73          |
-| Price To Book        | 7.05          |
-| Price To Sales       | 2.83          |
-| Ev To Ebitda         | 9.92          |
-| Ev To Sales          | 2.87          |
-| Dividend Yield Pct   | 2.60          |
+| Market Cap           | 761,607.42 Cr |
+| Enterprise Value     | 772,890.42 Cr |
+| Pe Ratio             | 15.29         |
+| Peg Ratio            | 2.75          |
+| Price To Book        | 7.10          |
+| Price To Sales       | 2.85          |
+| Ev To Ebitda         | 9.99          |
+| Ev To Sales          | 2.89          |
+| Dividend Yield Pct   | 2.53          |
 | Book Value Per Share | 296.40        |
 | Eps Ttm              | 136.01        |
 | Dividend Per Share   | -             |
@@ -1427,7 +1431,7 @@ TCS
 
 ### Market Cap Crore
 
-890,375.00
+915,376.00
 
 ### Debt To Equity
 
@@ -1589,6 +1593,18 @@ Mar 2026
 
 Strong
 
+### Data Completeness Pct
+
+100.00
+
+### Metrics Scored
+
+10
+
+### Metrics Total
+
+10
+
 ### Components
 
 | Metric                 | Value | Score | Weight |
@@ -1649,12 +1665,12 @@ INE467B01029
 
 | Metric       | Value         |
 |--------------|---------------|
-| Price        | 2,460.90      |
-| Change Pct   | -0.17         |
-| Market Cap   | 890,375.14 Cr |
+| Price        | 2,530.00      |
+| Change Pct   | 0.92          |
+| Market Cap   | 915,376.12 Cr |
 | 52 Week High | 3,350.00      |
 | 52 Week Low  | 1,976.80      |
-| Volume       | 86.75 L       |
+| Volume       | 68.57 L       |
 ```
 
 ## `trademcp_get_valuation`
@@ -1667,7 +1683,7 @@ INE467B01029
 }
 ```
 
-Took 2.38s.
+Took 0.45s.
 
 ```markdown
 # INFY valuation
@@ -1686,21 +1702,21 @@ Information Technology
 
 ## Price
 
-1,130.70
+1,153.80
 
 ## Valuation
 
 | Metric               | Value         |
 |----------------------|---------------|
-| Market Cap           | 413,337.56 Cr |
-| Enterprise Value     | 413,434.26 Cr |
-| Pe Ratio             | 13.16         |
-| Peg Ratio            | 1.80          |
-| Price To Book        | 422.38        |
-| Price To Sales       | 205.05        |
-| Ev To Ebitda         | 7.98          |
-| Ev To Sales          | 205.10        |
-| Dividend Yield Pct   | 4.25          |
+| Market Cap           | 428,764.70 Cr |
+| Enterprise Value     | 428,861.40 Cr |
+| Pe Ratio             | 13.61         |
+| Peg Ratio            | 1.87          |
+| Price To Book        | 438.14        |
+| Price To Sales       | 212.70        |
+| Ev To Ebitda         | 8.27          |
+| Ev To Sales          | 212.75        |
+| Dividend Yield Pct   | 4.16          |
 | Book Value Per Share | 2.38          |
 | Eps Ttm              | 0.80          |
 | Dividend Per Share   | -             |
@@ -1716,7 +1732,7 @@ Information Technology
 
 ## Verdict
 
-- P/E of 13.2 sits below the usual large-cap Indian band (15-30).
+- P/E of 13.6 sits below the usual large-cap Indian band (15-30).
 - 3-year revenue CAGR is 3.4%.
 - ROE is 33.9% - healthy for a listed company.
 - Debt/equity is 0.10 - conservative.
@@ -1733,7 +1749,7 @@ Information Technology
 }
 ```
 
-Took 0.57s.
+Took 0.18s.
 
 ```markdown
 # RELIANCE financial statements (annual)
@@ -1890,7 +1906,7 @@ annual
 }
 ```
 
-Took 5.09s.
+Took 0.82s.
 
 ```markdown
 # Stock screen - NIFTY 50
@@ -1899,9 +1915,21 @@ Took 5.09s.
 
 NIFTY 50
 
+## Universe Size
+
+50
+
 ## Symbols Scanned
 
 50
+
+## Universe Truncated
+
+no
+
+## Universe Scan Cap
+
+600
 
 ## With Fundamentals
 
@@ -1936,17 +1964,17 @@ NIFTY 50
 
 ## Elapsed Seconds
 
-5.10
+0.80
 
 ## Matches
 
 | Symbol     | Price    | Market Cap    | Pe Ratio | Price To Book | Ev To Ebitda | Roe Pct | Roce Pct | Net Margin Pct | Debt To Equity | Current Ratio | Revenue Cagr 3Y Pct | Dividend Yield Pct | Health Score |
 |------------|----------|---------------|----------|---------------|--------------|---------|----------|----------------|----------------|---------------|---------------------|--------------------|--------------|
-| TCS        | 2,460.90 | 890,375.14 Cr | 17.25    | 7.48          | 9.92         | 45.89   | 62.21    | 18.43          | 0.11           | 2.23          | 5.80                | 1.95               | 94.30        |
-| INFY       | 1,130.70 | 457,972.33 Cr | 15.40    | 5.01          | 7.98         | 33.85   | 46.53    | 16.44          | 0.10           | 1.98          | 3.44                | 4.42               | 89.30        |
-| HINDUNILVR | 1,853.20 | 435,426.24 Cr | 41.55    | 8.93          | 28.47        | 30.86   | 29.18    | 23.59          | 0.03           | 1.22          | 2.31                | 2.37               | 88.30        |
-| HCLTECH    | 1,379.90 | 373,368.74 Cr | 20.42    | 4.95          | 11.51        | 22.14   | 30.50    | 12.79          | 0.07           | 2.22          | 8.65                | 3.48               | 96.40        |
-| ITC        | 260.80   | 326,795.87 Cr | 16.46    | 4.51          | 10.91        | 28.53   | 37.65    | 26.45          | 0.03           | 3.04          | 3.65                | 6.14               | 88.70        |
+| TCS        | 2,530.00 | 915,376.12 Cr | 17.73    | 7.69          | 9.99         | 45.89   | 62.21    | 18.43          | 0.11           | 2.23          | 5.80                | 1.90               | 94.30        |
+| INFY       | 1,153.80 | 467,332.44 Cr | 15.36    | 4.80          | 8.27         | 33.85   | 46.53    | 16.44          | 0.10           | 1.98          | 3.44                | 4.51               | 89.30        |
+| HINDUNILVR | 1,814.70 | 426,380.31 Cr | 40.69    | 8.75          | 28.47        | 30.86   | 29.18    | 23.59          | 0.03           | 1.22          | 2.31                | 2.42               | 88.30        |
+| HCLTECH    | 1,422.20 | 384,936.26 Cr | 21.04    | 5.14          | 12.68        | 22.14   | 30.50    | 12.79          | 0.07           | 2.22          | 8.65                | 3.38               | 96.40        |
+| ITC        | 257.90   | 323,198.02 Cr | 16.28    | 4.46          | 10.91        | 28.53   | 37.65    | 26.45          | 0.03           | 3.04          | 3.65                | 6.20               | 88.70        |
 ```
 
 ## `trademcp_analyze_portfolio`
@@ -1970,7 +1998,7 @@ NIFTY 50
 }
 ```
 
-Took 0.06s.
+Took 0.04s.
 
 ```markdown
 # Portfolio analysis
@@ -1981,7 +2009,7 @@ Took 0.06s.
 
 ## Total Market Value
 
-24,324.50
+24,550.00
 
 ## Total Cost
 
@@ -1989,18 +2017,18 @@ Took 0.06s.
 
 ## Total Profit Loss
 
--175.50
+50.00
 
 ## Total Profit Loss Pct
 
--0.72
+0.20
 
 ## Holdings
 
 | Symbol   | Name                              | Industry                   | Quantity | Cost Price | Current Price | Market Value | Profit Loss | Profit Loss Pct | Technical Score | Technical Label | Rsi 14 | Distance From 52W High Pct | Weight Pct |
 |----------|-----------------------------------|----------------------------|----------|------------|---------------|--------------|-------------|-----------------|-----------------|-----------------|--------|----------------------------|------------|
-| RELIANCE | Reliance Industries Limited       | Oil Gas & Consumable Fuels | 10.00    | 1,150.00   | 1,202.00      | 12,020.00    | 520.00      | 4.52            | -2.70           | Neutral         | 46.58  | -25.42                     | 49.42      |
-| TCS      | Tata Consultancy Services Limited | Information Technology     | 5.00     | 2,600.00   | 2,460.90      | 12,304.50    | -695.50     | -5.35           | 31.70           | Buy             | 72.98  | -26.54                     | 50.58      |
+| RELIANCE | Reliance Industries Limited       | Oil Gas & Consumable Fuels | 10.00    | 1,150.00   | 1,190.00      | 11,900.00    | 400.00      | 3.48            | -67.60          | Strong Sell     | 44.35  | -26.17                     | 48.47      |
+| TCS      | Tata Consultancy Services Limited | Information Technology     | 5.00     | 2,600.00   | 2,530.00      | 12,650.00    | -350.00     | -2.69           | 43.90           | Buy             | 74.27  | -24.48                     | 51.53      |
 
 ## Allocation
 
@@ -2008,8 +2036,8 @@ Took 0.06s.
 
 | Metric                     | Value |
 |----------------------------|-------|
-| Information Technology     | 50.58 |
-| Oil Gas & Consumable Fuels | 49.42 |
+| Information Technology     | 51.53 |
+| Oil Gas & Consumable Fuels | 48.47 |
 
 ### Largest Position
 
@@ -2017,7 +2045,7 @@ TCS
 
 ### Largest Position Weight Pct
 
-50.58
+51.53
 
 ### Best Performer
 
@@ -2025,7 +2053,7 @@ RELIANCE
 
 ### Best Performer Profit Pct
 
-4.52
+3.48
 
 ### Worst Performer
 
@@ -2033,7 +2061,7 @@ TCS
 
 ### Worst Performer Profit Pct
 
--5.35
+-2.69
 
 
 ## Risk
@@ -2041,23 +2069,24 @@ TCS
 | Metric                    | Value    |
 |---------------------------|----------|
 | Beta                      | 0.88     |
-| Annualised Alpha Pct      | -0.09    |
-| Annualised Volatility Pct | 19.35    |
-| Sharpe Ratio              | -0.97    |
-| Sortino Ratio             | -0.95    |
+| Annualised Alpha Pct      | -6.69    |
+| Annualised Volatility Pct | 19.45    |
+| Sharpe Ratio              | -0.93    |
+| Sortino Ratio             | -0.91    |
 | Max Drawdown Pct          | -32.11   |
 | Benchmark                 | NIFTY 50 |
-| Benchmark Return Pct      | -11.43   |
-| Portfolio Return Pct      | -18.22   |
-| Days Compared             | 246      |
-| Excess Return Pct         | -6.79    |
+| Benchmark Return Pct      | -12.71   |
+| Portfolio Return Pct      | -17.76   |
+| Days Compared             | 247      |
+| Excess Return Pct         | -5.05    |
 
 ## Flags
 
-- Information Technology is 50.58% of the portfolio - concentration risk.
-- Oil Gas & Consumable Fuels is 49.42% of the portfolio - concentration risk.
-- RELIANCE is 49.42% of the portfolio - single-stock concentration.
-- TCS is 50.58% of the portfolio - single-stock concentration.
+- Information Technology is 51.53% of the portfolio - concentration risk.
+- Oil Gas & Consumable Fuels is 48.47% of the portfolio - concentration risk.
+- RELIANCE carries a Strong Sell technical signal.
+- RELIANCE is 48.47% of the portfolio - single-stock concentration.
+- TCS is 51.53% of the portfolio - single-stock concentration.
 - Fewer than 4 holdings - limited diversification.
 ```
 

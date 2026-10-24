@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Annotated, Any
+from typing import Annotated, Any, Sequence
 
 from pydantic import Field
 
@@ -14,6 +14,47 @@ from ..http import DataSourceError
 from ..providers import nse, yahoo
 from ..symbols import ResolvedSymbol, SymbolNotFound, resolve, search_symbols
 from .common import ResponseFormat, error_text, render, tool_annotations
+
+# The default index set for trademcp_get_index_snapshot: NIFTY 50, SENSEX, the
+# twelve NIFTY sector indices and INDIA VIX.
+DEFAULT_INDICES: list[str] = [
+    "NIFTY 50",
+    "SENSEX",
+    "NIFTY BANK",
+    "NIFTY IT",
+    "NIFTY AUTO",
+    "NIFTY FMCG",
+    "NIFTY PHARMA",
+    "NIFTY REALTY",
+    "NIFTY METAL",
+    "NIFTY MEDIA",
+    "NIFTY ENERGY",
+    "NIFTY PSU BANK",
+    "NIFTY PRIVATE BANK",
+    "NIFTY FINANCIAL SERVICES",
+    "INDIA VIX",
+]
+
+
+def period_return(closes: Sequence[float], days: int) -> float | None:
+    """Return over the last `days` trading sessions, in percent."""
+    if len(closes) <= days:
+        return None
+    start = closes[-days - 1]
+    if not start or not closes[-1]:
+        return None
+    return (closes[-1] - start) / start * 100
+
+
+def window_return(closes: Sequence[float]) -> float | None:
+    """Return across the whole fetched window (first close -> last close), in percent.
+
+    A one-year chart holds roughly 248 daily bars, so there is no 253rd bar to
+    index back to - the window's own endpoints are the only honest anchors.
+    """
+    if len(closes) < 2 or not closes[0] or not closes[-1]:
+        return None
+    return (closes[-1] - closes[0]) / closes[0] * 100
 
 
 def _fmt_field(description: str):
@@ -111,11 +152,6 @@ async def trademcp_get_quote(
     closes = [b.close for b in bars]
     price = quote.get("regularMarketPrice") or (closes[-1] if closes else None)
 
-    def period_return(days: int) -> float | None:
-        if len(closes) <= days or not closes[-1]:
-            return None
-        return (closes[-1] - closes[-days - 1]) / closes[-days - 1] * 100
-
     high_52 = quote.get("fiftyTwoWeekHigh") or (max(b.high for b in bars) if bars else None)
     low_52 = quote.get("fiftyTwoWeekLow") or (min(b.low for b in bars) if bars else None)
     position = None
@@ -152,11 +188,11 @@ async def trademcp_get_quote(
         "dividend_yield_pct": quote.get("dividendYield"),
         "beta": quote.get("beta"),
         "returns": {
-            "1_week_pct": period_return(5),
-            "1_month_pct": period_return(21),
-            "3_month_pct": period_return(63),
-            "6_month_pct": period_return(126),
-            "1_year_pct": period_return(252),
+            "1_week_pct": period_return(closes, 5),
+            "1_month_pct": period_return(closes, 21),
+            "3_month_pct": period_return(closes, 63),
+            "6_month_pct": period_return(closes, 126),
+            "1_year_pct": window_return(closes),
         },
     }
     return render(payload, response_format, f"{resolved.symbol} - {resolved.name}")
@@ -247,6 +283,10 @@ async def trademcp_get_index_snapshot(
     Pharma, Realty, Metal, Energy, PSU Bank, Private Bank, Financial Services,
     Media) and INDIA VIX, so the caller can see where the market stands.
 
+    One of them the free source does not publish: Yahoo carries every one of
+    these except Nifty Private Bank, so that one is reported back under
+    "unavailable" rather than quietly dropped.
+
     Args:
         indices: optional list of index names to fetch
         response_format: 'markdown' or 'json'
@@ -256,9 +296,7 @@ async def trademcp_get_index_snapshot(
     """
     from ..symbols import INDEX_TICKERS
 
-    wanted = indices or ["NIFTY 50", "SENSEX", "NIFTY BANK", "NIFTY IT", "NIFTY AUTO", "NIFTY FMCG",
-                         "NIFTY PHARMA", "NIFTY REALTY", "NIFTY METAL", "NIFTY ENERGY",
-                         "NIFTY PSU BANK", "NIFTY FINANCIAL SERVICES", "INDIA VIX"]
+    wanted = indices or list(DEFAULT_INDICES)
 
     rows: list[dict[str, Any]] = []
     skipped: list[str] = []
@@ -475,8 +513,9 @@ async def trademcp_compare_stocks(
             if bars:
                 from ..analytics import signals as sg
 
-                row["technical_score"] = sg.technical_signals(bars)["summary"]["score"]
-                row["technical_label"] = sg.technical_signals(bars)["summary"]["label"]
+                summary = sg.technical_signals(bars)["summary"]
+                row["technical_score"] = summary["score"]
+                row["technical_label"] = summary["label"]
         except DataSourceError as exc:
             errors.append(f"{query}: {exc}")
         rows.append(row)

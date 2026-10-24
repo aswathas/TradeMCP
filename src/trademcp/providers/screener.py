@@ -1,6 +1,6 @@
 """Screener.in provider - India-specific fundamentals.
 
-Adds the ratios Indian investors actually use (ROCE, ROCE, promoter holding,
+Adds the ratios Indian investors actually use (ROCE, ROE, promoter holding,
 FII/DII flows, working-capital days) on top of what the statement APIs give us.
 Parsing is intentionally defensive: if the markup shifts we degrade to fewer
 fields instead of failing the whole tool call.

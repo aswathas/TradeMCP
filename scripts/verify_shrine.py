@@ -14,17 +14,26 @@ phones) and asserts:
   3. the domain switch still changes the theme and keeps its aria-pressed state
 
     python scripts/verify_shrine.py --port 8099
+
+The script serves the site itself: the probe page and the site have to be on
+the same origin for the iframe to be readable, and a check that needs a server
+the reader forgot to start is a check that silently never runs.
 """
 
 from __future__ import annotations
 
 import argparse
+import functools
+import http.server
 import json
 import re
 import shutil
+import socketserver
 import subprocess
 import sys
 import tempfile
+import threading
+import time
 from pathlib import Path
 
 CHROME_CANDIDATES = [
@@ -75,30 +84,31 @@ setTimeout(() => {{
         hudH: Math.round(hud.height),
       }};
     }}
-    // the domain switch, driven for real
+    // the domain switch, driven for real. The rail's two buttons are the
+    // switcher now: CLEAVE opens the void, FUGA opens the shrine.
     const steps = [];
     d.documentElement.dataset.theme = "paper";
     const state = () => steps.push([
       d.documentElement.dataset.theme,
-      d.getElementById("domain-void").getAttribute("aria-pressed"),
-      d.getElementById("domain-shrine").getAttribute("aria-pressed"),
+      d.getElementById("domain-btn").getAttribute("aria-pressed"),
+      d.getElementById("tech-shrine").getAttribute("aria-pressed"),
     ]);
     state();
-    d.getElementById("domain-void").click(); state();
-    d.getElementById("domain-shrine").click(); state();
-    d.getElementById("domain-shrine").click(); state();
-    d.getElementById("domain-void").click(); state();
+    d.getElementById("domain-btn").click(); state();
+    d.getElementById("tech-shrine").click(); state();
+    d.getElementById("tech-shrine").click(); state();
+    d.getElementById("domain-btn").click(); state();
     out.switching = steps;
 
     // Dismantle has to tear the open domain back down to the base page.
-    d.getElementById("domain-shrine").click();
+    d.getElementById("tech-shrine").click();
     const opened = d.documentElement.dataset.theme;
     d.getElementById("dismantle-btn").click();
     out.dismantle = [
       opened,
       d.documentElement.dataset.theme,
-      d.getElementById("domain-shrine").getAttribute("aria-pressed"),
-      d.getElementById("domain-void").getAttribute("aria-pressed"),
+      d.getElementById("tech-shrine").getAttribute("aria-pressed"),
+      d.getElementById("domain-btn").getAttribute("aria-pressed"),
     ];
 
     /* The pointer must not be able to hide the first box. The two hero planes
@@ -168,12 +178,24 @@ def probe(chrome: str, port: int, width: int) -> dict:
     return json.loads(m.group(2))
 
 
+def serve(port: int) -> socketserver.ThreadingTCPServer:
+    """Serve the site on the given port, for as long as the check runs."""
+    handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(SITE))
+    handler.log_message = lambda *a, **k: None
+    httpd = socketserver.ThreadingTCPServer(("127.0.0.1", port), handler)
+    httpd.daemon_threads = True
+    threading.Thread(target=httpd.serve_forever, daemon=True).start()
+    time.sleep(0.4)
+    return httpd
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--port", type=int, default=8099)
     args = parser.parse_args()
     chrome = find_chrome()
 
+    httpd = serve(args.port)
     failures: list[str] = []
     for width in WIDTHS:
         data = probe(chrome, args.port, width)
@@ -256,8 +278,10 @@ def main() -> int:
         print("\nFAILURES:")
         for f in failures:
             print("  -", f)
+        httpd.shutdown()
         return 1
     print("\nAll shrine checks passed.")
+    httpd.shutdown()
     return 0
 
 

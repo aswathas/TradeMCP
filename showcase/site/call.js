@@ -122,6 +122,14 @@
   /* The live path: the showcase server turns this into a real MCP
      tools/call over stdio against the TradeMCP server. */
   async function callLive(sym) {
+    /* The live layer settles whether this host has a backend with the board's
+       own first request. Waiting for that answer instead of asking again is
+       what keeps a static host from logging a 404 page every time this panel
+       is used. */
+    if (window.trademcpApiReady) {
+      const live = await window.trademcpApiReady;
+      if (!live) throw new Error("no live endpoint on this host");
+    }
     const payload = await getJSON(API + "/quote?symbol=" + encodeURIComponent(sym), 15000);
     if (!payload || typeof payload !== "object") throw new Error("empty payload");
     return { payload: payload, source: "live · /api/quote" };
@@ -130,7 +138,13 @@
   /* The fallback path: the snapshot was written by these same tools, so
      a static host still shows a real answer — an older one. */
   async function callSnapshot(sym) {
-    if (!snapshot) snapshot = await getJSON(SNAPSHOT_URL, 8000);
+    /* live.js loads this same file. Sharing it keeps one fetch of it on the
+       page instead of one per module. */
+    if (!snapshot) {
+      snapshot = window.trademcpSnapshot
+        ? await window.trademcpSnapshot()
+        : await getJSON(SNAPSHOT_URL, 8000);
+    }
     const rows = snapshot && Array.isArray(snapshot.tape) ? snapshot.tape : [];
     const wanted = sym.toUpperCase();
     for (let i = 0; i < rows.length; i += 1) {
